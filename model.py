@@ -90,6 +90,11 @@ class EfficientNet(nn.Module):
         Returns output of the final convolution layer
         """
 
+        # (!) Here we permute the model inputs to make this implementation consistent with
+        # the TensorFlow pretrained weights, which are trained with images with a different
+        # permutation of image dimensions.
+        inputs = inputs.permute((0, 1, 3, 2))
+
         # Stem
         x = relu_fn(self._bn0(self._conv_stem(inputs)))
 
@@ -99,6 +104,10 @@ class EfficientNet(nn.Module):
             if drop_connect_rate:
                 drop_connect_rate *= float(idx) / len(self._blocks)
             x = block(x, drop_connect_rate)
+
+        # Finally, we permute back to the PyTorch image dimension permutation.
+        x = x.permute((0, 1, 3, 2))
+
         return x
 
     def forward(self, inputs):
@@ -170,8 +179,6 @@ class MBConvBlock(nn.Module):
         :param drop_connect_rate: drop connect rate (float, between 0 and 1)
         :return: output of block
         """
-
-        print(inputs)
 
         # Expansion and Depthwise Convolution
         x = inputs
