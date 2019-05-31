@@ -102,5 +102,12 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+.DS_STORE
 
+# PyCharm
 .idea*
+*.xml
+
+# Custom
+tensorflow/
+

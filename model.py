@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 # Swish activation
 def relu_fn(x):
-    return x * F.sigmoid(x)
+    return x * torch.sigmoid(x)
 
 
 # Parameters for the entire model are packaged into a namedtuple
@@ -111,9 +111,9 @@ class EfficientNet(nn.Module):
 
         # Head
         x = relu_fn(self._bn1(self._conv_head(x)))
-        x = F.adaptive_avg_pool2d(x, 1)
+        x = F.adaptive_avg_pool2d(x, 1).squeeze(-1).squeeze(-1)
         if self._dropout:
-            x = F.dropout(self._dropout, training=self.training)
+            x = F.dropout(x, p=self._dropout, training=self.training)
         x = self._fc(x)
         return x
 
@@ -166,10 +166,12 @@ class MBConvBlock(nn.Module):
 
     def forward(self, inputs, drop_connect_rate=None):
         """
-        :param inputs: input tensor (B x H x W x 3)
+        :param inputs: input tensor
         :param drop_connect_rate: drop connect rate (float, between 0 and 1)
         :return: output of block
         """
+
+        print(inputs)
 
         # Expansion and Depthwise Convolution
         x = inputs
@@ -181,7 +183,7 @@ class MBConvBlock(nn.Module):
         if self.has_se:
             x_squeezed = F.adaptive_avg_pool2d(x, 1)
             x_squeezed = self._se_expand(relu_fn(self._se_reduce(x_squeezed)))
-            x = F.sigmoid(x_squeezed) * x
+            x = torch.sigmoid(x_squeezed) * x
 
         x = self._bn2(self._project_conv(x))
 
