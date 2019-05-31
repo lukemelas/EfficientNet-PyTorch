@@ -1,15 +1,25 @@
 # EfficientNet PyTorch
 This repository contains an op-for-op PyTorch reimplementation of EfficientNet, the new convolutional neural network architecture from [EfficientNet](https://arxiv.org/abs/1905.11946) ([TensorFlow implementation](https://github.com/tensorflow/tpu/tree/master/models/official/efficientnet)). 
 
-This repository is being built at this very momement. When finished, it will include: 
- * Loading pre-trained EfficientNet models
- * Evaluating the models on ImageNet
- * Predicting on your own images with the models
- * Training new EfficientNet models
+At the moment, you can: 
+ * 
+ * Load pretrained EfficientNet models
+ * Evaluate and train on ImageNet with the models
 
-Check back very soon for the models! 
+_Upcoming features_:  In the next few days, you will be able to:
+ * Install this repository via `pip` 
+ * Easily load pretrained models without having to manually run `download.sh` in `pretrained/pretrained_pytorch`    
+ * Easily predict on your own images
+ * Easily replicate the paper's results by training from scratch 
 
-### About EfficientNet Models
+### Table of contents
+ 1. [About EfficientNet](#about_efficientnet_tf)
+ 2. [About EfficientNet-PyTorch](#about_efficientnet_pytorch)
+ 2. [Examples](#examples)
+ 3. [Models](#models) 
+ 4. [Installation](#installation) 
+
+### About EfficientNet Models <a name="about_efficientnet_tf"></a>
 
 If you're new to EfficientNets, here is an explanation straight from the official TensorFlow implementation: 
 

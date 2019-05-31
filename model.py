@@ -79,7 +79,7 @@ class MBConvBlock(nn.Module):
     def __init__(self, block_args, global_params):
         super().__init__()
         self._block_args = block_args
-        self._bn_mom = global_params.batch_norm_momentum
+        self._bn_mom = 1 - global_params.batch_norm_momentum
         self._bn_eps = global_params.batch_norm_epsilon
         self.has_se = (self._block_args.se_ratio is not None) and (0 < self._block_args.se_ratio <= 1)
         self.id_skip = block_args.id_skip  # skip connection and drop connect
@@ -159,7 +159,7 @@ class EfficientNet(nn.Module):
         self._blocks_args = blocks_args
 
         # Batch norm parameters
-        bn_mom = self._global_params.batch_norm_momentum
+        bn_mom = 1 - self._global_params.batch_norm_momentum
         bn_eps = self._global_params.batch_norm_epsilon
 
         # Stem
@@ -204,17 +204,30 @@ class EfficientNet(nn.Module):
         # (!) Here we permute the model inputs to make this implementation consistent with
         # the TensorFlow pretrained weights, which are trained with images with a different
         # permutation of image dimensions.
-        inputs = inputs.permute((0, 1, 3, 2))
+        # inputs = inputs.permute((0, 1, 3, 2))
+
+        print("INPUTS:", inputs.permute(0, 2, 3, 1))
 
         # Stem
+        x = self._conv_stem(inputs)
+        print("AFTER FIRST CONV SUM:", x.sum())
+        print("AFTER FIRST CONV:", x.permute(0, 3, 2, 1))
+        x = self._bn0(x)
+        print("AFTER FIRST BN:", x.permute(0, 3, 2, 1))
+        x = relu_fn(x)
+
         x = relu_fn(self._bn0(self._conv_stem(inputs)))
+
+        print("AFTER STEM:", x.permute(0, 3, 2, 1))
 
         # Blocks
         for idx, block in enumerate(self._blocks):
             drop_connect_rate = self._global_params.drop_connect_rate
             if drop_connect_rate:
                 drop_connect_rate *= float(idx) / len(self._blocks)
-            x = block(x, drop_connect_rate)
+            x = block(x) # , drop_connect_rate) # see https://github.com/tensorflow/tpu/issues/381
+
+            print("AFTER BLOCK "+str(idx)+':', x.permute(0, 3, 2, 1))
 
         # Finally, we permute back to the PyTorch image dimension permutation.
         x = x.permute((0, 1, 3, 2))

@@ -29,10 +29,12 @@ def load_param(checkpoint_file, conversion_table, model_name):
     for pyt_param, tf_param_name in conversion_table.items():
         tf_param_name = str(model_name) + '/' +  tf_param_name
         tf_param = tf.train.load_variable(checkpoint_file, tf_param_name)
-        if tf_param_name.endswith('kernel'):  # for weight(kernel), we should do transpose
+        if 'conv' in tf_param_name and 'kernel' in tf_param_name:
+            tf_param = np.transpose(tf_param, (3, 2, 0, 1))
+            if 'depthwise' in tf_param_name:
+                tf_param = np.transpose(tf_param, (1, 0, 2, 3))
+        elif tf_param_name.endswith('kernel'):  # for weight(kernel), we should do transpose
             tf_param = np.transpose(tf_param)
-        if 'depthwise' in tf_param_name:
-            tf_param = np.transpose(tf_param, (1, 0, 2, 3))
         assert pyt_param.size() == tf_param.shape, \
             'Dim Mismatch: %s vs %s ; %s' % (tuple(pyt_param.size()), tf_param.shape, tf_param_name)
         pyt_param.data = torch.from_numpy(tf_param)
