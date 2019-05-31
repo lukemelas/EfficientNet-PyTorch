@@ -9,9 +9,44 @@ from torch.nn import functional as F
 logger = logging.getLogger(__name__)
 
 
-# Swish activation
 def relu_fn(x):
+    """ Swish activation function """
     return x * torch.sigmoid(x)
+
+
+def round_filters(filters, global_params):
+    """ Calculate and round number of filters based on depth multiplier. """
+    multiplier = global_params.width_coefficient
+    if not multiplier:
+        return filters
+    divisor = global_params.depth_divisor
+    min_depth = global_params.min_depth
+    filters *= multiplier
+    min_depth = min_depth or divisor
+    new_filters = max(min_depth, int(filters + divisor / 2) // divisor * divisor)
+    if new_filters < 0.9 * filters:  # prevent rounding by more than 10%
+        new_filters += divisor
+    return int(new_filters)
+
+
+def round_repeats(repeats, global_params):
+    """ Round number of filters based on depth multiplier. """
+    multiplier = global_params.depth_coefficient
+    if not multiplier:
+        return repeats
+    return int(math.ceil(multiplier * repeats))
+
+
+def drop_connect(inputs, p, training):
+    """ Drop connect. """
+    if not training: return inputs
+    batch_size = inputs.shape[0]
+    keep_prob = 1 - p
+    random_tensor = keep_prob
+    random_tensor += torch.rand([batch_size, 1, 1, 1], dtype=inputs.dtype)  # uniform [0,1)
+    binary_tensor = torch.floor(random_tensor)
+    output = inputs / keep_prob * binary_tensor
+    return output
 
 
 # Parameters for the entire model are packaged into a namedtuple
@@ -27,6 +62,82 @@ BlockArgs = collections.namedtuple('BlockArgs', [
     'kernel_size', 'num_repeat', 'input_filters', 'output_filters',
     'expand_ratio', 'id_skip', 'stride', 'se_ratio'])
 BlockArgs.__new__.__defaults__ = (None,) * len(BlockArgs._fields)
+
+
+class MBConvBlock(nn.Module):
+    """
+    Mobile Inverted Residual Bottleneck Block
+
+    Args:
+        block_args (namedtuple): BlockArgs, see above
+        global_params (namedtuple): GlobalParam, see above
+
+    Attributes:
+        has_se (bool): Whether the block contains a Squeeze and Excitation layer.
+    """
+
+    def __init__(self, block_args, global_params):
+        super().__init__()
+        self._block_args = block_args
+        self._bn_mom = global_params.batch_norm_momentum
+        self._bn_eps = global_params.batch_norm_epsilon
+        self.has_se = (self._block_args.se_ratio is not None) and (0 < self._block_args.se_ratio <= 1)
+        self.id_skip = block_args.id_skip  # skip connection and drop connect
+
+        # Expansion phase
+        inp = self._block_args.input_filters  # number of input channels
+        oup = self._block_args.input_filters * self._block_args.expand_ratio  # number of output channels
+        if self._block_args.expand_ratio != 1:
+            self._expand_conv = nn.Conv2d(in_channels=inp, out_channels=oup, kernel_size=1, bias=False)
+            self._bn0 = nn.BatchNorm2d(num_features=oup, momentum=self._bn_mom, eps=self._bn_eps)
+
+        # Depthwise convolution phase
+        k = self._block_args.kernel_size
+        s = self._block_args.stride
+        self._depthwise_conv = nn.Conv2d(
+            in_channels=oup, out_channels=oup, groups=oup,  # groups makes it depthwise
+            kernel_size=k, stride=s, padding=(k-1)//2, bias=False)
+        self._bn1 = nn.BatchNorm2d(num_features=oup, momentum=self._bn_mom, eps=self._bn_eps)
+
+        # Squeeze and Excitation layer, if desired
+        if self.has_se:
+            num_squeezed_channels = max(1, int(self._block_args.input_filters * self._block_args.se_ratio))
+            self._se_reduce = nn.Conv2d(in_channels=oup, out_channels=num_squeezed_channels, kernel_size=1)
+            self._se_expand = nn.Conv2d(in_channels=num_squeezed_channels, out_channels=oup, kernel_size=1)
+
+        # Output phase
+        final_oup = self._block_args.output_filters
+        self._project_conv = nn.Conv2d(in_channels=oup, out_channels=final_oup, kernel_size=1, bias=False)
+        self._bn2 = nn.BatchNorm2d(num_features=final_oup, momentum=self._bn_mom, eps=self._bn_eps)
+
+    def forward(self, inputs, drop_connect_rate=None):
+        """
+        :param inputs: input tensor
+        :param drop_connect_rate: drop connect rate (float, between 0 and 1)
+        :return: output of block
+        """
+
+        # Expansion and Depthwise Convolution
+        x = inputs
+        if self._block_args.expand_ratio != 1:
+            x = relu_fn(self._bn0(self._expand_conv(inputs)))
+        x = relu_fn(self._bn1(self._depthwise_conv(x)))
+
+        # Squeeze and Excitation
+        if self.has_se:
+            x_squeezed = F.adaptive_avg_pool2d(x, 1)
+            x_squeezed = self._se_expand(relu_fn(self._se_reduce(x_squeezed)))
+            x = torch.sigmoid(x_squeezed) * x
+
+        x = self._bn2(self._project_conv(x))
+
+        # Skip connection and drop connect
+        input_filters, output_filters = self._block_args.input_filters, self._block_args.output_filters
+        if self.id_skip and self._block_args.stride == 1 and input_filters == output_filters:
+            if drop_connect_rate:
+                x = drop_connect(x, p=drop_connect_rate, training=self.training)
+            x = x + inputs  # skip connection
+        return x
 
 
 class EfficientNet(nn.Module):
@@ -127,112 +238,10 @@ class EfficientNet(nn.Module):
         return x
 
 
-class MBConvBlock(nn.Module):
-    """
-    Mobile Inverted Residual Bottleneck Block
-
-    Args:
-        block_args (namedtuple): BlockArgs, see above
-        global_params (namedtuple): GlobalParam, see above
-
-    Attributes:
-        has_se (bool): Whether the block contains a Squeeze and Excitation layer.
-    """
-
-    def __init__(self, block_args, global_params):
-        super().__init__()
-        self._block_args = block_args
-        self._bn_mom = global_params.batch_norm_momentum
-        self._bn_eps = global_params.batch_norm_epsilon
-        self.has_se = (self._block_args.se_ratio is not None) and (0 < self._block_args.se_ratio <= 1)
-        self.id_skip = block_args.id_skip  # skip connection and drop connect
-
-        # Expansion phase
-        inp = self._block_args.input_filters  # number of input channels
-        oup = self._block_args.input_filters * self._block_args.expand_ratio  # number of output channels
-        if self._block_args.expand_ratio != 1:
-            self._expand_conv = nn.Conv2d(in_channels=inp, out_channels=oup, kernel_size=1, bias=False)
-            self._bn0 = nn.BatchNorm2d(num_features=oup, momentum=self._bn_mom, eps=self._bn_eps)
-
-        # Depthwise convolution phase
-        k = self._block_args.kernel_size
-        s = self._block_args.stride
-        self._depthwise_conv = nn.Conv2d(
-            in_channels=oup, out_channels=oup, groups=oup,  # groups makes it depthwise
-            kernel_size=k, stride=s, padding=(k-1)//2, bias=False)
-        self._bn1 = nn.BatchNorm2d(num_features=oup, momentum=self._bn_mom, eps=self._bn_eps)
-
-        # Squeeze and Excitation layer, if desired
-        if self.has_se:
-            num_squeezed_channels = max(1, int(self._block_args.input_filters * self._block_args.se_ratio))
-            self._se_reduce = nn.Conv2d(in_channels=oup, out_channels=num_squeezed_channels, kernel_size=1)
-            self._se_expand = nn.Conv2d(in_channels=num_squeezed_channels, out_channels=oup, kernel_size=1)
-
-        # Output phase
-        final_oup = self._block_args.output_filters
-        self._project_conv = nn.Conv2d(in_channels=oup, out_channels=final_oup, kernel_size=1, bias=False)
-        self._bn2 = nn.BatchNorm2d(num_features=final_oup, momentum=self._bn_mom, eps=self._bn_eps)
-
-    def forward(self, inputs, drop_connect_rate=None):
-        """
-        :param inputs: input tensor
-        :param drop_connect_rate: drop connect rate (float, between 0 and 1)
-        :return: output of block
-        """
-
-        # Expansion and Depthwise Convolution
-        x = inputs
-        if self._block_args.expand_ratio != 1:
-            x = relu_fn(self._bn0(self._expand_conv(inputs)))
-        x = relu_fn(self._bn1(self._depthwise_conv(x)))
-
-        # Squeeze and Excitation
-        if self.has_se:
-            x_squeezed = F.adaptive_avg_pool2d(x, 1)
-            x_squeezed = self._se_expand(relu_fn(self._se_reduce(x_squeezed)))
-            x = torch.sigmoid(x_squeezed) * x
-
-        x = self._bn2(self._project_conv(x))
-
-        # Skip connection and drop connect
-        input_filters, output_filters = self._block_args.input_filters, self._block_args.output_filters
-        if self.id_skip and self._block_args.stride == 1 and input_filters == output_filters:
-            if drop_connect_rate:
-                x = drop_connect(x, p=drop_connect_rate, training=self.training)
-            x = x + inputs  # skip connection
-        return x
+    # @classmethod
+    # def from_pretrained(cls):
 
 
-def round_filters(filters, global_params):
-    """ Calculate and round number of filters based on depth multiplier. """
-    multiplier = global_params.width_coefficient
-    if not multiplier:
-        return filters
-    divisor = global_params.depth_divisor
-    min_depth = global_params.min_depth
-    filters *= multiplier
-    min_depth = min_depth or divisor
-    new_filters = max(min_depth, int(filters + divisor / 2) // divisor * divisor)
-    if new_filters < 0.9 * filters:  # prevent rounding by more than 10%
-        new_filters += divisor
-    return int(new_filters)
 
 
-def round_repeats(repeats, global_params):
-    """ Round number of filters based on depth multiplier. """
-    multiplier = global_params.depth_coefficient
-    if not multiplier:
-        return repeats
-    return int(math.ceil(multiplier * repeats))
 
-
-def drop_connect(inputs, p, training):
-    """ Drop connect. """
-    if not training: return inputs
-    batch_size = inputs.shape[0]
-    keep_prob = 1 - p
-    random_tensor = keep_prob
-    random_tensor += torch.rand([batch_size, 1, 1, 1], dtype=inputs.dtype)  # uniform [0,1)
-    binary_tensor = torch.floor(random_tensor)
-    output = inputs / keep_prob * binary_tensor
-    return output
