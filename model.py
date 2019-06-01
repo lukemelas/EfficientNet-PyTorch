@@ -49,6 +49,24 @@ def drop_connect(inputs, p, training):
     return output
 
 
+class Conv2dSamePadding(nn.Conv2d):
+    """ 2D Convolutions like TensorFlow """
+    def __init__(self, in_channels, out_channels, kernel_size, stride=1, dilation=1, groups=1, bias=True):
+        super().__init__(in_channels, out_channels, kernel_size, stride, 0, dilation, groups, bias)
+        self.stride = self.stride if len(self.stride) == 2 else [self.stride[0]]*2
+
+    def forward(self, x):
+        ih, iw = x.size()[-2:]
+        kh, kw = self.weight.size()[-2:]
+        sh, sw = self.stride
+        oh, ow = math.ceil(ih / sh), math.ceil(iw / sw)
+        pad_h = max((oh - 1) * self.stride[0] + (kh - 1) * self.dilation[0] + 1 - ih, 0)
+        pad_w = max((ow - 1) * self.stride[1] + (kw - 1) * self.dilation[1] + 1 - iw, 0)
+        if pad_h > 0 or pad_w > 0:
+            x = F.pad(x, [pad_w//2, pad_w - pad_w//2, pad_h//2, pad_h - pad_h//2])
+        return F.conv2d(x, self.weight, self.bias, self.stride, self.padding, self.dilation, self.groups)
+
+
 # Parameters for the entire model are packaged into a namedtuple
 GlobalParams = collections.namedtuple('GlobalParams', [
     'batch_norm_momentum', 'batch_norm_epsilon', 'dropout_rate',
@@ -88,26 +106,26 @@ class MBConvBlock(nn.Module):
         inp = self._block_args.input_filters  # number of input channels
         oup = self._block_args.input_filters * self._block_args.expand_ratio  # number of output channels
         if self._block_args.expand_ratio != 1:
-            self._expand_conv = nn.Conv2d(in_channels=inp, out_channels=oup, kernel_size=1, bias=False)
+            self._expand_conv = Conv2dSamePadding(in_channels=inp, out_channels=oup, kernel_size=1, bias=False)
             self._bn0 = nn.BatchNorm2d(num_features=oup, momentum=self._bn_mom, eps=self._bn_eps)
 
         # Depthwise convolution phase
         k = self._block_args.kernel_size
         s = self._block_args.stride
-        self._depthwise_conv = nn.Conv2d(
+        self._depthwise_conv = Conv2dSamePadding(
             in_channels=oup, out_channels=oup, groups=oup,  # groups makes it depthwise
-            kernel_size=k, stride=s, padding=(k-1)//2, bias=False)
+            kernel_size=k, stride=s, bias=False)
         self._bn1 = nn.BatchNorm2d(num_features=oup, momentum=self._bn_mom, eps=self._bn_eps)
 
         # Squeeze and Excitation layer, if desired
         if self.has_se:
             num_squeezed_channels = max(1, int(self._block_args.input_filters * self._block_args.se_ratio))
-            self._se_reduce = nn.Conv2d(in_channels=oup, out_channels=num_squeezed_channels, kernel_size=1)
-            self._se_expand = nn.Conv2d(in_channels=num_squeezed_channels, out_channels=oup, kernel_size=1)
+            self._se_reduce = Conv2dSamePadding(in_channels=oup, out_channels=num_squeezed_channels, kernel_size=1)
+            self._se_expand = Conv2dSamePadding(in_channels=num_squeezed_channels, out_channels=oup, kernel_size=1)
 
         # Output phase
         final_oup = self._block_args.output_filters
-        self._project_conv = nn.Conv2d(in_channels=oup, out_channels=final_oup, kernel_size=1, bias=False)
+        self._project_conv = Conv2dSamePadding(in_channels=oup, out_channels=final_oup, kernel_size=1, bias=False)
         self._bn2 = nn.BatchNorm2d(num_features=final_oup, momentum=self._bn_mom, eps=self._bn_eps)
 
     def forward(self, inputs, drop_connect_rate=None):
@@ -165,7 +183,7 @@ class EfficientNet(nn.Module):
         # Stem
         in_channels = 3  # rgb
         out_channels = round_filters(32, self._global_params)  # number of output channels
-        self._conv_stem = nn.Conv2d(in_channels, out_channels, kernel_size=3, stride=2, padding=1, bias=False)
+        self._conv_stem = Conv2dSamePadding(in_channels, out_channels, kernel_size=3, stride=2, bias=False)
         self._bn0 = nn.BatchNorm2d(num_features=out_channels, momentum=bn_mom, eps=bn_eps)
 
         # Build blocks
@@ -189,7 +207,7 @@ class EfficientNet(nn.Module):
         # Head
         in_channels = block_args.output_filters  # output of final block
         out_channels = round_filters(1280, self._global_params)
-        self._conv_head = nn.Conv2d(in_channels, out_channels, kernel_size=1, bias=False)
+        self._conv_head = Conv2dSamePadding(in_channels, out_channels, kernel_size=1, bias=False)
         self._bn1 = nn.BatchNorm2d(num_features=out_channels, momentum=bn_mom, eps=bn_eps)
 
         # Final linear layer
@@ -200,25 +218,25 @@ class EfficientNet(nn.Module):
         """
         Returns output of the final convolution layer
         """
+        print_tf = lambda s,t: print(s, t.permute(0,2,3,1))
 
-        # (!) Here we permute the model inputs to make this implementation consistent with
-        # the TensorFlow pretrained weights, which are trained with images with a different
-        # permutation of image dimensions.
-        # inputs = inputs.permute((0, 1, 3, 2))
-
-        print("INPUTS:", inputs.permute(0, 2, 3, 1))
+        print_tf("INPUTS:", inputs)
 
         # Stem
         x = self._conv_stem(inputs)
+
         print("AFTER FIRST CONV SUM:", x.sum())
-        print("AFTER FIRST CONV:", x.permute(0, 3, 2, 1))
+        print_tf("AFTER FIRST CONV:", x)
+
         x = self._bn0(x)
-        print("AFTER FIRST BN:", x.permute(0, 3, 2, 1))
+
+        print_tf("AFTER FIRST BN:", x)
+
         x = relu_fn(x)
 
-        x = relu_fn(self._bn0(self._conv_stem(inputs)))
+        # x = relu_fn(self._bn0(self._conv_stem(inputs)))
 
-        print("AFTER STEM:", x.permute(0, 3, 2, 1))
+        print_tf("AFTER STEM:", x)
 
         # Blocks
         for idx, block in enumerate(self._blocks):
@@ -227,10 +245,7 @@ class EfficientNet(nn.Module):
                 drop_connect_rate *= float(idx) / len(self._blocks)
             x = block(x) # , drop_connect_rate) # see https://github.com/tensorflow/tpu/issues/381
 
-            print("AFTER BLOCK "+str(idx)+':', x.permute(0, 3, 2, 1))
-
-        # Finally, we permute back to the PyTorch image dimension permutation.
-        x = x.permute((0, 1, 3, 2))
+            print_tf("AFTER BLOCK "+str(idx)+':', x)
 
         return x
 
