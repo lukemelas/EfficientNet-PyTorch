@@ -51,7 +51,7 @@ EfficientNets achieve state-of-the-art accuracy on ImageNet with an order of mag
 
 ### About EfficientNet PyTorch
 
-EfficientNet PyTorch is a re-implementation of EfficientNet in PyTorch. Our PyTorch model model is consistent with the [original TensorFlow implementation](), such that it is easy to load weights from a TensorFlow checkpoint. At the same time, we aim to make our PyTorch implementation as simple, flexible, and extensible as possible.
+EfficientNet PyTorch is a PyTorch re-implementation of EfficientNet. It is consistent with the [original TensorFlow implementation](), such that it is easy to load weights from a TensorFlow checkpoint. At the same time, we aim to make our PyTorch implementation as simple, flexible, and extensible as possible.
 
 If you have any feature requests or questions, feel free to leave them as GitHub issues!
 
