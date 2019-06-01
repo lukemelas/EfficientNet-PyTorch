@@ -1,83 +1,17 @@
-import math
-import logging
-import collections
-
 import torch
 from torch import nn
 from torch.nn import functional as F
 
-logger = logging.getLogger(__name__)
-
-
-def relu_fn(x):
-    """ Swish activation function """
-    return x * torch.sigmoid(x)
-
-
-def round_filters(filters, global_params):
-    """ Calculate and round number of filters based on depth multiplier. """
-    multiplier = global_params.width_coefficient
-    if not multiplier:
-        return filters
-    divisor = global_params.depth_divisor
-    min_depth = global_params.min_depth
-    filters *= multiplier
-    min_depth = min_depth or divisor
-    new_filters = max(min_depth, int(filters + divisor / 2) // divisor * divisor)
-    if new_filters < 0.9 * filters:  # prevent rounding by more than 10%
-        new_filters += divisor
-    return int(new_filters)
-
-
-def round_repeats(repeats, global_params):
-    """ Round number of filters based on depth multiplier. """
-    multiplier = global_params.depth_coefficient
-    if not multiplier:
-        return repeats
-    return int(math.ceil(multiplier * repeats))
-
-
-def drop_connect(inputs, p, training):
-    """ Drop connect. """
-    if not training: return inputs
-    batch_size = inputs.shape[0]
-    keep_prob = 1 - p
-    random_tensor = keep_prob
-    random_tensor += torch.rand([batch_size, 1, 1, 1], dtype=inputs.dtype)  # uniform [0,1)
-    binary_tensor = torch.floor(random_tensor)
-    output = inputs / keep_prob * binary_tensor
-    return output
-
-
-class Conv2dSamePadding(nn.Conv2d):
-    """ 2D Convolutions like TensorFlow """
-    def __init__(self, in_channels, out_channels, kernel_size, stride=1, dilation=1, groups=1, bias=True):
-        super().__init__(in_channels, out_channels, kernel_size, stride, 0, dilation, groups, bias)
-        self.stride = self.stride if len(self.stride) == 2 else [self.stride[0]]*2
-
-    def forward(self, x):
-        ih, iw = x.size()[-2:]
-        kh, kw = self.weight.size()[-2:]
-        sh, sw = self.stride
-        oh, ow = math.ceil(ih / sh), math.ceil(iw / sw)
-        pad_h = max((oh - 1) * self.stride[0] + (kh - 1) * self.dilation[0] + 1 - ih, 0)
-        pad_w = max((ow - 1) * self.stride[1] + (kw - 1) * self.dilation[1] + 1 - iw, 0)
-        if pad_h > 0 or pad_w > 0:
-            x = F.pad(x, [pad_w//2, pad_w - pad_w//2, pad_h//2, pad_h - pad_h//2])
-        return F.conv2d(x, self.weight, self.bias, self.stride, self.padding, self.dilation, self.groups)
-
-
-# Parameters for the entire model as well as individual blocks are stored as namedtuples
-GlobalParams = collections.namedtuple('GlobalParams', [
-    'batch_norm_momentum', 'batch_norm_epsilon', 'dropout_rate',
-    'num_classes', 'width_coefficient', 'depth_coefficient',
-    'depth_divisor', 'min_depth', 'drop_connect_rate',])
-BlockArgs = collections.namedtuple('BlockArgs', [
-    'kernel_size', 'num_repeat', 'input_filters', 'output_filters',
-    'expand_ratio', 'id_skip', 'stride', 'se_ratio'])
-GlobalParams.__new__.__defaults__ = (None,) * len(GlobalParams._fields)
-BlockArgs.__new__.__defaults__ = (None,) * len(BlockArgs._fields)
-
+from utils import (
+    relu_fn,
+    round_filters,
+    round_repeats,
+    drop_connect,
+    Conv2dSamePadding,
+    get_model_params,
+    efficientnet_params,
+    # load_pretrained_weights,
+)
 
 class MBConvBlock(nn.Module):
     """
@@ -157,12 +91,14 @@ class MBConvBlock(nn.Module):
 
 class EfficientNet(nn.Module):
     """
-    An EfficientNet model (mostly from MNasNet)
+    An EfficientNet model. Most easily loaded with the .from_name or .from_pretrained methods
 
     Args:
         blocks_args (list): A list of BlockArgs to construct blocks
         global_params (namedtuple): A set of GlobalParams shared between blocks
-    Raises:
+
+    Example:
+        model = EfficientNet.from_pretrained('efficientnet-b0')
 
     """
 
@@ -212,9 +148,7 @@ class EfficientNet(nn.Module):
         self._fc = nn.Linear(out_channels, self._global_params.num_classes)
 
     def extract_features(self, inputs):
-        """
-        Returns output of the final convolution layer
-        """
+        """ Returns output of the final convolution layer """
 
         # Stem
         x = relu_fn(self._bn0(self._conv_stem(inputs)))
@@ -229,9 +163,7 @@ class EfficientNet(nn.Module):
         return x
 
     def forward(self, inputs):
-        """
-        Calls extract_features to extract features, applies final linear layer, and returns logits.
-        """
+        """ Calls extract_features to extract features, applies final linear layer, and returns logits. """
 
         # Convolution layers
         x = self.extract_features(inputs)
@@ -244,6 +176,28 @@ class EfficientNet(nn.Module):
         x = self._fc(x)
         return x
 
+    @classmethod
+    def from_name(cls, model_name, override_params=None):
+        blocks_args, global_params = get_model_params(model_name, override_params)
+        return EfficientNet(blocks_args, global_params)
 
+    @classmethod
+    def from_pretrained(cls, model_name):
+        model = EfficientNet.from_name(model_name)
+        load_pretrained_weights(model)
+        return model
 
+    @classmethod
+    def get_image_size(cls, model_name):
+        cls._check_model_name_is_valid(model_name)
+        _, _, res, _ = efficientnet_params(model_name)
+        return res
 
+    @classmethod
+    def _check_model_name_is_valid(cls, model_name, also_need_pretrained_weights=False):
+        """ Validates model name. None that pretrained weights are only available for
+        the first four models (efficientnet-b{i} for i in 0,1,2,3) at the moment. """
+        num_models = 4 if also_need_pretrained_weights else 8
+        valid_models = ['efficientnet_b'+str(i) for i in range(num_models)]
+        if model_name not in valid_models:
+            raise ValueError('model_name should be one of: ' + ', '.join(valid_models))

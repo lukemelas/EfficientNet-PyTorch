@@ -1,6 +1,101 @@
-import re
+"""
+This file contains helper functions for building the model and for loading model parameters.
+These helper functions are built to mirror those in the official TensorFlow implementation.
+"""
 
-from model import BlockArgs, GlobalParams, EfficientNet
+import re
+import math
+import collections
+import torch
+from torch import nn
+from torch.nn import functional as F
+from torch.utils import model_zoo
+
+
+########################################################################
+############### HELPERS FUNCTIONS FOR MODEL ARCHITECTURE ###############
+########################################################################
+
+
+# Parameters for the entire model (stem, all blocks, and head)
+GlobalParams = collections.namedtuple('GlobalParams', [
+    'batch_norm_momentum', 'batch_norm_epsilon', 'dropout_rate',
+    'num_classes', 'width_coefficient', 'depth_coefficient',
+    'depth_divisor', 'min_depth', 'drop_connect_rate',])
+
+
+# Parameters for an individual model block
+BlockArgs = collections.namedtuple('BlockArgs', [
+    'kernel_size', 'num_repeat', 'input_filters', 'output_filters',
+    'expand_ratio', 'id_skip', 'stride', 'se_ratio'])
+
+
+# Change namedtuple defaults
+GlobalParams.__new__.__defaults__ = (None,) * len(GlobalParams._fields)
+BlockArgs.__new__.__defaults__ = (None,) * len(BlockArgs._fields)
+
+
+def relu_fn(x):
+    """ Swish activation function """
+    return x * torch.sigmoid(x)
+
+
+def round_filters(filters, global_params):
+    """ Calculate and round number of filters based on depth multiplier. """
+    multiplier = global_params.width_coefficient
+    if not multiplier:
+        return filters
+    divisor = global_params.depth_divisor
+    min_depth = global_params.min_depth
+    filters *= multiplier
+    min_depth = min_depth or divisor
+    new_filters = max(min_depth, int(filters + divisor / 2) // divisor * divisor)
+    if new_filters < 0.9 * filters:  # prevent rounding by more than 10%
+        new_filters += divisor
+    return int(new_filters)
+
+
+def round_repeats(repeats, global_params):
+    """ Round number of filters based on depth multiplier. """
+    multiplier = global_params.depth_coefficient
+    if not multiplier:
+        return repeats
+    return int(math.ceil(multiplier * repeats))
+
+
+def drop_connect(inputs, p, training):
+    """ Drop connect. """
+    if not training: return inputs
+    batch_size = inputs.shape[0]
+    keep_prob = 1 - p
+    random_tensor = keep_prob
+    random_tensor += torch.rand([batch_size, 1, 1, 1], dtype=inputs.dtype)  # uniform [0,1)
+    binary_tensor = torch.floor(random_tensor)
+    output = inputs / keep_prob * binary_tensor
+    return output
+
+
+class Conv2dSamePadding(nn.Conv2d):
+    """ 2D Convolutions like TensorFlow """
+    def __init__(self, in_channels, out_channels, kernel_size, stride=1, dilation=1, groups=1, bias=True):
+        super().__init__(in_channels, out_channels, kernel_size, stride, 0, dilation, groups, bias)
+        self.stride = self.stride if len(self.stride) == 2 else [self.stride[0]]*2
+
+    def forward(self, x):
+        ih, iw = x.size()[-2:]
+        kh, kw = self.weight.size()[-2:]
+        sh, sw = self.stride
+        oh, ow = math.ceil(ih / sh), math.ceil(iw / sw)
+        pad_h = max((oh - 1) * self.stride[0] + (kh - 1) * self.dilation[0] + 1 - ih, 0)
+        pad_w = max((ow - 1) * self.stride[1] + (kw - 1) * self.dilation[1] + 1 - iw, 0)
+        if pad_h > 0 or pad_w > 0:
+            x = F.pad(x, [pad_w//2, pad_w - pad_w//2, pad_h//2, pad_h - pad_h//2])
+        return F.conv2d(x, self.weight, self.bias, self.stride, self.padding, self.dilation, self.groups)
+
+
+########################################################################
+############## HELPERS FUNCTIONS FOR LOADING MODEL PARAMS ##############
+########################################################################
 
 
 def efficientnet_params(model_name):
@@ -136,14 +231,12 @@ def get_model_params(model_name, override_params):
     return blocks_args, global_params
 
 
-def build_model(model_name, override_params=None):
-    """
-    A helper function to creates a model and returns predicted logits.
-
-    :param model_name: (string) the predefined model name.
-    :param override_params: (dict) params for overriding default GlobalParams
-    :return: an EfficientNet model
-    """
-    blocks_args, global_params = get_model_params(model_name, override_params)
-    return EfficientNet(blocks_args, global_params)
-
+# url_map = {
+#     'efficientnet-b0': #,
+#     'efficientnet-b1':  # ,
+#     'efficientnet-b2':  # ,
+#     'efficientnet-b3':  # ,
+# }
+#
+# def load_pretrained_weights(model_name):
+#     url =

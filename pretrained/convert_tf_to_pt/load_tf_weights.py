@@ -1,17 +1,15 @@
 """
+This is a helper script to convert TensorFlow weights to PyTorch. In order to use it, you must first
+    (1) Download the pretrained tensorflow weights by running download.sh in ../pretrained_tensorflow
+    (2) Download the original tensorflow code by running download.sh in this directory
+
+At the moment, this script is very hacky. It will be refactored in the near future.
+
 Example usage:
-
-python load_tf_weights.py \
-    --model_name efficientnet-b0 \
-    --tf_checkpoint pretrained_tensorflow/efficientnet-b0/model.ckpt \
-    --output_file pretrained_pytorch/efficientnet-b0.pth
-
-Or for easier copying and pasting:
-
-python load_tf_weights.py --model_name efficientnet-b0 --tf_checkpoint pretrained_tensorflow/efficientnet-b0/model.ckpt --output_file pretrained_pytorch/efficientnet-b0.pth
-python load_tf_weights.py --model_name efficientnet-b1 --tf_checkpoint pretrained_tensorflow/efficientnet-b1/model.ckpt --output_file pretrained_pytorch/efficientnet-b1.pth
-python load_tf_weights.py --model_name efficientnet-b2 --tf_checkpoint pretrained_tensorflow/efficientnet-b2/model.ckpt --output_file pretrained_pytorch/efficientnet-b2.pth
-python load_tf_weights.py --model_name efficientnet-b3 --tf_checkpoint pretrained_tensorflow/efficientnet-b3/model.ckpt --output_file pretrained_pytorch/efficientnet-b3.pth
+    python load_tf_weights.py --model_name efficientnet-b0 --tf_checkpoint ../pretrained_tensorflow/efficientnet-b0/ --output_file ../pretrained_pytorch/efficientnet-b0.pth
+    python load_tf_weights.py --model_name efficientnet-b1 --tf_checkpoint ../pretrained_tensorflow/efficientnet-b1/ --output_file ../pretrained_pytorch/efficientnet-b1.pth
+    python load_tf_weights.py --model_name efficientnet-b2 --tf_checkpoint ../pretrained_tensorflow/efficientnet-b2/ --output_file ../pretrained_pytorch/efficientnet-b2.pth
+    python load_tf_weights.py --model_name efficientnet-b3 --tf_checkpoint ../pretrained_tensorflow/efficientnet-b3/ --output_file ../pretrained_pytorch/efficientnet-b3.pth
 """
 
 import numpy as np
@@ -139,28 +137,52 @@ def load_efficientnet(model, checkpoint_file, model_name):
     return conversion_table
 
 
+def load_and_save_temporary_tensorflow_model(model_name, model_ckpt, example_img= '../../example/img.jpg'):
+    """ Loads and saves a TensorFlow model. """
+    image_files = [example_img]
+    eval_ckpt_driver = eval_ckpt_main.EvalCkptDriver(model_name)
+    with tf.Graph().as_default(), tf.Session() as sess:
+        images, labels = eval_ckpt_driver.build_dataset(image_files, [0] * len(image_files), False)
+        probs = eval_ckpt_driver.build_model(images, is_training=False)
+        sess.run(tf.global_variables_initializer())
+        print(model_ckpt)
+        eval_ckpt_driver.restore_model(sess, model_ckpt)
+        tf.train.Saver().save(sess, 'tmp/model.ckpt')
+
+
 if __name__ == '__main__':
 
+    # These import statements are truly horrific, but they work! They'll be refactored soon :)
     import sys
     import argparse
-    sys.path.append('..')
-    from utils import build_model
+    sys.path.append('../..')
+    from model import EfficientNet
+    sys.path.pop()
+    sys.path.append('original_tf')
+    from importlib import reload
+    import utils
+    reload(utils)
+    import eval_ckpt_main
 
     parser = argparse.ArgumentParser(
         description='Convert TF model to PyTorch model and save for easier future loading')
     parser.add_argument('--model_name', type=str, default='efficientnet-b0',
                         help='efficientnet-b{N}, where N is an integer 0 <= N <= 7')
-    parser.add_argument('--tf_checkpoint', type=str, default='pretrained_tensorflow/efficientnet-b0/model.ckpt',
+    parser.add_argument('--tf_checkpoint', type=str, default='pretrained_tensorflow/efficientnet-b0/',
                         help='checkpoint file path')
     parser.add_argument('--output_file', type=str, default='pretrained_pytorch/efficientnet-b0.pth',
                         help='output PyTorch model file name')
     args = parser.parse_args()
 
     # Build model
-    model = build_model(args.model_name)
+    model = EfficientNet.from_name(args.model_name)
+
+    # Load and save temporary TensorFlow file due to TF nuances
+    print(args.tf_checkpoint)
+    load_and_save_temporary_tensorflow_model(args.model_name, args.tf_checkpoint)
 
     # Load weights
-    load_efficientnet(model, args.tf_checkpoint, model_name=args.model_name)
+    load_efficientnet(model, 'tmp/model.ckpt', model_name=args.model_name)
     print('Loaded TF checkpoint weights')
 
     # Save PyTorch file
