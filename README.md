@@ -59,7 +59,7 @@ If you have any feature requests or questions, feel free to leave them as GitHub
 
 Install via pip:
 ```bash
-pip install git+https://github.com/lukemelas/EfficientNet-PyTorch
+pip install efficientnet_pytorch
 ```
 
 Or install from source:
