@@ -67,18 +67,15 @@ class Conv2dSamePadding(nn.Conv2d):
         return F.conv2d(x, self.weight, self.bias, self.stride, self.padding, self.dilation, self.groups)
 
 
-# Parameters for the entire model are packaged into a namedtuple
+# Parameters for the entire model as well as individual blocks are stored as namedtuples
 GlobalParams = collections.namedtuple('GlobalParams', [
     'batch_norm_momentum', 'batch_norm_epsilon', 'dropout_rate',
     'num_classes', 'width_coefficient', 'depth_coefficient',
     'depth_divisor', 'min_depth', 'drop_connect_rate',])
-GlobalParams.__new__.__defaults__ = (None,) * len(GlobalParams._fields)
-
-
-# Parameters for each block are packaged into a namedtuple
 BlockArgs = collections.namedtuple('BlockArgs', [
     'kernel_size', 'num_repeat', 'input_filters', 'output_filters',
     'expand_ratio', 'id_skip', 'stride', 'se_ratio'])
+GlobalParams.__new__.__defaults__ = (None,) * len(GlobalParams._fields)
 BlockArgs.__new__.__defaults__ = (None,) * len(BlockArgs._fields)
 
 
@@ -218,25 +215,9 @@ class EfficientNet(nn.Module):
         """
         Returns output of the final convolution layer
         """
-        print_tf = lambda s,t: print(s, t.permute(0,2,3,1))
-
-        print_tf("INPUTS:", inputs)
 
         # Stem
-        x = self._conv_stem(inputs)
-
-        print("AFTER FIRST CONV SUM:", x.sum())
-        print_tf("AFTER FIRST CONV:", x)
-
-        x = self._bn0(x)
-
-        print_tf("AFTER FIRST BN:", x)
-
-        x = relu_fn(x)
-
-        # x = relu_fn(self._bn0(self._conv_stem(inputs)))
-
-        print_tf("AFTER STEM:", x)
+        x = relu_fn(self._bn0(self._conv_stem(inputs)))
 
         # Blocks
         for idx, block in enumerate(self._blocks):
@@ -244,8 +225,6 @@ class EfficientNet(nn.Module):
             if drop_connect_rate:
                 drop_connect_rate *= float(idx) / len(self._blocks)
             x = block(x) # , drop_connect_rate) # see https://github.com/tensorflow/tpu/issues/381
-
-            print_tf("AFTER BLOCK "+str(idx)+':', x)
 
         return x
 
@@ -264,11 +243,6 @@ class EfficientNet(nn.Module):
             x = F.dropout(x, p=self._dropout, training=self.training)
         x = self._fc(x)
         return x
-
-
-    # @classmethod
-    # def from_pretrained(cls):
-
 
 
 

@@ -139,7 +139,7 @@ def get_model_params(model_name, override_params):
 def build_model(model_name, override_params=None):
     """
     A helper function to creates a model and returns predicted logits.
-    
+
     :param model_name: (string) the predefined model name.
     :param override_params: (dict) params for overriding default GlobalParams
     :return: an EfficientNet model
@@ -147,6 +147,3 @@ def build_model(model_name, override_params=None):
     blocks_args, global_params = get_model_params(model_name, override_params)
     return EfficientNet(blocks_args, global_params)
 
-
-def build_model_base(images, model_name, training, override_params=None):
-    pass  # work in progress
