@@ -1,17 +1,3 @@
-"""
-This is a helper script to convert TensorFlow weights to PyTorch. In order to use it, you must first
-    (1) Download the pretrained tensorflow weights by running download.sh in ../pretrained_tensorflow
-    (2) Download the original tensorflow code by running download.sh in this directory
-
-At the moment, this script is very hacky. It will be refactored in the near future.
-
-Example usage:
-    python load_tf_weights.py --model_name efficientnet-b0 --tf_checkpoint ../pretrained_tensorflow/efficientnet-b0/ --output_file ../pretrained_pytorch/efficientnet-b0.pth
-    python load_tf_weights.py --model_name efficientnet-b1 --tf_checkpoint ../pretrained_tensorflow/efficientnet-b1/ --output_file ../pretrained_pytorch/efficientnet-b1.pth
-    python load_tf_weights.py --model_name efficientnet-b2 --tf_checkpoint ../pretrained_tensorflow/efficientnet-b2/ --output_file ../pretrained_pytorch/efficientnet-b2.pth
-    python load_tf_weights.py --model_name efficientnet-b3 --tf_checkpoint ../pretrained_tensorflow/efficientnet-b3/ --output_file ../pretrained_pytorch/efficientnet-b3.pth
-"""
-
 import numpy as np
 import tensorflow as tf
 import torch
@@ -152,18 +138,13 @@ def load_and_save_temporary_tensorflow_model(model_name, model_ckpt, example_img
 
 if __name__ == '__main__':
 
-    # These import statements are truly horrific, but they work! They'll be refactored soon :)
     import sys
     import argparse
-    sys.path.append('../..')
-    from efficientnet_pytorch.model import EfficientNet
-    sys.path.pop()
-    sys.path.append('original_tf')
-    from importlib import reload
-    from efficientnet_pytorch import utils
 
-    reload(utils)
+    sys.path.append('original_tf')
     import eval_ckpt_main
+
+    from efficientnet_pytorch import EfficientNet
 
     parser = argparse.ArgumentParser(
         description='Convert TF model to PyTorch model and save for easier future loading')
