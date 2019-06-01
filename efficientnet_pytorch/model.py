@@ -10,7 +10,7 @@ from utils import (
     Conv2dSamePadding,
     get_model_params,
     efficientnet_params,
-    # load_pretrained_weights,
+    load_pretrained_weights,
 )
 
 class MBConvBlock(nn.Module):
@@ -185,7 +185,7 @@ class EfficientNet(nn.Module):
     @classmethod
     def from_pretrained(cls, model_name):
         model = EfficientNet.from_name(model_name)
-        load_pretrained_weights(model)
+        load_pretrained_weights(model, model_name)
         return model
 
     @classmethod

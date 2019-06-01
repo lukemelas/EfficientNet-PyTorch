@@ -231,12 +231,15 @@ def get_model_params(model_name, override_params):
     return blocks_args, global_params
 
 
-# url_map = {
-#     'efficientnet-b0': #,
-#     'efficientnet-b1':  # ,
-#     'efficientnet-b2':  # ,
-#     'efficientnet-b3':  # ,
-# }
-#
-# def load_pretrained_weights(model_name):
-#     url =
+url_map = {
+    'efficientnet-b0': 'http://storage.googleapis.com/public-models/efficientnet-b0-08094119.pth',
+    'efficientnet-b1': 'http://storage.googleapis.com/public-models/efficientnet-b1-dbc7070a.pth',
+    'efficientnet-b2': 'http://storage.googleapis.com/public-models/efficientnet-b2-27687264.pth',
+    'efficientnet-b3': 'http://storage.googleapis.com/public-models/efficientnet-b3-c8376fa2.pth',
+}
+
+def load_pretrained_weights(model, model_name):
+    """ Loads pretrained weights, and downloads if loading for the first time. """
+    state_dict = model_zoo.load_url(url_map[model_name])
+    model.load_state_dict(state_dict)
+    print('Loaded pretrained weights for {}'.format(model_name))

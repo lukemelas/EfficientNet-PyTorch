@@ -156,11 +156,12 @@ if __name__ == '__main__':
     import sys
     import argparse
     sys.path.append('../..')
-    from model import EfficientNet
+    from efficientnet_pytorch.model import EfficientNet
     sys.path.pop()
     sys.path.append('original_tf')
     from importlib import reload
-    import utils
+    from efficientnet_pytorch import utils
+
     reload(utils)
     import eval_ckpt_main
 
