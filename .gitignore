@@ -112,6 +112,7 @@ venv.bak/
 tensorflow/
 imagenet/
 example/test*
+*.pth*
 
 
 
