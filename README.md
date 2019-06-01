@@ -9,7 +9,7 @@ At the moment, you can easily:
  * Evaluate EfficientNet models on ImageNet or your own images
 
 _Upcoming features_: In the next few days, you will be able to:
- * Train from scratch on ImageNet with a simple command 
+ * Train new models from scratch on ImageNet with a simple command 
  * Quickly finetune an EfficientNet on your own dataset
  * Export EfficientNet models for production
 
