@@ -1,4 +1,15 @@
 # EfficientNet PyTorch
+
+### Update (June 18, 2019)
+
+The B4 and B5 models are now available. Their usage is identical to the other models: 
+```python
+from efficientnet_pytorch import EfficientNet
+model = EfficientNet.from_pretrained('efficientnet-b4') 
+```
+Upgrade the pip package with `pip install --upgrade pytorch_efficientnet`.
+
+### Overview
 This repository contains an op-for-op PyTorch reimplementation of [EfficientNet](https://arxiv.org/abs/1905.11946), along with pre-trained models and examples. 
 
 The goal of this implementation is to be simple, highly extensible, and easy to integrate into your own projects. This implementation is a work in progress -- new features are currently being implemented. 

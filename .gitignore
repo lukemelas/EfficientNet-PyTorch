@@ -112,6 +112,8 @@ venv.bak/
 tensorflow/
 example/test*
 *.pth*
+examples/imagenet/data/
+!examples/imagenet/data/README.md
 
 
 
