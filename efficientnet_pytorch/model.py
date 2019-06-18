@@ -158,7 +158,7 @@ class EfficientNet(nn.Module):
             drop_connect_rate = self._global_params.drop_connect_rate
             if drop_connect_rate:
                 drop_connect_rate *= float(idx) / len(self._blocks)
-            x = block(x) # , drop_connect_rate) # see https://github.com/tensorflow/tpu/issues/381
+            x = block(x, drop_connect_rate) 
 
         return x
 
