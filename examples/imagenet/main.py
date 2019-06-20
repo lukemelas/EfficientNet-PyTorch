@@ -132,11 +132,7 @@ def main_worker(gpu, ngpus_per_node, args):
         dist.init_process_group(backend=args.dist_backend, init_method=args.dist_url,
                                 world_size=args.world_size, rank=args.rank)
     # create model
-    if args.arch == 'efficientnet-b5':
-        model = EfficientNet.from_name(args.arch)
-        model.load_state_dict(torch.load('../../tf_to_pytorch/pretrained_pytorch/efficientnet-b5.pth'))
-        print("Using pretrained b5")
-    elif 'efficientnet' in args.arch:  # NEW
+    if 'efficientnet' in args.arch:  # NEW
         if args.pretrained:
             model = EfficientNet.from_pretrained(args.arch)
             print("=> using pre-trained model '{}'".format(args.arch))
