@@ -1,0 +1,21 @@
+FROM nvcr.io/nvidia/pytorch:19.05-py3
+
+RUN apt-get update -y
+RUN apt-get upgrade -y
+RUN apt-get install curl python3-pip -y
+
+RUN mkdir -p /src
+
+WORKDIR /src
+
+COPY app.py /src/app.py
+COPY requirements.txt /src/requirements.txt
+
+RUN wget -O labels_map.txt https://s3.amazonaws.com/deep-learning-models/image-models/imagenet_class_index.json
+
+RUN pip install -r requirements.txt
+
+EXPOSE 5000
+
+#ENTRYPOINT ["python3"]
+#CMD ["app.py"]
