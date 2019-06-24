@@ -1,6 +1,6 @@
 # EfficientNet PyTorch
 
-### Update (June 18, 2019)
+### Update (June 23, 2019)
 
 The B4 and B5 models are now available. Their usage is identical to the other models: 
 ```python
@@ -96,7 +96,7 @@ from efficientnet_pytorch import EfficientNet
 model = EfficientNet.from_pretrained('efficientnet-b0')
 ```
 
-Note that pretrained models have only been released for `N=0,1,2,3` at the current time, so `.from_pretrained` only supports `'efficientnet-b{N}'` for `N=0,1,2,3`. 
+Note that pretrained models have only been released for `N=0,1,2,3,4,5` at the current time, so `.from_pretrained` only supports `'efficientnet-b{N}'` for `N=0,1,2,3,4,5`. 
 
 Details about the models are below: 
 
@@ -106,8 +106,8 @@ Details about the models are below:
 | `efficientnet-b1` |   7.8M   |    78.8    |      ✓      |
 | `efficientnet-b2` |   9.2M   |    79.8    |      ✓      |
 | `efficientnet-b3` |    12M   |    81.1    |      ✓      |
-| `efficientnet-b4` |    19M   |    82.6    |      -      |
-| `efficientnet-b5` |    30M   |    83.3    |      -      |
+| `efficientnet-b4` |    19M   |    82.6    |      ✓      |
+| `efficientnet-b5` |    30M   |    83.3    |      ✓      |
 | `efficientnet-b6` |    43M   |    84.0    |      -      |
 | `efficientnet-b7` |    66M   |    84.4    |      -      |
 
