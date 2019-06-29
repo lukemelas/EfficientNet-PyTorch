@@ -6,6 +6,7 @@ These helper functions are built to mirror those in the official TensorFlow impl
 import re
 import math
 import collections
+from functools import partial
 import torch
 from torch import nn
 from torch.nn import functional as F
@@ -21,7 +22,7 @@ from torch.utils import model_zoo
 GlobalParams = collections.namedtuple('GlobalParams', [
     'batch_norm_momentum', 'batch_norm_epsilon', 'dropout_rate',
     'num_classes', 'width_coefficient', 'depth_coefficient',
-    'depth_divisor', 'min_depth', 'drop_connect_rate',])
+    'depth_divisor', 'min_depth', 'drop_connect_rate', 'image_size'])
 
 
 # Parameters for an individual model block
@@ -75,8 +76,16 @@ def drop_connect(inputs, p, training):
     return output
 
 
-class Conv2dSamePadding(nn.Conv2d):
-    """ 2D Convolutions like TensorFlow """
+def get_same_padding_conv2d(image_size=None):
+    """ Chooses static padding if you have specified an image size, and dynamic padding otherwise.
+        Static padding is necessary for ONNX exporting of models. """
+    if image_size is None:
+        return Conv2dDynamicSamePadding
+    else:
+        return partial(Conv2dStaticSamePadding, image_size=image_size)
+
+class Conv2dDynamicSamePadding(nn.Conv2d):
+    """ 2D Convolutions like TensorFlow, for a dynamic image size """
     def __init__(self, in_channels, out_channels, kernel_size, stride=1, dilation=1, groups=1, bias=True):
         super().__init__(in_channels, out_channels, kernel_size, stride, 0, dilation, groups, bias)
         self.stride = self.stride if len(self.stride) == 2 else [self.stride[0]]*2
@@ -91,6 +100,39 @@ class Conv2dSamePadding(nn.Conv2d):
         if pad_h > 0 or pad_w > 0:
             x = F.pad(x, [pad_w//2, pad_w - pad_w//2, pad_h//2, pad_h - pad_h//2])
         return F.conv2d(x, self.weight, self.bias, self.stride, self.padding, self.dilation, self.groups)
+
+
+class Conv2dStaticSamePadding(nn.Conv2d):
+    """ 2D Convolutions like TensorFlow, for a fixed image size"""
+    def __init__(self, in_channels, out_channels, kernel_size, image_size=None, **kwargs):
+        super().__init__(in_channels, out_channels, kernel_size, **kwargs)
+        self.stride = self.stride if len(self.stride) == 2 else [self.stride[0]] * 2
+
+        # Calculate padding based on image size and save it
+        assert image_size is not None
+        ih, iw = image_size if type(image_size) == list else [image_size, image_size]
+        kh, kw = self.weight.size()[-2:]
+        sh, sw = self.stride
+        oh, ow = math.ceil(ih / sh), math.ceil(iw / sw)
+        pad_h = max((oh - 1) * self.stride[0] + (kh - 1) * self.dilation[0] + 1 - ih, 0)
+        pad_w = max((ow - 1) * self.stride[1] + (kw - 1) * self.dilation[1] + 1 - iw, 0)
+        if pad_h > 0 or pad_w > 0:
+            self.static_padding = nn.ZeroPad2d((pad_w // 2, pad_w - pad_w // 2, pad_h // 2, pad_h - pad_h // 2))
+        else:
+            self.static_padding = Identity()
+
+    def forward(self, x):
+        x = self.static_padding(x)
+        x = F.conv2d(x, self.weight, self.bias, self.stride, self.padding, self.dilation, self.groups)
+        return x
+
+
+class Identity(nn.Module):
+    def __init__(self,):
+        super(Identity, self).__init__()
+
+    def forward(self, input):
+        return input
 
 
 ########################################################################
@@ -189,8 +231,8 @@ class BlockDecoder(object):
         return block_strings
 
 
-def efficientnet(width_coefficient=None, depth_coefficient=None,
-                 dropout_rate=0.2, drop_connect_rate=0.2):
+def efficientnet(width_coefficient=None, depth_coefficient=None, dropout_rate=0.2,
+                 drop_connect_rate=0.2, image_size=None, num_classes=1000):
     """ Creates a efficientnet model. """
 
     blocks_args = [
@@ -207,11 +249,12 @@ def efficientnet(width_coefficient=None, depth_coefficient=None,
         dropout_rate=dropout_rate,
         drop_connect_rate=drop_connect_rate,
         # data_format='channels_last',  # removed, this is always true in PyTorch
-        num_classes=1000,
+        num_classes=num_classes,
         width_coefficient=width_coefficient,
         depth_coefficient=depth_coefficient,
         depth_divisor=8,
-        min_depth=None
+        min_depth=None,
+        image_size=image_size,
     )
 
     return blocks_args, global_params
@@ -220,9 +263,10 @@ def efficientnet(width_coefficient=None, depth_coefficient=None,
 def get_model_params(model_name, override_params):
     """ Get the block args and global params for a given model """
     if model_name.startswith('efficientnet'):
-        w, d, _, p = efficientnet_params(model_name)
+        w, d, s, p = efficientnet_params(model_name)
         # note: all models have drop connect rate = 0.2
-        blocks_args, global_params = efficientnet(width_coefficient=w, depth_coefficient=d, dropout_rate=p)
+        blocks_args, global_params = efficientnet(
+            width_coefficient=w, depth_coefficient=d, dropout_rate=p, image_size=s)
     else:
         raise NotImplementedError('model name is not pre-defined: %s' % model_name)
     if override_params:
@@ -240,8 +284,14 @@ url_map = {
     'efficientnet-b5': 'http://storage.googleapis.com/public-models/efficientnet-b5-586e6cc6.pth',
 }
 
-def load_pretrained_weights(model, model_name):
+def load_pretrained_weights(model, model_name, load_fc=True):
     """ Loads pretrained weights, and downloads if loading for the first time. """
     state_dict = model_zoo.load_url(url_map[model_name])
-    model.load_state_dict(state_dict)
+    if load_fc:
+        model.load_state_dict(state_dict)
+    else:
+        state_dict.pop('_fc.weight')
+        state_dict.pop('_fc.bias')
+        res = model.load_state_dict(state_dict, strict=False)
+        assert str(res.missing_keys) == str(['_fc.weight', '_fc.bias']), 'issue loading pretrained weights'
     print('Loaded pretrained weights for {}'.format(model_name))
