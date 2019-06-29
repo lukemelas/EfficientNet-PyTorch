@@ -1,5 +1,21 @@
 # EfficientNet PyTorch
 
+### Update (June 29, 2019)
+
+_Upgrade the pip package with_ `pip install --upgrade efficientnet-pytorch`
+
+This update adds easy model exporting ([#20](https://github.com/lukemelas/EfficientNet-PyTorch/issues/20)) and feature extraction ([#38](https://github.com/lukemelas/EfficientNet-PyTorch/issues/38)). 
+
+ * [Example: Export to ONNX](#example-export)
+ * [Example: Extract features](#example-feature-extraction)
+ * Also: fixed a CUDA/CPU bug ([#32](https://github.com/lukemelas/EfficientNet-PyTorch/issues/32))
+
+It is also now incredibly simple to load a pretrained model with a new number of classes for transfer learning:
+```python
+model = EfficientNet.from_pretrained('efficientnet-b1', num_classes=23)
+``` 
+
+
 ### Update (June 23, 2019)
 
 The B4 and B5 models are now available. Their usage is identical to the other models: 
@@ -7,7 +23,6 @@ The B4 and B5 models are now available. Their usage is identical to the other mo
 from efficientnet_pytorch import EfficientNet
 model = EfficientNet.from_pretrained('efficientnet-b4') 
 ```
-Upgrade the pip package with `pip install --upgrade efficientnet-pytorch`.
 
 ### Overview
 This repository contains an op-for-op PyTorch reimplementation of [EfficientNet](https://arxiv.org/abs/1905.11946), along with pre-trained models and examples. 
@@ -32,6 +47,7 @@ _Upcoming features_: In the next few days, you will be able to:
     * [Load pretrained models](#loading-pretrained-models)
     * [Example: Classify](#example-classification)
     * [Example: Extract features](#example-feature-extraction)
+    * [Example: Export to ONNX](#example-export)
 6. [Contributing](#contributing) 
 
 ### About EfficientNet
@@ -160,8 +176,24 @@ model = EfficientNet.from_pretrained('efficientnet-b0')
 print(img.shape) # torch.Size([1, 3, 224, 224])
 
 features = model.extract_features(img)
-print(features.shape) # torch.Size([1, 320, 7, 7])
+print(features.shape) # torch.Size([1, 1280, 7, 7])
 ```
+
+#### Example: Export to ONNX  
+
+Exporting to ONNX for deploying to production is now simple: 
+```python
+import torch 
+from efficientnet_pytorch import EfficientNet
+
+model = EfficientNet.from_pretrained('efficientnet-b1')
+dummy_input = torch.randn(10, 3, 240, 240)
+
+torch.onnx.export(model, dummy_input, "test-b1.onnx", verbose=True)
+``` 
+
+[Here](https://colab.research.google.com/drive/1rOAEXeXHaA8uo3aG2YcFDHItlRJMV0VP) is a Colab example. 
+
 
 #### ImageNet
 
