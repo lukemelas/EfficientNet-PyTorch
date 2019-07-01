@@ -11,6 +11,7 @@ from .utils import (
     get_model_params,
     efficientnet_params,
     load_pretrained_weights,
+    _tf_weight_init,
 )
 
 class MBConvBlock(nn.Module):
@@ -152,6 +153,11 @@ class EfficientNet(nn.Module):
         # Final linear layer
         self._dropout = self._global_params.dropout_rate
         self._fc = nn.Linear(out_channels, self._global_params.num_classes)
+
+        # Weight initialization
+        for module in self.modules():
+            _tf_weight_init(module)
+
 
     def extract_features(self, inputs):
         """ Returns output of the final convolution layer """
