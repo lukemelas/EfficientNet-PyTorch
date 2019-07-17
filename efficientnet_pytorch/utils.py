@@ -38,7 +38,8 @@ BlockArgs.__new__.__defaults__ = (None,) * len(BlockArgs._fields)
 
 def relu_fn(x):
     """ Swish activation function """
-    return x * torch.sigmoid(x)
+    #return x * torch.sigmoid(x)
+    return x*(F.sigmoid(2.0 * x)**1.5)
 
 
 def round_filters(filters, global_params):
