@@ -1,3 +1,6 @@
+
+# This is a Forked repository (under maintenance)
+
 # EfficientNet PyTorch
 
 ### Update (June 29, 2019)
