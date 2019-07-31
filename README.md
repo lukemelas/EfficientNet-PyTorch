@@ -1,8 +1,16 @@
 # EfficientNet PyTorch
 
-### Update (June 29, 2019)
+### Update (July 31, 2019)
 
 _Upgrade the pip package with_ `pip install --upgrade efficientnet-pytorch`
+
+The B6 and B7 models are now available. Additionally, _all_ pretrained models have been updated to use AutoAugment preprocessing, which translates to better performance across the board. Usage is the same as before: 
+```python
+from efficientnet_pytorch import EfficientNet
+model = EfficientNet.from_pretrained('efficientnet-b7') 
+```
+
+### Update (June 29, 2019)
 
 This update adds easy model exporting ([#20](https://github.com/lukemelas/EfficientNet-PyTorch/issues/20)) and feature extraction ([#38](https://github.com/lukemelas/EfficientNet-PyTorch/issues/38)). 
 

@@ -7,7 +7,7 @@ I should also emphasize that you do *not* need to run any of this code to load p
 That being said, the main script here is `convert_to_tf/load_tf_weights.py`. In order to use it, you should first download the pretrained TensorFlow weights:
  ```bash
 cd pretrained_tensorflow
-./download.sh
+./download.sh efficientnet-b0
 cd ..
 ```
 Then
