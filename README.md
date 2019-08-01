@@ -132,8 +132,8 @@ Details about the models are below:
 | `efficientnet-b3` |    12M   |    81.1    |      ✓      |
 | `efficientnet-b4` |    19M   |    82.6    |      ✓      |
 | `efficientnet-b5` |    30M   |    83.3    |      ✓      |
-| `efficientnet-b6` |    43M   |    84.0    |      -      |
-| `efficientnet-b7` |    66M   |    84.4    |      -      |
+| `efficientnet-b6` |    43M   |    84.0    |      ✓      |
+| `efficientnet-b7` |    66M   |    84.4    |      ✓      |
 
 
 #### Example: Classification
