@@ -9,6 +9,6 @@
 #   ./download.sh efficientnet-b3
 
 MODEL=$1
-wget https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/${MODEL}.tar.gz
+wget https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/ckptsaug/${MODEL}.tar.gz
 tar xvf ${MODEL}.tar.gz
 rm ${MODEL}.tar.gz
