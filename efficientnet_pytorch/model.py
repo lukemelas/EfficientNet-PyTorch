@@ -46,9 +46,12 @@ class MBConvBlock(nn.Module):
         # Depthwise convolution phase
         k = self._block_args.kernel_size
         s = self._block_args.stride
+        d = self._block_args.dilation
+        if d is None:
+            d = 1
         self._depthwise_conv = Conv2d(
             in_channels=oup, out_channels=oup, groups=oup,  # groups makes it depthwise
-            kernel_size=k, stride=s, bias=False)
+            kernel_size=k, stride=s, bias=False, dilation=d)
         self._bn1 = nn.BatchNorm2d(num_features=oup, momentum=self._bn_mom, eps=self._bn_eps)
 
         # Squeeze and Excitation layer, if desired
@@ -127,19 +130,23 @@ class EfficientNet(nn.Module):
 
         # Build blocks
         self._blocks = nn.ModuleList([])
-        for block_args in self._blocks_args:
+        dilate_idx = len(self._blocks_args) - self._global_params.num_dilation
+        for i, block_args in enumerate(self._blocks_args):
 
+            dilate = i >= dilate_idx
             # Update block input and output filters based on depth multiplier.
             block_args = block_args._replace(
                 input_filters=round_filters(block_args.input_filters, self._global_params),
                 output_filters=round_filters(block_args.output_filters, self._global_params),
-                num_repeat=round_repeats(block_args.num_repeat, self._global_params)
+                num_repeat=round_repeats(block_args.num_repeat, self._global_params),
+                stride=[1, 1] if dilate else block_args.stride,
+                dilation=[2, 2] if dilate else block_args.dilation
             )
 
             # The first block needs to take care of stride and filter size increase.
             self._blocks.append(MBConvBlock(block_args, self._global_params))
             if block_args.num_repeat > 1:
-                block_args = block_args._replace(input_filters=block_args.output_filters, stride=1)
+                block_args = block_args._replace(input_filters=block_args.output_filters, stride=1, dilation=1)
             for _ in range(block_args.num_repeat - 1):
                 self._blocks.append(MBConvBlock(block_args, self._global_params))
 
@@ -191,8 +198,8 @@ class EfficientNet(nn.Module):
         return EfficientNet(blocks_args, global_params)
 
     @classmethod
-    def from_pretrained(cls, model_name, num_classes=1000):
-        model = EfficientNet.from_name(model_name, override_params={'num_classes': num_classes})
+    def from_pretrained(cls, model_name, num_classes=1000, num_dilation=0):
+        model = EfficientNet.from_name(model_name, override_params={'num_classes': num_classes, 'num_dilation': num_dilation})
         load_pretrained_weights(model, model_name, load_fc=(num_classes == 1000))
         return model
 
