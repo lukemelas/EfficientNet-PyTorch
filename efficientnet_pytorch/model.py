@@ -128,12 +128,22 @@ class EfficientNet(nn.Module):
         self._conv_stem = Conv2d(in_channels, out_channels, kernel_size=3, stride=2, bias=False)
         self._bn0 = nn.BatchNorm2d(num_features=out_channels, momentum=bn_mom, eps=bn_eps)
 
+        dilate_count = 0
+        dilations = []
+        # determine blocks to dilate from last to first
+        for block_args in reversed(self._blocks_args):
+            if (block_args.stride == [2] or block_args.stride == [2, 2]) and dilate_count < self._global_params.num_dilation:
+                dilations += [True]
+                dilate_count += 1
+            else:
+                dilations += [False]
+        # Organize from first to last
+        dilations.reverse()
+        
         # Build blocks
         self._blocks = nn.ModuleList([])
-        dilate_idx = len(self._blocks_args) - self._global_params.num_dilation
-        for i, block_args in enumerate(self._blocks_args):
-
-            dilate = i >= dilate_idx
+        for block_args, dilate in zip(self._blocks_args, dilations):
+            
             # Update block input and output filters based on depth multiplier.
             block_args = block_args._replace(
                 input_filters=round_filters(block_args.input_filters, self._global_params),
