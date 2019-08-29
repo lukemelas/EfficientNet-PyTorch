@@ -188,11 +188,11 @@ class EfficientNet(nn.Module):
     def from_name(cls, model_name, override_params=None):
         cls._check_model_name_is_valid(model_name)
         blocks_args, global_params = get_model_params(model_name, override_params)
-        return EfficientNet(blocks_args, global_params)
+        return cls(blocks_args, global_params)
 
     @classmethod
     def from_pretrained(cls, model_name, num_classes=1000):
-        model = EfficientNet.from_name(model_name, override_params={'num_classes': num_classes})
+        model = cls.from_name(model_name, override_params={'num_classes': num_classes})
         load_pretrained_weights(model, model_name, load_fc=(num_classes == 1000))
         return model
 
