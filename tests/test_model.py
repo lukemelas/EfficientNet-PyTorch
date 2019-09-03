@@ -94,7 +94,6 @@ def test_modify_norm(net, img_size):
             avg_x = self.ada_avgpool(x)
             max_x = self.ada_maxpool(x)
             x = torch.cat((avg_x, max_x), dim=1)
-            x = x.view(x.size(0), -1)
             return x
 
     avg_pooling = AdaptiveMaxAvgPool()
