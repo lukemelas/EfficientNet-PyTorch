@@ -80,8 +80,8 @@ def test_modify_dropout(net, img_size):
 
 
 @pytest.mark.parametrize('img_size', [224, 256, 512])
-def test_modify_norm(net, img_size):
-    """Test ability to modify norm layer of network"""
+def test_modify_pool(net, img_size):
+    """Test ability to modify pooling module of network"""
 
     class AdaptiveMaxAvgPool(nn.Module):
 
