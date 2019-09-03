@@ -9,7 +9,7 @@ from efficientnet_pytorch import EfficientNet
 
 # -- fixtures -------------------------------------------------------------------------------------
 
-@pytest.fixture(scope='module', params=[x for x in range(8)])
+@pytest.fixture(scope='module', params=[x for x in range(4)])
 def model(request):
     return 'efficientnet-b{}'.format(request.param)
 
