@@ -205,11 +205,11 @@ class EfficientNet(nn.Module):
     def from_name(cls, model_name, override_params=None):
         cls._check_model_name_is_valid(model_name)
         blocks_args, global_params = get_model_params(model_name, override_params)
-        return EfficientNet(blocks_args, global_params)
+        return cls(blocks_args, global_params)
 
     @classmethod
     def from_pretrained(cls, model_name, num_classes=1000, num_dilation=0):
-        model = EfficientNet.from_name(model_name, override_params={'num_classes': num_classes, 'num_dilation': num_dilation})
+        model = cls.from_name(model_name, override_params={'num_classes': num_classes, 'num_dilation': num_dilation})
         load_pretrained_weights(model, model_name, load_fc=(num_classes == 1000))
         return model
 
@@ -224,6 +224,6 @@ class EfficientNet(nn.Module):
         """ Validates model name. None that pretrained weights are only available for
         the first four models (efficientnet-b{i} for i in 0,1,2,3) at the moment. """
         num_models = 4 if also_need_pretrained_weights else 8
-        valid_models = ['efficientnet_b'+str(i) for i in range(num_models)]
-        if model_name.replace('-','_') not in valid_models:
+        valid_models = ['efficientnet-b'+str(i) for i in range(num_models)]
+        if model_name not in valid_models:
             raise ValueError('model_name should be one of: ' + ', '.join(valid_models))
