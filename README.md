@@ -1,5 +1,9 @@
 # EfficientNet PyTorch
 
+### Update (October 08, 2019)
+
+This update changes activation function implementation to more memory-efficient. For more details please refer to: https://github.com/lukemelas/EfficientNet-PyTorch/issues/18
+
 ### Update (July 31, 2019)
 
 _Upgrade the pip package with_ `pip install --upgrade efficientnet-pytorch`
