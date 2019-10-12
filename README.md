@@ -2,7 +2,7 @@
 
 ### Update (October 12, 2019)
 
-This update changes activation function implementation to more memory-efficient. For more details please refer to: https://github.com/lukemelas/EfficientNet-PyTorch/issues/18. Thanks to [Dmytro Panchenko](https://www.kaggle.com/hokmund) for the pull request. 
+This update makes the Swish activation function more memory-efficient. It also addresses pull requests #72, #73, #85, and #86. Thanks to the authors of all the pull requests! 
 
 ### Update (July 31, 2019)
 
