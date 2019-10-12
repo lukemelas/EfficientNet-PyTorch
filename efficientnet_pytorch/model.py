@@ -150,7 +150,8 @@ class EfficientNet(nn.Module):
         self._bn1 = nn.BatchNorm2d(num_features=out_channels, momentum=bn_mom, eps=bn_eps)
 
         # Final linear layer
-        self._dropout = self._global_params.dropout_rate
+        self._avg_pooling = nn.AdaptiveAvgPool2d(1)
+        self._dropout = nn.Dropout(self._global_params.dropout_rate)
         self._fc = nn.Linear(out_channels, self._global_params.num_classes)
 
     def extract_features(self, inputs):
@@ -173,14 +174,14 @@ class EfficientNet(nn.Module):
 
     def forward(self, inputs):
         """ Calls extract_features to extract features, applies final linear layer, and returns logits. """
-
+        bs = inputs.size(0)
         # Convolution layers
         x = self.extract_features(inputs)
 
         # Pooling and final linear layer
-        x = F.adaptive_avg_pool2d(x, 1).squeeze(-1).squeeze(-1)
-        if self._dropout:
-            x = F.dropout(x, p=self._dropout, training=self.training)
+        x = self._avg_pooling(x)
+        x = x.view(bs, -1)
+        x = self._dropout(x)
         x = self._fc(x)
         return x
 
