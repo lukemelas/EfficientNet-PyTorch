@@ -47,13 +47,13 @@ class SwishImplementation(torch.autograd.Function):
         return grad_output * (sigmoid_i * (1 + i * (1 - sigmoid_i)))
 
 
-class Swish(nn.Module):
-    @staticmethod
-    def forward(x):
+class MemoryEfficientSwish(nn.Module):
+    def forward(self, x):
         return SwishImplementation.apply(x)
 
-
-relu_fn = Swish()
+class Swish(nn.Module):
+    def forward(self, x):
+        return x * torch.sigmoid(x)
 
 
 def round_filters(filters, global_params):
