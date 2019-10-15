@@ -94,10 +94,8 @@ class MBConvBlock(nn.Module):
         return x
 
     def set_swish(self, memory_efficient=True):
-        if memory_efficient:
-            self._swish = MemoryEfficientSwish()
-        else:
-            self._swish = Swish()
+        """Sets swish function as memory efficient (for training) or standard (for export)"""
+        self._swish = MemoryEfficientSwish() if memory_efficient else Swish()
 
 
 class EfficientNet(nn.Module):
@@ -164,11 +162,8 @@ class EfficientNet(nn.Module):
         self._swish = MemoryEfficientSwish()
 
     def set_swish(self, memory_efficient=True):
-        if memory_efficient:
-            self._swish = MemoryEfficientSwish()
-        else:
-            self._swish = Swish()
-
+        """Sets swish function as memory efficient (for training) or standard (for export)"""
+        self._swish = MemoryEfficientSwish() if memory_efficient else Swish()
         for block in self._blocks:
             block.set_swish(memory_efficient)
 
