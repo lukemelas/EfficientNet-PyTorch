@@ -98,7 +98,7 @@ class MBConvBlock(nn.Module):
         """Sets swish function as memory efficient (for training) or standard (for export)"""
         if act_ == "swish":
             self._swish = Swish()
-        elif act_ = "mish":
+        elif act_ == "mish":
             self._swish = Mish()
         else:
             self._swish = MemoryEfficientSwish()
@@ -170,7 +170,7 @@ class EfficientNet(nn.Module):
         """Sets swish function as memory efficient (for training) or standard (for export)"""
         if act_ == "swish":
             self._swish = Swish()
-        elif act_ = "mish":
+        elif act_ == "mish":
             self._swish = Mish()
         else:
             self._swish = MemoryEfficientSwish()
@@ -217,9 +217,9 @@ class EfficientNet(nn.Module):
     @classmethod
     def from_pretrained(cls, model_name, num_classes=1000, in_channels=3, dropout=-1, drop_connect=-1):
         override_params={'num_classes': num_classes}
-        if 0 < dropout < 1:
+        if 0 < dropout:
             override_params['dropout_rate'] = dropout
-        if 0 < drop_connect < 1:
+        if 0 < drop_connect:
             override_params['drop_connect_rate'] = drop_connect
         model = cls._from_name(model_name, override_params=override_params)
         load_pretrained_weights(model, model_name, load_fc=(num_classes == 1000))
@@ -232,9 +232,9 @@ class EfficientNet(nn.Module):
     @classmethod
     def from_name(cls, model_name, num_classes=1000, in_channels=3, dropout=-1, drop_connect=-1):
         override_params={'num_classes': num_classes}
-        if 0 < dropout < 1:
+        if 0 < dropout:
             override_params['dropout_rate'] = dropout
-        if 0 < drop_connect < 1:
+        if 0 < drop_connect:
             override_params['drop_connect_rate'] = drop_connect
         model = cls._from_name(model_name, override_params=override_params)
         if in_channels != 3:
