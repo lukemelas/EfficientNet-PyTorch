@@ -57,7 +57,7 @@ class Swish(nn.Module):
 
 class Mish(nn.Module):
     def forward(self, x):
-        return x * torch.tanh(F.softplus(input))
+        return x * torch.tanh(F.softplus(x))
 
 def round_filters(filters, global_params):
     """ Calculate and round number of filters based on depth multiplier. """
