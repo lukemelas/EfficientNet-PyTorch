@@ -21,12 +21,12 @@ from torch.utils import model_zoo
 GlobalParams = collections.namedtuple('GlobalParams', [
     'batch_norm_momentum', 'batch_norm_epsilon', 'dropout_rate',
     'num_classes', 'width_coefficient', 'depth_coefficient',
-    'depth_divisor', 'min_depth', 'drop_connect_rate', 'image_size'])
+    'depth_divisor', 'min_depth', 'drop_connect_rate', 'image_size', 'num_dilation'])
 
 # Parameters for an individual model block
 BlockArgs = collections.namedtuple('BlockArgs', [
     'kernel_size', 'num_repeat', 'input_filters', 'output_filters',
-    'expand_ratio', 'id_skip', 'stride', 'se_ratio'])
+    'expand_ratio', 'id_skip', 'stride', 'se_ratio', 'dilation'])
 
 # Change namedtuple defaults
 GlobalParams.__new__.__defaults__ = (None,) * len(GlobalParams._fields)
@@ -202,7 +202,8 @@ class BlockDecoder(object):
             expand_ratio=int(options['e']),
             id_skip=('noskip' not in block_string),
             se_ratio=float(options['se']) if 'se' in options else None,
-            stride=[int(options['s'][0])])
+            stride=[int(options['s'][0])],
+            dilation=[int(options['d'][0]), int(options['d'][1])] if 'd' in options else [1, 1])
 
     @staticmethod
     def _encode_block_string(block):
@@ -213,7 +214,8 @@ class BlockDecoder(object):
             's%d%d' % (block.strides[0], block.strides[1]),
             'e%s' % block.expand_ratio,
             'i%d' % block.input_filters,
-            'o%d' % block.output_filters
+            'o%d' % block.output_filters,
+            'd%d%d' % (block.dilation[0], block.dilation[1]),
         ]
         if 0 < block.se_ratio <= 1:
             args.append('se%s' % block.se_ratio)
@@ -250,7 +252,7 @@ class BlockDecoder(object):
 
 
 def efficientnet(width_coefficient=None, depth_coefficient=None, dropout_rate=0.2,
-                 drop_connect_rate=0.2, image_size=None, num_classes=1000):
+                 drop_connect_rate=0.2, image_size=None, num_classes=1000, num_dilation=0):
     """ Creates a efficientnet model. """
 
     blocks_args = [
@@ -273,6 +275,7 @@ def efficientnet(width_coefficient=None, depth_coefficient=None, dropout_rate=0.
         depth_divisor=8,
         min_depth=None,
         image_size=image_size,
+        num_dilation=num_dilation
     )
 
     return blocks_args, global_params
