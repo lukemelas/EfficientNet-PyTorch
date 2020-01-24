@@ -295,7 +295,7 @@ def get_model_params(model_name, override_params):
     return blocks_args, global_params
 
 
-url_map_aa = {
+url_map = {
     'efficientnet-b0': 'https://publicmodels.blob.core.windows.net/container/aa/efficientnet-b0-355c32eb.pth',
     'efficientnet-b1': 'https://publicmodels.blob.core.windows.net/container/aa/efficientnet-b1-f1951068.pth',
     'efficientnet-b2': 'https://publicmodels.blob.core.windows.net/container/aa/efficientnet-b2-8bb594d6.pth',
@@ -323,8 +323,8 @@ url_map_advprop = {
 def load_pretrained_weights(model, model_name, load_fc=True, advprop=False):
     """ Loads pretrained weights, and downloads if loading for the first time. """
     # AutoAugment or Advprop (different preprocessing)
-    url_map = url_map_advprop if advprop else url_map_aa
-    state_dict = model_zoo.load_url(url_map[model_name])
+    url_map_ = url_map_advprop if advprop else url_map
+    state_dict = model_zoo.load_url(url_map_[model_name])
     if load_fc:
         model.load_state_dict(state_dict)
     else:
