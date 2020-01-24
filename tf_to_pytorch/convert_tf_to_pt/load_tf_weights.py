@@ -149,7 +149,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Convert TF model to PyTorch model and save for easier future loading')
     parser.add_argument('--model_name', type=str, default='efficientnet-b0',
-                        help='efficientnet-b{N}, where N is an integer 0 <= N <= 7')
+                        help='efficientnet-b{N}, where N is an integer 0 <= N <= 8')
     parser.add_argument('--tf_checkpoint', type=str, default='pretrained_tensorflow/efficientnet-b0/',
                         help='checkpoint file path')
     parser.add_argument('--output_file', type=str, default='pretrained_pytorch/efficientnet-b0.pth',

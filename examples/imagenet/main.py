@@ -71,6 +71,8 @@ parser.add_argument('--gpu', default=None, type=int,
                     help='GPU id to use.')
 parser.add_argument('--image_size', default=224, type=int,
                     help='image size')
+parser.add_argument('--advprop', default=False, action='store_true',
+                    help='use advprop or not')
 parser.add_argument('--multiprocessing-distributed', action='store_true',
                     help='Use multi-processing distributed training to launch '
                          'N processes per node, which has N GPUs. This is the '
@@ -134,7 +136,7 @@ def main_worker(gpu, ngpus_per_node, args):
     # create model
     if 'efficientnet' in args.arch:  # NEW
         if args.pretrained:
-            model = EfficientNet.from_pretrained(args.arch)
+            model = EfficientNet.from_pretrained(args.arch, advprop=args.advprop)
             print("=> using pre-trained model '{}'".format(args.arch))
         else:
             print("=> creating model '{}'".format(args.arch))
@@ -206,8 +208,11 @@ def main_worker(gpu, ngpus_per_node, args):
     # Data loading code
     traindir = os.path.join(args.data, 'train')
     valdir = os.path.join(args.data, 'val')
-    normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
-                                     std=[0.229, 0.224, 0.225])
+    if args.advprop:
+        normalize = transforms.Lambda(lambda img: img * 2.0 - 1.0)
+    else:
+        normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                         std=[0.229, 0.224, 0.225])
 
     train_dataset = datasets.ImageFolder(
         traindir,
