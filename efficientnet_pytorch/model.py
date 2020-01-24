@@ -206,22 +206,15 @@ class EfficientNet(nn.Module):
         return cls(blocks_args, global_params)
 
     @classmethod
-    def from_pretrained(cls, model_name, num_classes=1000, in_channels = 3):
+    def from_pretrained(cls, model_name, advprop=False, num_classes=1000, in_channels=3):
         model = cls.from_name(model_name, override_params={'num_classes': num_classes})
-        load_pretrained_weights(model, model_name, load_fc=(num_classes == 1000))
+        load_pretrained_weights(model, model_name, load_fc=(num_classes == 1000), advprop=advprop)
         if in_channels != 3:
             Conv2d = get_same_padding_conv2d(image_size = model._global_params.image_size)
             out_channels = round_filters(32, model._global_params)
             model._conv_stem = Conv2d(in_channels, out_channels, kernel_size=3, stride=2, bias=False)
         return model
     
-    @classmethod
-    def from_pretrained(cls, model_name, num_classes=1000):
-        model = cls.from_name(model_name, override_params={'num_classes': num_classes})
-        load_pretrained_weights(model, model_name, load_fc=(num_classes == 1000))
-
-        return model
-
     @classmethod
     def get_image_size(cls, model_name):
         cls._check_model_name_is_valid(model_name)
