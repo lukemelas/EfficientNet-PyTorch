@@ -17,7 +17,10 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import tensorflow as tf
+from absl import logging
+
+import tensorflow.compat.v1 as tf
+
 
 IMAGE_SIZE = 224
 CROP_PADDING = 32
@@ -122,7 +125,6 @@ def _decode_and_center_crop(image_bytes, image_size):
                           padded_center_crop_size, padded_center_crop_size])
   image = tf.image.decode_and_crop_jpeg(image_bytes, crop_window, channels=3)
   image = tf.image.resize_bicubic([image], [image_size, image_size])[0]
-
   return image
 
 
@@ -132,13 +134,24 @@ def _flip(image):
   return image
 
 
-def preprocess_for_train(image_bytes, use_bfloat16, image_size=IMAGE_SIZE):
+def preprocess_for_train(image_bytes, use_bfloat16, image_size=IMAGE_SIZE,
+                         augment_name=None,
+                         randaug_num_layers=None, randaug_magnitude=None):
   """Preprocesses the given image for evaluation.
 
   Args:
     image_bytes: `Tensor` representing an image binary of arbitrary size.
     use_bfloat16: `bool` for whether to use bfloat16.
     image_size: image size.
+    augment_name: `string` that is the name of the augmentation method
+      to apply to the image. `autoaugment` if AutoAugment is to be used or
+      `randaugment` if RandAugment is to be used. If the value is `None` no
+      augmentation method will be applied applied. See autoaugment.py for more
+      details.
+    randaug_num_layers: 'int', if RandAug is used, what should the number of
+      layers be. See autoaugment.py for detailed description.
+    randaug_magnitude: 'int', if RandAug is used, what should the magnitude
+      be. See autoaugment.py for detailed description.
 
   Returns:
     A preprocessed image `Tensor`.
@@ -146,8 +159,32 @@ def preprocess_for_train(image_bytes, use_bfloat16, image_size=IMAGE_SIZE):
   image = _decode_and_random_crop(image_bytes, image_size)
   image = _flip(image)
   image = tf.reshape(image, [image_size, image_size, 3])
+
   image = tf.image.convert_image_dtype(
       image, dtype=tf.bfloat16 if use_bfloat16 else tf.float32)
+
+  if augment_name:
+    try:
+      import autoaugment  # pylint: disable=g-import-not-at-top
+    except ImportError as e:
+      logging.exception('Autoaugment is not supported in TF 2.x.')
+      raise e
+
+    logging.info('Apply AutoAugment policy %s', augment_name)
+    input_image_type = image.dtype
+    image = tf.clip_by_value(image, 0.0, 255.0)
+    image = tf.cast(image, dtype=tf.uint8)
+
+    if augment_name == 'autoaugment':
+      logging.info('Apply AutoAugment policy %s', augment_name)
+      image = autoaugment.distort_image_with_autoaugment(image, 'v0')
+    elif augment_name == 'randaugment':
+      image = autoaugment.distort_image_with_randaugment(
+          image, randaug_num_layers, randaug_magnitude)
+    else:
+      raise ValueError('Invalid value for augment_name: %s' % (augment_name))
+
+    image = tf.cast(image, dtype=input_image_type)
   return image
 
 
@@ -172,7 +209,10 @@ def preprocess_for_eval(image_bytes, use_bfloat16, image_size=IMAGE_SIZE):
 def preprocess_image(image_bytes,
                      is_training=False,
                      use_bfloat16=False,
-                     image_size=IMAGE_SIZE):
+                     image_size=IMAGE_SIZE,
+                     augment_name=None,
+                     randaug_num_layers=None,
+                     randaug_magnitude=None):
   """Preprocesses the given image.
 
   Args:
@@ -180,11 +220,22 @@ def preprocess_image(image_bytes,
     is_training: `bool` for whether the preprocessing is for training.
     use_bfloat16: `bool` for whether to use bfloat16.
     image_size: image size.
+    augment_name: `string` that is the name of the augmentation method
+      to apply to the image. `autoaugment` if AutoAugment is to be used or
+      `randaugment` if RandAugment is to be used. If the value is `None` no
+      augmentation method will be applied applied. See autoaugment.py for more
+      details.
+    randaug_num_layers: 'int', if RandAug is used, what should the number of
+      layers be. See autoaugment.py for detailed description.
+    randaug_magnitude: 'int', if RandAug is used, what should the magnitude
+      be. See autoaugment.py for detailed description.
 
   Returns:
     A preprocessed image `Tensor` with value range of [0, 255].
   """
   if is_training:
-    return preprocess_for_train(image_bytes, use_bfloat16, image_size)
+    return preprocess_for_train(
+        image_bytes, use_bfloat16, image_size, augment_name,
+        randaug_num_layers, randaug_magnitude)
   else:
     return preprocess_for_eval(image_bytes, use_bfloat16, image_size)

@@ -213,33 +213,17 @@ class EfficientNet(nn.Module):
         cls._check_model_name_is_valid(model_name)
         blocks_args, global_params = get_model_params(model_name, override_params)
         return cls(blocks_args, global_params)
-
-#     @classmethod
-#     def from_pretrained(cls, model_name, num_classes=1000, in_channels=3, dropout=-1, drop_connect=-1):
-#         override_params={'num_classes': num_classes}
-#         if 0 < dropout:
-#             override_params['dropout_rate'] = dropout
-#         if 0 < drop_connect:
-#             override_params['drop_connect_rate'] = drop_connect
-#         model = cls._from_name(model_name, override_params=override_params)
-#         load_pretrained_weights(model, model_name, load_fc=(num_classes == 1000))
-#         if in_channels != 3:
-#             Conv2d = get_same_padding_conv2d(image_size = model._global_params.image_size)
-#             out_channels = round_filters(32, model._global_params)
-#             model._conv_stem = Conv2d(in_channels, out_channels, kernel_size=3, stride=2, bias=False)
-#         return model
     
     @classmethod
-    def from_name(cls, model_name, num_classes=1000, pretrained=False, in_channels=3, dropout=-1, drop_connect=-1):
+    def from_name(cls, model_name, num_classes=1000, pretrained=False, advprop=False, in_channels=3, dropout=-1, drop_connect=-1):
         override_params={'num_classes': num_classes}
         if 0 < dropout:
             override_params['dropout_rate'] = dropout
         if 0 < drop_connect:
             override_params['drop_connect_rate'] = drop_connect
-        print("Overriding default params:", override_params)
         model = cls._from_name(model_name, override_params=override_params)
         if pretrained:
-            load_pretrained_weights(model, model_name, load_fc=(num_classes == 1000))
+            load_pretrained_weights(model, model_name, load_fc=(num_classes == 1000), advprop=advprop)
         if in_channels != 3:
             Conv2d = get_same_padding_conv2d(image_size = model._global_params.image_size)
             out_channels = round_filters(32, model._global_params)
@@ -253,10 +237,8 @@ class EfficientNet(nn.Module):
         return res
 
     @classmethod
-    def _check_model_name_is_valid(cls, model_name, also_need_pretrained_weights=False):
-        """ Validates model name. None that pretrained weights are only available for
-        the first four models (efficientnet-b{i} for i in 0,1,2,3) at the moment. """
-        num_models = 4 if also_need_pretrained_weights else 8
-        valid_models = ['efficientnet-b'+str(i) for i in range(num_models)]
+    def _check_model_name_is_valid(cls, model_name):
+        """ Validates model name. """ 
+        valid_models = ['efficientnet-b'+str(i) for i in range(9)]
         if model_name not in valid_models:
             raise ValueError('model_name should be one of: ' + ', '.join(valid_models))
