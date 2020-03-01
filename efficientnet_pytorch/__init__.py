@@ -1,4 +1,4 @@
-__version__ = "0.6.2"
+__version__ = "0.6.3"
 from .model import EfficientNet
 from .utils import (
     GlobalParams,

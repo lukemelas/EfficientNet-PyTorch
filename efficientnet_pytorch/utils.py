@@ -296,27 +296,27 @@ def get_model_params(model_name, override_params):
 
 
 url_map = {
-    'efficientnet-b0': 'https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/pth/effnet/efficientnet-b0-355c32eb.pth',
-    'efficientnet-b1': 'https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/pth/effnet/efficientnet-b1-f1951068.pth',
-    'efficientnet-b2': 'https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/pth/effnet/efficientnet-b2-8bb594d6.pth',
-    'efficientnet-b3': 'https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/pth/effnet/efficientnet-b3-5fb5a3c3.pth',
-    'efficientnet-b4': 'https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/pth/effnet/efficientnet-b4-6ed6700e.pth',
-    'efficientnet-b5': 'https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/pth/effnet/efficientnet-b5-b6417697.pth',
-    'efficientnet-b6': 'https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/pth/effnet/efficientnet-b6-c76e70fd.pth',
-    'efficientnet-b7': 'https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/pth/effnet/efficientnet-b7-dcc49843.pth',
+    'efficientnet-b0': 'https://github.com/lukemelas/EfficientNet-PyTorch/releases/download/1.0/efficientnet-b0-355c32eb.pth',
+    'efficientnet-b1': 'https://github.com/lukemelas/EfficientNet-PyTorch/releases/download/1.0/efficientnet-b1-f1951068.pth',
+    'efficientnet-b2': 'https://github.com/lukemelas/EfficientNet-PyTorch/releases/download/1.0/efficientnet-b2-8bb594d6.pth',
+    'efficientnet-b3': 'https://github.com/lukemelas/EfficientNet-PyTorch/releases/download/1.0/efficientnet-b3-5fb5a3c3.pth',
+    'efficientnet-b4': 'https://github.com/lukemelas/EfficientNet-PyTorch/releases/download/1.0/efficientnet-b4-6ed6700e.pth',
+    'efficientnet-b5': 'https://github.com/lukemelas/EfficientNet-PyTorch/releases/download/1.0/efficientnet-b5-b6417697.pth',
+    'efficientnet-b6': 'https://github.com/lukemelas/EfficientNet-PyTorch/releases/download/1.0/efficientnet-b6-c76e70fd.pth',
+    'efficientnet-b7': 'https://github.com/lukemelas/EfficientNet-PyTorch/releases/download/1.0/efficientnet-b7-dcc49843.pth',
 }
 
 
 url_map_advprop = {
-    'efficientnet-b0': 'https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/pth/effnetadv/efficientnet-b0-b64d5a18.pth',
-    'efficientnet-b1': 'https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/pth/effnetadv/efficientnet-b1-0f3ce85a.pth',
-    'efficientnet-b2': 'https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/pth/effnetadv/efficientnet-b2-6e9d97e5.pth',
-    'efficientnet-b3': 'https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/pth/effnetadv/efficientnet-b3-cdd7c0f4.pth',
-    'efficientnet-b4': 'https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/pth/effnetadv/efficientnet-b4-44fb3a87.pth',
-    'efficientnet-b5': 'https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/pth/effnetadv/efficientnet-b5-86493f6b.pth',
-    'efficientnet-b6': 'https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/pth/effnetadv/efficientnet-b6-ac80338e.pth',
-    'efficientnet-b7': 'https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/pth/effnetadv/efficientnet-b7-4652b6dd.pth',
-    'efficientnet-b8': 'https://storage.googleapis.com/cloud-tpu-checkpoints/efficientnet/pth/effnetadv/efficientnet-b8-22a8fe65.pth',
+    'efficientnet-b0': 'https://github.com/lukemelas/EfficientNet-PyTorch/releases/download/1.0/adv-efficientnet-b0-b64d5a18.pth',
+    'efficientnet-b1': 'https://github.com/lukemelas/EfficientNet-PyTorch/releases/download/1.0/adv-efficientnet-b1-0f3ce85a.pth',
+    'efficientnet-b2': 'https://github.com/lukemelas/EfficientNet-PyTorch/releases/download/1.0/adv-efficientnet-b2-6e9d97e5.pth',
+    'efficientnet-b3': 'https://github.com/lukemelas/EfficientNet-PyTorch/releases/download/1.0/adv-efficientnet-b3-cdd7c0f4.pth',
+    'efficientnet-b4': 'https://github.com/lukemelas/EfficientNet-PyTorch/releases/download/1.0/adv-efficientnet-b4-44fb3a87.pth',
+    'efficientnet-b5': 'https://github.com/lukemelas/EfficientNet-PyTorch/releases/download/1.0/adv-efficientnet-b5-86493f6b.pth',
+    'efficientnet-b6': 'https://github.com/lukemelas/EfficientNet-PyTorch/releases/download/1.0/adv-efficientnet-b6-ac80338e.pth',
+    'efficientnet-b7': 'https://github.com/lukemelas/EfficientNet-PyTorch/releases/download/1.0/adv-efficientnet-b7-4652b6dd.pth',
+    'efficientnet-b8': 'https://github.com/lukemelas/EfficientNet-PyTorch/releases/download/1.0/adv-efficientnet-b8-22a8fe65.pth',
 }
 
 
