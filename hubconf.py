@@ -22,7 +22,7 @@ for model_name in ['efficientnet_b' + str(i) for i in range(9)]:
         """
         model_name_ = model_name.replace('_', '-')
         if pretrained is not None:
-            return _EfficientNet.from_pretrained(
+            model = _EfficientNet.from_pretrained(
                 model_name=model_name_,
                 advprop=(pretrained == 'advprop'),
                 num_classes=num_classes,
@@ -33,5 +33,7 @@ for model_name in ['efficientnet_b' + str(i) for i in range(9)]:
                 override_params={'num_classes': num_classes},
             )
             model._change_in_channels(in_channels)
+
+        return model
 
     locals()[model_name] = _foo
