@@ -2,12 +2,12 @@ from efficientnet_pytorch import EfficientNet as _EfficientNet
 
 dependencies = ['torch']
 
-for model_name in ['efficientnet_b' + str(i) for i in range(9)]:
-    def _foo(num_classes=1000, in_channels=3, pretrained='imagenet'):
+
+def _create_model_fn(model_name):
+    def _model_fn(num_classes=1000, in_channels=3, pretrained='imagenet'):
         """Create Efficient Net.
 
         Described in detail here: https://arxiv.org/abs/1905.11946
-
 
         Args:
             num_classes (int, optional): Description
@@ -36,4 +36,7 @@ for model_name in ['efficientnet_b' + str(i) for i in range(9)]:
 
         return model
 
-    locals()[model_name] = _foo
+    return _model_fn
+
+for model_name in ['efficientnet_b' + str(i) for i in range(9)]:
+    locals()[model_name] = _create_model_fn(model_name)
