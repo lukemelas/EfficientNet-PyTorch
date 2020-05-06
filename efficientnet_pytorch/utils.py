@@ -100,6 +100,16 @@ def get_same_padding_conv2d(image_size=None):
         return partial(Conv2dStaticSamePadding, image_size=image_size)
 
 
+def calculate_output_image_size(input_image_size, stride):
+    """ Calculates the output image size when using Conv2dSamePadding with a stride. 
+        Necessary for static padding. Thanks to mannatsingh for pointing this out. """
+    if input_image_size is None: return None
+    image_height, image_width = input_image_size
+    image_height = int(math.ceil(image_height / stride))
+    image_width = int(math.ceil(image_width / stride))
+    return image_height, image_width
+
+
 class Conv2dDynamicSamePadding(nn.Conv2d):
     """ 2D Convolutions like TensorFlow, for a dynamic image size """
 
