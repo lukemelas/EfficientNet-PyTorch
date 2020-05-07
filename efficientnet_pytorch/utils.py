@@ -97,17 +97,26 @@ def get_same_padding_conv2d(image_size=None):
     if image_size is None:
         return Conv2dDynamicSamePadding
     else:
+        print("IMAGE SIZE: ", image_size)
         return partial(Conv2dStaticSamePadding, image_size=image_size)
+
+
+def get_width_and_height_from_size(x):
+    """ Obtains width and height from a int or tuple """
+    if isinstance(x, int): return x, x
+    if isinstance(x, list) or isinstance(x, tuple): return x
+    else: raise TypeError()
 
 
 def calculate_output_image_size(input_image_size, stride):
     """ Calculates the output image size when using Conv2dSamePadding with a stride. 
         Necessary for static padding. Thanks to mannatsingh for pointing this out. """
     if input_image_size is None: return None
-    image_height, image_width = input_image_size
+    image_height, image_width = get_width_and_height_from_size(input_image_size)
+    stride = stride if isinstance(stride, int) else stride[0]
     image_height = int(math.ceil(image_height / stride))
     image_width = int(math.ceil(image_width / stride))
-    return image_height, image_width
+    return [image_height, image_width]
 
 
 class Conv2dDynamicSamePadding(nn.Conv2d):
@@ -138,7 +147,9 @@ class Conv2dStaticSamePadding(nn.Conv2d):
 
         # Calculate padding based on image size and save it
         assert image_size is not None
-        ih, iw = image_size if type(image_size) == list else [image_size, image_size]
+        #print('image_size: ', image_size)
+        ih, iw = (image_size, image_size) if isinstance(image_size, int) else image_size
+        #print('ih, iw', ih, iw)
         kh, kw = self.weight.size()[-2:]
         sh, sw = self.stride
         oh, ow = math.ceil(ih / sh), math.ceil(iw / sw)
