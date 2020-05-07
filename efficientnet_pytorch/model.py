@@ -219,10 +219,7 @@ class EfficientNet(nn.Module):
     def from_pretrained(cls, model_name, advprop=False, num_classes=1000, in_channels=3):
         model = cls.from_name(model_name, override_params={'num_classes': num_classes})
         load_pretrained_weights(model, model_name, load_fc=(num_classes == 1000), advprop=advprop)
-        if in_channels != 3:
-            Conv2d = get_same_padding_conv2d(image_size=model._global_params.image_size)
-            out_channels = round_filters(32, model._global_params)
-            model._conv_stem = Conv2d(in_channels, out_channels, kernel_size=3, stride=2, bias=False)
+        model._change_in_channels(in_channels)
         return model
     
     @classmethod
@@ -237,3 +234,9 @@ class EfficientNet(nn.Module):
         valid_models = ['efficientnet-b'+str(i) for i in range(9)]
         if model_name not in valid_models:
             raise ValueError('model_name should be one of: ' + ', '.join(valid_models))
+
+    def _change_in_channels(model, in_channels):
+        if in_channels != 3:
+            Conv2d = get_same_padding_conv2d(image_size = model._global_params.image_size)
+            out_channels = round_filters(32, model._global_params)
+            model._conv_stem = Conv2d(in_channels, out_channels, kernel_size=3, stride=2, bias=False)
