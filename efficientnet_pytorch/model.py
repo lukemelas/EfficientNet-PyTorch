@@ -53,6 +53,7 @@ class MBConvBlock(nn.Module):
             in_channels=oup, out_channels=oup, groups=oup,  # groups makes it depthwise
             kernel_size=k, stride=s, bias=False)
         self._bn1 = nn.BatchNorm2d(num_features=oup, momentum=self._bn_mom, eps=self._bn_eps)
+        print('56 About to calculate_output_image_size:', image_size, s)
         image_size = calculate_output_image_size(image_size, s)
 
         # Squeeze and Excitation layer, if desired
@@ -136,6 +137,7 @@ class EfficientNet(nn.Module):
         out_channels = round_filters(32, self._global_params)  # number of output channels
         self._conv_stem = Conv2d(in_channels, out_channels, kernel_size=3, stride=2, bias=False)
         self._bn0 = nn.BatchNorm2d(num_features=out_channels, momentum=bn_mom, eps=bn_eps)
+        print('140 About to calculate_output_image_size:', image_size, 2)
         image_size = calculate_output_image_size(image_size, 2)
 
         # Build blocks
@@ -151,6 +153,7 @@ class EfficientNet(nn.Module):
 
             # The first block needs to take care of stride and filter size increase.
             self._blocks.append(MBConvBlock(block_args, self._global_params))
+            print('156 About to calculate_output_image_size:', image_size, block_args.stride)
             image_size = calculate_output_image_size(image_size, block_args.stride)
             if block_args.num_repeat > 1:
                 block_args = block_args._replace(input_filters=block_args.output_filters, stride=1)
