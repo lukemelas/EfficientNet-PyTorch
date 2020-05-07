@@ -147,9 +147,7 @@ class Conv2dStaticSamePadding(nn.Conv2d):
 
         # Calculate padding based on image size and save it
         assert image_size is not None
-        #print('image_size: ', image_size)
         ih, iw = (image_size, image_size) if isinstance(image_size, int) else image_size
-        #print('ih, iw', ih, iw)
         kh, kw = self.weight.size()[-2:]
         sh, sw = self.stride
         oh, ow = math.ceil(ih / sh), math.ceil(iw / sw)
