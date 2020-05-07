@@ -97,7 +97,6 @@ def get_same_padding_conv2d(image_size=None):
     if image_size is None:
         return Conv2dDynamicSamePadding
     else:
-        print("IMAGE SIZE: ", image_size)
         return partial(Conv2dStaticSamePadding, image_size=image_size)
 
 
