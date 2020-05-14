@@ -1,10 +1,10 @@
-"""model.py - Model and module Class for EfficientNet.
+"""model.py - Model and module class for EfficientNet.
    They are built to mirror those in the official TensorFlow implementation.
 """
 
 # Author: lukemelas (github username)
 # Github repo: https://github.com/lukemelas/EfficientNet-PyTorch
-# Made some adjustments and added comments by workingcoder(github username).
+# With adjustments and added comments by workingcoder (github username).
 
 import torch
 from torch import nn
@@ -290,7 +290,7 @@ class EfficientNet(nn.Module):
         return model
 
     @classmethod
-    def from_pretrained(cls, model_name, weights_path=None, advprop=True, 
+    def from_pretrained(cls, model_name, weights_path=None, advprop=False, 
                         in_channels=3, num_classes=1000, **override_params):
         """create an efficientnet model according to name.
 
