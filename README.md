@@ -1,12 +1,20 @@
 # EfficientNet PyTorch
 
+### Quickstart 
 
-_IMPORTANT NOTE_: In the latest update, I switched hosting providers for the pretrained models, as the previous models were becoming extremely expensive to host. This _will_ break old versions of the library. I apologize, but I cannot afford to keep serving the models on the old provider. Everything should work properly if you update the library: 
-```
-pip install --upgrade efficientnet-pytorch
+Install with `pip install efficientnet_pytorch` and load a pretrained EfficientNet with:
+```python
+from efficientnet_pytorch import EfficientNet
+model = EfficientNet.from_pretrained('efficientnet-b0')
 ```
 
-### Update (January 23, 2020)
+### Updates
+
+#### Update (May 14, 2020)
+
+This update adds comprehensive comments and documentation (thanks to @workingcoder). 
+
+#### Update (January 23, 2020)
 
 This update adds a new category of pre-trained model based on adversarial training, called _advprop_. It is important to note that the preprocessing required for the advprop pretrained models is slightly different from normal ImageNet preprocessing. As a result, by default, advprop models are not used. To load a model with advprop, use:
 ```
@@ -23,15 +31,15 @@ else:
 ```
 This update also addresses multiple other issues ([#115](https://github.com/lukemelas/EfficientNet-PyTorch/issues/115), [#128](https://github.com/lukemelas/EfficientNet-PyTorch/issues/128)). 
 
-### Update (October 15, 2019)
+#### Update (October 15, 2019)
 
 This update allows you to choose whether to use a memory-efficient Swish activation. The memory-efficient version is chosen by default, but it cannot be used when exporting using PyTorch JIT. For this purpose, we have also included a standard (export-friendly) swish activation function. To switch to the export-friendly version, simply call `model.set_swish(memory_efficient=False)` after loading your desired model. This update addresses issues [#88](https://github.com/lukemelas/EfficientNet-PyTorch/pull/88) and [#89](https://github.com/lukemelas/EfficientNet-PyTorch/pull/89).
 
-### Update (October 12, 2019)
+#### Update (October 12, 2019)
 
 This update makes the Swish activation function more memory-efficient. It also addresses pull requests [#72](https://github.com/lukemelas/EfficientNet-PyTorch/pull/72), [#73](https://github.com/lukemelas/EfficientNet-PyTorch/pull/73), [#85](https://github.com/lukemelas/EfficientNet-PyTorch/pull/85), and [#86](https://github.com/lukemelas/EfficientNet-PyTorch/pull/86). Thanks to the authors of all the pull requests! 
 
-### Update (July 31, 2019)
+#### Update (July 31, 2019)
 
 _Upgrade the pip package with_ `pip install --upgrade efficientnet-pytorch`
 
@@ -41,7 +49,7 @@ from efficientnet_pytorch import EfficientNet
 model = EfficientNet.from_pretrained('efficientnet-b7') 
 ```
 
-### Update (June 29, 2019)
+#### Update (June 29, 2019)
 
 This update adds easy model exporting ([#20](https://github.com/lukemelas/EfficientNet-PyTorch/issues/20)) and feature extraction ([#38](https://github.com/lukemelas/EfficientNet-PyTorch/issues/38)). 
 
@@ -55,7 +63,7 @@ model = EfficientNet.from_pretrained('efficientnet-b1', num_classes=23)
 ``` 
 
 
-### Update (June 23, 2019)
+#### Update (June 23, 2019)
 
 The B4 and B5 models are now available. Their usage is identical to the other models: 
 ```python
