@@ -14,7 +14,7 @@ from setuptools import find_packages, setup, Command
 # Package meta-data.
 NAME = 'efficientnet_pytorch'
 DESCRIPTION = 'EfficientNet implemented in PyTorch.'
-URL = 'https://github.com/lukemelas/efficientnet_pytorch'
+URL = 'https://github.com/lukemelas/EfficientNet-PyTorch'
 EMAIL = 'lmelaskyriazi@college.harvard.edu'
 AUTHOR = 'Luke'
 REQUIRES_PYTHON = '>=3.5.0'
