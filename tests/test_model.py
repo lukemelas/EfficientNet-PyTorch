@@ -105,3 +105,20 @@ def test_modify_pool(net, img_size):
     data = torch.zeros((2, 3, img_size, img_size))
     output = net(data)
     assert not torch.isnan(output).any()
+
+
+@pytest.mark.parametrize('img_size', [224, 256, 512])
+def test_extract_endpoints(net, img_size):
+    """Test `.extract_endpoints()` doesn't throw an error"""
+    data = torch.zeros((1, 3, img_size, img_size))
+    endpoints = net.extract_endpoints(data)
+    assert not torch.isnan(endpoints['reduction_1']).any()
+    assert not torch.isnan(endpoints['reduction_2']).any()
+    assert not torch.isnan(endpoints['reduction_3']).any()
+    assert not torch.isnan(endpoints['reduction_4']).any()
+    assert not torch.isnan(endpoints['reduction_5']).any()
+    assert endpoints['reduction_1'].size(2) == img_size // 2
+    assert endpoints['reduction_2'].size(2) == img_size // 4
+    assert endpoints['reduction_3'].size(2) == img_size // 8
+    assert endpoints['reduction_4'].size(2) == img_size // 16
+    assert endpoints['reduction_5'].size(2) == img_size // 32

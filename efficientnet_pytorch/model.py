@@ -215,6 +215,49 @@ class EfficientNet(nn.Module):
         for block in self._blocks:
             block.set_swish(memory_efficient)
 
+    def extract_endpoints(self, inputs):
+        """Use convolution layer to extract features
+        from reduction levels i in [1, 2, 3, 4, 5].
+
+        Args:
+            inputs (tensor): Input tensor.
+
+        Returns:
+            Dictionary of last intermediate features
+            with reduction levels i in [1, 2, 3, 4, 5].
+            Example:
+                >>> import torch
+                >>> from efficientnet.model import EfficientNet
+                >>> inputs = torch.rand(1, 3, 224, 224)
+                >>> model = EfficientNet.from_pretrained('efficientnet-b0')
+                >>> endpoints = model.extract_features(inputs)
+                >>> print(endpoints['reduction_1'].shape)  # torch.Size([1, 16, 112, 112])
+                >>> print(endpoints['reduction_2'].shape)  # torch.Size([1, 24, 56, 56])
+                >>> print(endpoints['reduction_3'].shape)  # torch.Size([1, 40, 28, 28])
+                >>> print(endpoints['reduction_4'].shape)  # torch.Size([1, 112, 14, 14])
+                >>> print(endpoints['reduction_5'].shape)  # torch.Size([1, 1280, 7, 7])
+        """
+        endpoints = dict()
+
+        # Stem
+        x = self._swish(self._bn0(self._conv_stem(inputs)))
+        prev_x = x
+
+        # Blocks
+        for idx, block in enumerate(self._blocks):
+            drop_connect_rate = self._global_params.drop_connect_rate
+            if drop_connect_rate:
+                drop_connect_rate *= float(idx) / len(self._blocks) # scale drop connect_rate
+            x = block(x, drop_connect_rate=drop_connect_rate)
+            if prev_x.size(2) > x.size(2):
+                endpoints[f'reduction_{len(endpoints)+1}'] = prev_x
+            prev_x = x
+
+        # Head
+        x = self._swish(self._bn1(self._conv_head(x)))
+        endpoints[f'reduction_{len(endpoints)+1}'] = x
+
+        return endpoints
 
     def extract_features(self, inputs):
         """use convolution layer to extract feature .
