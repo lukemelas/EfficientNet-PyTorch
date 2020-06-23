@@ -10,8 +10,9 @@ def _create_model_fn(model_name):
         Described in detail here: https://arxiv.org/abs/1905.11946
 
         Args:
-            num_classes (int, optional): Description
-            in_channels (int, optional): Description
+            num_classes (int, optional): Number of classes, default is 1000.
+            in_channels (int, optional): Number of input channels, default
+                is 3.
             pretrained (str, optional): One of [None, 'imagenet', 'advprop']
                 If None, no pretrained model is loaded.
                 If 'imagenet', models trained on imagenet dataset are loaded.
