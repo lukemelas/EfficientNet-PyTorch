@@ -294,14 +294,12 @@ class EfficientNet(nn.Module):
         Returns:
             Output of this model after processing.
         """
-        bs = inputs.size(0)
-
         # Convolution layers
         x = self.extract_features(inputs)
 
         # Pooling and final linear layer
         x = self._avg_pooling(x)
-        x = x.view(bs, -1)
+        x = x.flatten(start_dim=1)
         x = self._dropout(x)
         x = self._fc(x)
 
