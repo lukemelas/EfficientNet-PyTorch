@@ -230,7 +230,7 @@ class EfficientNet(nn.Module):
                 >>> from efficientnet.model import EfficientNet
                 >>> inputs = torch.rand(1, 3, 224, 224)
                 >>> model = EfficientNet.from_pretrained('efficientnet-b0')
-                >>> endpoints = model.extract_features(inputs)
+                >>> endpoints = model.extract_endpoints(inputs)
                 >>> print(endpoints['reduction_1'].shape)  # torch.Size([1, 16, 112, 112])
                 >>> print(endpoints['reduction_2'].shape)  # torch.Size([1, 24, 56, 56])
                 >>> print(endpoints['reduction_3'].shape)  # torch.Size([1, 40, 28, 28])
