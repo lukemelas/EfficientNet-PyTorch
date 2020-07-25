@@ -159,8 +159,6 @@ from efficientnet_pytorch import EfficientNet
 model = EfficientNet.from_pretrained('efficientnet-b0')
 ```
 
-Note that pretrained models have only been released for `N=0,1,2,3,4,5` at the current time, so `.from_pretrained` only supports `'efficientnet-b{N}'` for `N=0,1,2,3,4,5`. 
-
 Details about the models are below: 
 
 |    *Name*         |*# Params*|*Top-1 Acc.*|*Pretrained?*|
