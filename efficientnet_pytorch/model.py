@@ -22,6 +22,17 @@ from .utils import (
     calculate_output_image_size
 )
 
+
+VALID_MODELS = (
+    'efficientnet-b0', 'efficientnet-b1', 'efficientnet-b2', 'efficientnet-b3',
+    'efficientnet-b4', 'efficientnet-b5', 'efficientnet-b6', 'efficientnet-b7',
+    'efficientnet-b8',
+
+    # Support the construction of 'efficientnet-l2' without pretrained weights
+    'efficientnet-l2'
+)
+
+
 class MBConvBlock(nn.Module):
     """Mobile Inverted Residual Bottleneck Block.
 
@@ -388,14 +399,9 @@ class EfficientNet(nn.Module):
         Returns:
             bool: Is a valid name or not.
         """
-        valid_models = ['efficientnet-b'+str(i) for i in range(9)]
+        if model_name not in VALID_MODELS:
+            raise ValueError('model_name should be one of: ' + ', '.join(VALID_MODELS))
 
-        # Support the construction of 'efficientnet-l2' without pretrained weights
-        valid_models += ['efficientnet-l2']
-
-        if model_name not in valid_models:
-            raise ValueError('model_name should be one of: ' + ', '.join(valid_models))
-    
     def _change_in_channels(self, in_channels):
         """Adjust model's first convolution layer to in_channels, if in_channels not equals 3.
 
