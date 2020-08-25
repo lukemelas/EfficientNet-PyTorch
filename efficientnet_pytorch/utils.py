@@ -34,7 +34,6 @@ from torch.utils import model_zoo
 #     MaxPool2dStaticSamePadding
 #     It's an additional function, not used in EfficientNet,
 #     but can be used in other model (such as EfficientDet).
-# Identity: An implementation of identical mapping
 
 # Parameters for the entire model (stem, all blocks, and head)
 GlobalParams = collections.namedtuple('GlobalParams', [
@@ -125,7 +124,7 @@ def round_repeats(repeats, global_params):
 
 def drop_connect(inputs, p, training):
     """Drop connect.
-       
+
     Args:
         input (tensor: BCWH): Input of this structure.
         p (float: 0.0~1.0): Probability of drop connection.
@@ -134,7 +133,7 @@ def drop_connect(inputs, p, training):
     Returns:
         output: Output after drop connection.
     """
-    assert p >= 0 and p <= 1, 'p must be in range of [0,1]'
+    assert 0 <= p <= 1, 'p must be in range of [0,1]'
 
     if not training:
         return inputs
@@ -188,7 +187,7 @@ def calculate_output_image_size(input_image_size, stride):
     return [image_height, image_width]
 
 
-# Note: 
+# Note:
 # The following 'SamePadding' functions make output size equal ceil(input size/stride).
 # Only when stride equals 1, can the output size be the same as input size.
 # Don't be confused by their function names ! ! !
@@ -262,9 +261,10 @@ class Conv2dStaticSamePadding(nn.Conv2d):
         pad_h = max((oh - 1) * self.stride[0] + (kh - 1) * self.dilation[0] + 1 - ih, 0)
         pad_w = max((ow - 1) * self.stride[1] + (kw - 1) * self.dilation[1] + 1 - iw, 0)
         if pad_h > 0 or pad_w > 0:
-            self.static_padding = nn.ZeroPad2d((pad_w // 2, pad_w - pad_w // 2, pad_h // 2, pad_h - pad_h // 2))
+            self.static_padding = nn.ZeroPad2d((pad_w - pad_w // 2, pad_w - pad_w // 2,
+                                                pad_h - pad_h // 2, pad_h - pad_h // 2))
         else:
-            self.static_padding = Identity()
+            self.static_padding = nn.Identity()
 
     def forward(self, x):
         x = self.static_padding(x)
@@ -333,24 +333,13 @@ class MaxPool2dStaticSamePadding(nn.MaxPool2d):
         if pad_h > 0 or pad_w > 0:
             self.static_padding = nn.ZeroPad2d((pad_w // 2, pad_w - pad_w // 2, pad_h // 2, pad_h - pad_h // 2))
         else:
-            self.static_padding = Identity()
+            self.static_padding = nn.Identity()
 
     def forward(self, x):
         x = self.static_padding(x)
         x = F.max_pool2d(x, self.kernel_size, self.stride, self.padding,
                          self.dilation, self.ceil_mode, self.return_indices)
         return x
-
-class Identity(nn.Module):
-    """Identity mapping.
-       Send input to output directly.
-    """
-
-    def __init__(self):
-        super(Identity, self).__init__()
-
-    def forward(self, input):
-        return input
 
 
 ################################################################################
@@ -550,7 +539,7 @@ def get_model_params(model_name, override_params):
         blocks_args, global_params = efficientnet(
             width_coefficient=w, depth_coefficient=d, dropout_rate=p, image_size=s)
     else:
-        raise NotImplementedError('model name is not pre-defined: %s' % model_name)
+        raise NotImplementedError('model name is not pre-defined: {}'.format(model_name))
     if override_params:
         # ValueError will be raised here if override_params has fields not included in global_params.
         global_params = global_params._replace(**override_params)
@@ -593,29 +582,29 @@ def load_pretrained_weights(model, model_name, weights_path=None, load_fc=True, 
     Args:
         model (Module): The whole model of efficientnet.
         model_name (str): Model name of efficientnet.
-        weights_path (None or str): 
+        weights_path (None or str):
             str: path to pretrained weights file on the local disk.
             None: use pretrained weights downloaded from the Internet.
         load_fc (bool): Whether to load pretrained weights for fc layer at the end of the model.
         advprop (bool): Whether to load pretrained weights
                         trained with advprop (valid when weights_path is None).
     """
-    if isinstance(weights_path,str):
+    if isinstance(weights_path, str):
         state_dict = torch.load(weights_path)
     else:
         # AutoAugment or Advprop (different preprocessing)
         url_map_ = url_map_advprop if advprop else url_map
         state_dict = model_zoo.load_url(url_map_[model_name])
-    
+
     if load_fc:
         ret = model.load_state_dict(state_dict, strict=False)
-        assert not ret.missing_keys, f'Missing keys when loading pretrained weights: {ret.missing_keys}'
+        assert not ret.missing_keys, 'Missing keys when loading pretrained weights: {}'.format(ret.missing_keys)
     else:
         state_dict.pop('_fc.weight')
         state_dict.pop('_fc.bias')
         ret = model.load_state_dict(state_dict, strict=False)
         assert set(ret.missing_keys) == set(
-            ['_fc.weight', '_fc.bias']), f'Missing keys when loading pretrained weights: {ret.missing_keys}'
-    assert not ret.unexpected_keys, f'Missing keys when loading pretrained weights: {ret.unexpected_keys}'
+            ['_fc.weight', '_fc.bias']), 'Missing keys when loading pretrained weights: {}'.format(ret.missing_keys)
+    assert not ret.unexpected_keys, 'Missing keys when loading pretrained weights: {}'.format(ret.unexpected_keys)
 
     print('Loaded pretrained weights for {}'.format(model_name))

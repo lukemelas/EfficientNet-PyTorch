@@ -2,8 +2,6 @@ import numpy as np
 import tensorflow as tf
 import torch
 
-tf.compat.v1.disable_v2_behavior()
-
 def load_param(checkpoint_file, conversion_table, model_name):
     """
     Load parameters according to conversion_table.
@@ -129,13 +127,13 @@ def load_and_save_temporary_tensorflow_model(model_name, model_ckpt, example_img
     """ Loads and saves a TensorFlow model. """
     image_files = [example_img]
     eval_ckpt_driver = eval_ckpt_main.EvalCkptDriver(model_name)
-    with tf.Graph().as_default(), tf.compat.v1.Session() as sess:
+    with tf.Graph().as_default(), tf.Session() as sess:
         images, labels = eval_ckpt_driver.build_dataset(image_files, [0] * len(image_files), False)
         probs = eval_ckpt_driver.build_model(images, is_training=False)
-        sess.run(tf.compat.v1.global_variables_initializer())
+        sess.run(tf.global_variables_initializer())
         print(model_ckpt)
         eval_ckpt_driver.restore_model(sess, model_ckpt)
-        tf.compat.v1.train.Saver().save(sess, 'tmp/model.ckpt')
+        tf.train.Saver().save(sess, 'tmp/model.ckpt')
 
 
 if __name__ == '__main__':

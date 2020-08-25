@@ -35,8 +35,6 @@ import efficientnet_builder
 import preprocessing
 
 
-tf.compat.v1.disable_v2_behavior()
-
 flags.DEFINE_string('model_name', 'efficientnet-b0', 'Model name to eval.')
 flags.DEFINE_string('runmode', 'examples', 'Running mode: examples or imagenet')
 flags.DEFINE_string('imagenet_eval_glob', None,
@@ -81,13 +79,13 @@ class EvalCkptDriver(object):
     """Restore variables from checkpoint dir."""
     checkpoint = tf.train.latest_checkpoint(ckpt_dir)
     ema = tf.train.ExponentialMovingAverage(decay=0.9999)
-    ema_vars = tf.compat.v1.trainable_variables() + tf.compat.v1.get_collection('moving_vars')
-    for v in tf.compat.v1.global_variables():
+    ema_vars = tf.trainable_variables() + tf.get_collection('moving_vars')
+    for v in tf.global_variables():
       if 'moving_mean' in v.name or 'moving_variance' in v.name:
         ema_vars.append(v)
     ema_vars = list(set(ema_vars))
     var_dict = ema.variables_to_restore(ema_vars)
-    saver = tf.compat.v1.train.Saver(var_dict, max_to_keep=1)
+    saver = tf.train.Saver(var_dict, max_to_keep=1)
     saver.restore(sess, checkpoint)
 
   def build_model(self, features, is_training):
@@ -104,11 +102,10 @@ class EvalCkptDriver(object):
     """Build input dataset."""
     filenames = tf.constant(filenames)
     labels = tf.constant(labels)
-
-    dataset = tf.compat.v1.data.Dataset.from_tensor_slices((filenames, labels))
+    dataset = tf.data.Dataset.from_tensor_slices((filenames, labels))
 
     def _parse_function(filename, label):
-      image_string = tf.io.read_file(filename)
+      image_string = tf.read_file(filename)
       image_decoded = preprocessing.preprocess_image(
           image_string, is_training, self.image_size)
       image = tf.cast(image_decoded, tf.float32)
@@ -118,7 +115,6 @@ class EvalCkptDriver(object):
     dataset = dataset.batch(self.batch_size)
 
     iterator = dataset.make_one_shot_iterator()
-    #iterator = iter(dataset)
     images, labels = iterator.get_next()
     return images, labels
 
