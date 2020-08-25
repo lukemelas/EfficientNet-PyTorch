@@ -152,7 +152,9 @@ class EfficientNet(nn.Module):
         [1] https://arxiv.org/abs/1905.11946 (EfficientNet)
 
     Example:
-        >>> import torch
+        
+        
+        import torch
         >>> from efficientnet.model import EfficientNet
         >>> inputs = torch.rand(1, 3, 224, 224)
         >>> model = EfficientNet.from_pretrained('efficientnet-b0')
@@ -307,13 +309,12 @@ class EfficientNet(nn.Module):
         """
         # Convolution layers
         x = self.extract_features(inputs)
-
         # Pooling and final linear layer
         x = self._avg_pooling(x)
-        x = x.flatten(start_dim=1)
-        x = self._dropout(x)
-        x = self._fc(x)
-
+        if self._global_params.include_top:
+            x = x.flatten(start_dim=1)
+            x = self._dropout(x)
+            x = self._fc(x)
         return x
 
     @classmethod

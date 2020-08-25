@@ -39,7 +39,7 @@ from torch.utils import model_zoo
 GlobalParams = collections.namedtuple('GlobalParams', [
     'width_coefficient', 'depth_coefficient', 'image_size', 'dropout_rate',
     'num_classes', 'batch_norm_momentum', 'batch_norm_epsilon',
-    'drop_connect_rate', 'depth_divisor', 'min_depth'])
+    'drop_connect_rate', 'depth_divisor', 'min_depth', 'include_top'])
 
 # Parameters for an individual model block
 BlockArgs = collections.namedtuple('BlockArgs', [
@@ -475,7 +475,7 @@ def efficientnet_params(model_name):
 
 
 def efficientnet(width_coefficient=None, depth_coefficient=None, image_size=None,
-                 dropout_rate=0.2, drop_connect_rate=0.2, num_classes=1000):
+                 dropout_rate=0.2, drop_connect_rate=0.2, num_classes=1000, include_top=True):
     """Create BlockArgs and GlobalParams for efficientnet model.
 
     Args:
@@ -517,6 +517,7 @@ def efficientnet(width_coefficient=None, depth_coefficient=None, image_size=None
         drop_connect_rate=drop_connect_rate,
         depth_divisor=8,
         min_depth=None,
+        include_top=include_top,
     )
 
     return blocks_args, global_params
