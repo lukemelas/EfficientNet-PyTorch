@@ -152,9 +152,7 @@ class EfficientNet(nn.Module):
         [1] https://arxiv.org/abs/1905.11946 (EfficientNet)
 
     Example:
-        
-        
-        import torch
+        >>> import torch
         >>> from efficientnet.model import EfficientNet
         >>> inputs = torch.rand(1, 3, 224, 224)
         >>> model = EfficientNet.from_pretrained('efficientnet-b0')
@@ -213,8 +211,11 @@ class EfficientNet(nn.Module):
 
         # Final linear layer
         self._avg_pooling = nn.AdaptiveAvgPool2d(1)
-        self._dropout = nn.Dropout(self._global_params.dropout_rate)
-        self._fc = nn.Linear(out_channels, self._global_params.num_classes)
+        if self._global_params.include_top:
+            self._dropout = nn.Dropout(self._global_params.dropout_rate)
+            self._fc = nn.Linear(out_channels, self._global_params.num_classes)
+
+        # set activation to memory efficient swish by default
         self._swish = MemoryEfficientSwish()
 
     def set_swish(self, memory_efficient=True):
@@ -222,7 +223,6 @@ class EfficientNet(nn.Module):
 
         Args:
             memory_efficient (bool): Whether to use memory-efficient version of swish.
-
         """
         self._swish = MemoryEfficientSwish() if memory_efficient else Swish()
         for block in self._blocks:
@@ -238,17 +238,18 @@ class EfficientNet(nn.Module):
         Returns:
             Dictionary of last intermediate features
             with reduction levels i in [1, 2, 3, 4, 5].
-            Example:
-                >>> import torch
-                >>> from efficientnet.model import EfficientNet
-                >>> inputs = torch.rand(1, 3, 224, 224)
-                >>> model = EfficientNet.from_pretrained('efficientnet-b0')
-                >>> endpoints = model.extract_endpoints(inputs)
-                >>> print(endpoints['reduction_1'].shape)  # torch.Size([1, 16, 112, 112])
-                >>> print(endpoints['reduction_2'].shape)  # torch.Size([1, 24, 56, 56])
-                >>> print(endpoints['reduction_3'].shape)  # torch.Size([1, 40, 28, 28])
-                >>> print(endpoints['reduction_4'].shape)  # torch.Size([1, 112, 14, 14])
-                >>> print(endpoints['reduction_5'].shape)  # torch.Size([1, 1280, 7, 7])
+
+        Example:
+            >>> import torch
+            >>> from efficientnet.model import EfficientNet
+            >>> inputs = torch.rand(1, 3, 224, 224)
+            >>> model = EfficientNet.from_pretrained('efficientnet-b0')
+            >>> endpoints = model.extract_endpoints(inputs)
+            >>> print(endpoints['reduction_1'].shape)  # torch.Size([1, 16, 112, 112])
+            >>> print(endpoints['reduction_2'].shape)  # torch.Size([1, 24, 56, 56])
+            >>> print(endpoints['reduction_3'].shape)  # torch.Size([1, 40, 28, 28])
+            >>> print(endpoints['reduction_4'].shape)  # torch.Size([1, 112, 14, 14])
+            >>> print(endpoints['reduction_5'].shape)  # torch.Size([1, 1280, 7, 7])
         """
         endpoints = dict()
 
@@ -319,7 +320,7 @@ class EfficientNet(nn.Module):
 
     @classmethod
     def from_name(cls, model_name, in_channels=3, **override_params):
-        """create an efficientnet model according to name.
+        """Create an efficientnet model according to name.
 
         Args:
             model_name (str): Name for efficientnet.
@@ -345,7 +346,7 @@ class EfficientNet(nn.Module):
     @classmethod
     def from_pretrained(cls, model_name, weights_path=None, advprop=False,
                         in_channels=3, num_classes=1000, **override_params):
-        """create an efficientnet model according to name.
+        """Create an efficientnet model according to name.
 
         Args:
             model_name (str): Name for efficientnet.
