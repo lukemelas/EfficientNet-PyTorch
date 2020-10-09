@@ -240,6 +240,7 @@ from efficientnet_pytorch import EfficientNet
 model = EfficientNet.from_pretrained('efficientnet-b1')
 dummy_input = torch.randn(10, 3, 240, 240)
 
+model.set_swish(memory_efficient=False)
 torch.onnx.export(model, dummy_input, "test-b1.onnx", verbose=True)
 ```
 
