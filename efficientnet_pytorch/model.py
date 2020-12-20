@@ -218,6 +218,7 @@ class EfficientNet(nn.Module):
         self._swish = MemoryEfficientSwish()
 
         self._image_size = image_size
+        self._last_block_args = block_args
 
     def set_swish(self, memory_efficient=True):
         """Sets swish function as memory efficient (for training) or standard (for export).
@@ -443,9 +444,10 @@ class EfficientNetAutoEncoder(EfficientNet):
 
     def __init__(self, blocks_args=None, global_params=None):
         super().__init__(blocks_args=blocks_args, global_params=global_params)
-        bn_mom = self._bn_mon
+        bn_mom = self._bn_mom
         bn_eps = self._bn_eps
         image_size = self._image_size
+        block_args = self._last_block_args
 
         # EfficientNet Decoder
         # use dynamic image size for decoder
