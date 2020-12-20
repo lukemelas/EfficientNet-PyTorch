@@ -142,8 +142,8 @@ class MBConvBlock(nn.Module):
         self._swish = MemoryEfficientSwish() if memory_efficient else Swish()
 
 
-class EfficientNetAutoEncoder(nn.Module):
-    """EfficientNet AutoEncoder model.
+class EfficientNet(nn.Module):
+    """EfficientNet model.
        Most easily loaded with the .from_name or .from_pretrained methods.
 
     Args:
@@ -154,14 +154,12 @@ class EfficientNetAutoEncoder(nn.Module):
         [1] https://arxiv.org/abs/1905.11946 (EfficientNet)
 
     Example:
-        
-        
-        import torch
+        >>> import torch
         >>> from efficientnet.model import EfficientNet
         >>> inputs = torch.rand(1, 3, 224, 224)
-        >>> model = EfficientNetAutoEncoder.from_pretrained('efficientnet-b0')
+        >>> model = EfficientNet.from_pretrained('efficientnet-b0')
         >>> model.eval()
-        >>> ae_output, latent_fc_output = model(inputs)
+        >>> outputs = model(inputs)
     """
 
     def __init__(self, blocks_args=None, global_params=None):
@@ -175,10 +173,10 @@ class EfficientNetAutoEncoder(nn.Module):
         bn_mom = 1 - self._global_params.batch_norm_momentum
         bn_eps = self._global_params.batch_norm_epsilon
 
-        # ==== EfficientNet Encoder ====
         # Get stem static or dynamic convolution depending on image size
         image_size = global_params.image_size
         Conv2d = get_same_padding_conv2d(image_size=image_size)
+
         # Stem
         in_channels = 3  # rgb
         out_channels = round_filters(32, self._global_params)  # number of output channels
@@ -213,50 +211,11 @@ class EfficientNetAutoEncoder(nn.Module):
         self._conv_head = Conv2d(in_channels, out_channels, kernel_size=1, bias=False)
         self._bn1 = nn.BatchNorm2d(num_features=out_channels, momentum=bn_mom, eps=bn_eps)
 
-        # ==== Linear layer for latent space ====
+        # Final linear layer
         self._avg_pooling = nn.AdaptiveAvgPool2d(1)
         self._dropout = nn.Dropout(self._global_params.dropout_rate)
         self._fc = nn.Linear(out_channels, self._global_params.num_classes)
         self._swish = MemoryEfficientSwish()
-
-        # ==== EfficientNet Decoder ====
-        # use dynamic image size for decoder
-        TransposedConv2d = get_same_padding_conv2d(image_size=image_size, transposed=True)
-
-        # Stem
-        # number of output channels from encoder model
-        in_channels, out_channels = out_channels, in_channels
-        # self._decoder_conv_stem symmetry to self._conv_head
-        self._decoder_conv_stem = TransposedConv2d(in_channels, out_channels, kernel_size=1, bias=False)
-        image_size = calculate_output_image_size(image_size, 1, transposed=True)
-        self._decoder_bn0 = nn.BatchNorm2d(num_features=out_channels, momentum=bn_mom, eps=bn_eps)
-        # image_size = calculate_output_image_size(image_size, 2)
-
-        # Build blocks
-        self._decoder_blocks = nn.ModuleList([])
-        for block_args in reversed(self._blocks_args):
-
-            # Update block input and output filters based on depth multiplier.
-            # NOTE: input/output are flip here to support deconvolution
-            block_args = block_args._replace(
-                input_filters=round_filters(block_args.output_filters, self._global_params),
-                output_filters=round_filters(block_args.input_filters, self._global_params),
-                num_repeat=round_repeats(block_args.num_repeat, self._global_params)
-            )
-            # The first block needs to take care of stride and filter size increase.
-            self._decoder_blocks.append(MBConvBlock(block_args, self._global_params, image_size=image_size, decoder_mode=True))
-            image_size = calculate_output_image_size(image_size, block_args.stride, transposed=True)
-            if block_args.num_repeat > 1: # modify block_args to keep same output size
-                block_args = block_args._replace(input_filters=block_args.output_filters, stride=1)
-            for _ in range(block_args.num_repeat - 1):
-                self._decoder_blocks.append(MBConvBlock(block_args, self._global_params, image_size=image_size, decoder_mode=True))
-                # image_size = calculate_output_image_size(image_size, block_args.stride)  # stride = 1
-
-        # Head
-        in_channels = round_filters(32, self._global_params)  # number of output channels
-        out_channels = 3  # rgb
-        self._decoder_conv_head = TransposedConv2d(in_channels, out_channels, kernel_size=3, stride=2, bias=False)
-        self._decoder_bn1 = nn.BatchNorm2d(num_features=out_channels, momentum=bn_mom, eps=bn_eps)
 
     def set_swish(self, memory_efficient=True):
         """Sets swish function as memory efficient (for training) or standard (for export).
@@ -313,33 +272,6 @@ class EfficientNetAutoEncoder(nn.Module):
 
         return endpoints
 
-    def decode_features(self, inputs):
-        """decoder portion of this autoencoder.
-
-        Args:
-            inputs (tensor): Input tensor to the decoder, 
-                             usually from self.extract_features
-
-        Returns:
-            Output of the final convolution
-            layer in the efficientnet model.
-        """
-        # Stem
-        x = self._swish(self._decoder_bn0(self._decoder_conv_stem(inputs)))
-        # Blocks
-        for idx, block in enumerate(self._decoder_blocks):
-            drop_connect_rate = self._global_params.drop_connect_rate
-            if drop_connect_rate:
-                # scale drop connect_rate
-                drop_connect_rate *= float(idx) / len(self._blocks)
-            x = block(x, drop_connect_rate=drop_connect_rate)
-
-        # Head
-        x = self._swish(self._decoder_bn1(self._decoder_conv_head(x)))
-
-        return x
-
-
     def extract_features(self, inputs):
         """use convolution layer to extract feature .
 
@@ -366,28 +298,25 @@ class EfficientNetAutoEncoder(nn.Module):
         return x
 
     def forward(self, inputs):
-        """EfficientNet AutoEncoder's forward function.
-           Calls extract_features to extract features, 
-           then calls decode features to generates original inputs.
+        """EfficientNet's forward function.
+           Calls extract_features to extract features, applies final linear layer, and returns logits.
 
         Args:
             inputs (tensor): Input tensor.
 
         Returns:
-            (AE output tensor, latent representation tensor)
+            Output of this model after processing.
         """
         # Convolution layers
         x = self.extract_features(inputs)
-        
+
         # Pooling and final linear layer
-        latent_rep = self._avg_pooling(x)
-        latent_rep = latent_rep.flatten(start_dim=1)
-        latent_rep = self._dropout(latent_rep)
-        latent_rep = self._fc(latent_rep)
-        
-        # Deconvolution - decoder
-        x = self.decode_features(x)
-        return x, latent_rep
+        x = self._avg_pooling(x)
+        x = x.flatten(start_dim=1)
+        x = self._dropout(x)
+        x = self._fc(x)
+
+        return x
 
     @classmethod
     def from_name(cls, model_name, in_channels=3, **override_params):
@@ -485,3 +414,118 @@ class EfficientNetAutoEncoder(nn.Module):
             Conv2d = get_same_padding_conv2d(image_size=self._global_params.image_size)
             out_channels = round_filters(32, self._global_params)
             self._conv_stem = Conv2d(in_channels, out_channels, kernel_size=3, stride=2, bias=False)
+
+class EfficientNetAutoEncoder(EfficientNet):
+    """EfficientNet AutoEncoder model.
+       Most easily loaded with the .from_name or .from_pretrained methods.
+
+    Args:
+        blocks_args (list[namedtuple]): A list of BlockArgs to construct blocks.
+        global_params (namedtuple): A set of GlobalParams shared between blocks.
+
+    References:
+        [1] https://arxiv.org/abs/1905.11946 (EfficientNet)
+
+    Example:
+        
+        
+        import torch
+        >>> from efficientnet.model import EfficientNet
+        >>> inputs = torch.rand(1, 3, 224, 224)
+        >>> model = EfficientNetAutoEncoder.from_pretrained('efficientnet-b0')
+        >>> model.eval()
+        >>> ae_output, latent_fc_output = model(inputs)
+    """
+
+    def __init__(self, blocks_args=None, global_params=None):
+        super().__init__(blocks_args=blocks_args, global_params=global_params)
+        
+        # EfficientNet Decoder
+        # use dynamic image size for decoder
+        TransposedConv2d = get_same_padding_conv2d(image_size=image_size, transposed=True)
+
+        # Stem
+        # number of output channels from encoder model
+        in_channels, out_channels = out_channels, in_channels
+        # self._decoder_conv_stem symmetry to self._conv_head
+        self._decoder_conv_stem = TransposedConv2d(in_channels, out_channels, kernel_size=1, bias=False)
+        image_size = calculate_output_image_size(image_size, 1, transposed=True)
+        self._decoder_bn0 = nn.BatchNorm2d(num_features=out_channels, momentum=bn_mom, eps=bn_eps)
+        # image_size = calculate_output_image_size(image_size, 2)
+
+        # Build blocks
+        self._decoder_blocks = nn.ModuleList([])
+        for block_args in reversed(self._blocks_args):
+
+            # Update block input and output filters based on depth multiplier.
+            # NOTE: input/output are flip here to support deconvolution
+            block_args = block_args._replace(
+                input_filters=round_filters(block_args.output_filters, self._global_params),
+                output_filters=round_filters(block_args.input_filters, self._global_params),
+                num_repeat=round_repeats(block_args.num_repeat, self._global_params)
+            )
+            # The first block needs to take care of stride and filter size increase.
+            self._decoder_blocks.append(MBConvBlock(block_args, self._global_params, image_size=image_size, decoder_mode=True))
+            image_size = calculate_output_image_size(image_size, block_args.stride, transposed=True)
+            if block_args.num_repeat > 1: # modify block_args to keep same output size
+                block_args = block_args._replace(input_filters=block_args.output_filters, stride=1)
+            for _ in range(block_args.num_repeat - 1):
+                self._decoder_blocks.append(MBConvBlock(block_args, self._global_params, image_size=image_size, decoder_mode=True))
+                # image_size = calculate_output_image_size(image_size, block_args.stride)  # stride = 1
+
+        # Head
+        in_channels = round_filters(32, self._global_params)  # number of output channels
+        out_channels = 3  # rgb
+        self._decoder_conv_head = TransposedConv2d(in_channels, out_channels, kernel_size=3, stride=2, bias=False)
+        self._decoder_bn1 = nn.BatchNorm2d(num_features=out_channels, momentum=bn_mom, eps=bn_eps)
+
+    def decode_features(self, inputs):
+        """decoder portion of this autoencoder.
+
+        Args:
+            inputs (tensor): Input tensor to the decoder, 
+                             usually from self.extract_features
+
+        Returns:
+            Output of the final convolution
+            layer in the efficientnet model.
+        """
+        # Stem
+        x = self._swish(self._decoder_bn0(self._decoder_conv_stem(inputs)))
+        # Blocks
+        for idx, block in enumerate(self._decoder_blocks):
+            drop_connect_rate = self._global_params.drop_connect_rate
+            if drop_connect_rate:
+                # scale drop connect_rate
+                drop_connect_rate *= float(idx) / len(self._blocks)
+            x = block(x, drop_connect_rate=drop_connect_rate)
+
+        # Head
+        x = self._swish(self._decoder_bn1(self._decoder_conv_head(x)))
+
+        return x
+
+
+    def forward(self, inputs):
+        """EfficientNet AutoEncoder's forward function.
+           Calls extract_features to extract features, 
+           then calls decode features to generates original inputs.
+
+        Args:
+            inputs (tensor): Input tensor.
+
+        Returns:
+            (AE output tensor, latent representation tensor)
+        """
+        # Convolution layers
+        x = self.extract_features(inputs)
+        
+        # Pooling and final linear layer
+        latent_rep = self._avg_pooling(x)
+        latent_rep = latent_rep.flatten(start_dim=1)
+        latent_rep = self._dropout(latent_rep)
+        latent_rep = self._fc(latent_rep)
+        
+        # Deconvolution - decoder
+        x = self.decode_features(x)
+        return x, latent_rep
