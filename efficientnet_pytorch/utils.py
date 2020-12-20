@@ -654,6 +654,7 @@ def load_pretrained_weights(model, model_name, weights_path=None, load_fc=True, 
         for key in ret.missing_keys:
             if not key.startswith('_decoder'):
                 missing_keys.append(key)
+        print(f"Weights for _decoder keys are not loaded.")
 
         assert not missing_keys, 'Missing keys when loading pretrained weights: {}'.format(
             missing_keys)

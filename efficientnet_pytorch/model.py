@@ -159,9 +159,9 @@ class EfficientNetAutoEncoder(nn.Module):
         import torch
         >>> from efficientnet.model import EfficientNet
         >>> inputs = torch.rand(1, 3, 224, 224)
-        >>> model = EfficientNet.from_pretrained('efficientnet-b0')
+        >>> model = EfficientNetAutoEncoder.from_pretrained('efficientnet-b0')
         >>> model.eval()
-        >>> outputs = model(inputs)
+        >>> ae_output, latent_fc_output = model(inputs)
     """
 
     def __init__(self, blocks_args=None, global_params=None):
