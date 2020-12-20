@@ -239,7 +239,9 @@ class EfficientNet(nn.Module):
             Dictionary of last intermediate features
             with reduction levels i in [1, 2, 3, 4, 5].
             Example:
-                >>> import torch
+                    
+        
+                import torch
                 >>> from efficientnet.model import EfficientNet
                 >>> inputs = torch.rand(1, 3, 224, 224)
                 >>> model = EfficientNet.from_pretrained('efficientnet-b0')
