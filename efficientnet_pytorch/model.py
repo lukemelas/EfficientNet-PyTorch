@@ -518,7 +518,7 @@ class EfficientNetAutoEncoder(EfficientNet):
     def forward(self, inputs):
         """EfficientNet AutoEncoder's forward function.
            Calls extract_features to extract features, 
-           then calls decode features to generates original inputs.
+           then calls decode features to calculate AE output.
 
         Args:
             inputs (tensor): Input tensor.
