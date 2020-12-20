@@ -312,10 +312,10 @@ class EfficientNet(nn.Module):
 
         # Pooling and final linear layer
         x = self._avg_pooling(x)
-        x = x.flatten(start_dim=1)
-        x = self._dropout(x)
-        x = self._fc(x)
-
+        if self._global_params.include_top:
+            x = x.flatten(start_dim=1)
+            x = self._dropout(x)
+            x = self._fc(x)
         return x
 
     @classmethod
