@@ -170,8 +170,8 @@ class EfficientNet(nn.Module):
         self._blocks_args = blocks_args
 
         # Batch norm parameters
-        bn_mom = 1 - self._global_params.batch_norm_momentum
-        bn_eps = self._global_params.batch_norm_epsilon
+        self._bn_mom = bn_mom = 1 - self._global_params.batch_norm_momentum
+        self._bn_eps = bn_eps = self._global_params.batch_norm_epsilon
 
         # Get stem static or dynamic convolution depending on image size
         image_size = global_params.image_size
@@ -217,6 +217,8 @@ class EfficientNet(nn.Module):
         self._fc = nn.Linear(out_channels, self._global_params.num_classes)
         self._swish = MemoryEfficientSwish()
 
+        self._image_size = image_size
+
     def set_swish(self, memory_efficient=True):
         """Sets swish function as memory efficient (for training) or standard (for export).
 
@@ -241,7 +243,7 @@ class EfficientNet(nn.Module):
             Example:
                     
         
-                import torch
+                >>> import torch
                 >>> from efficientnet.model import EfficientNet
                 >>> inputs = torch.rand(1, 3, 224, 224)
                 >>> model = EfficientNet.from_pretrained('efficientnet-b0')
@@ -431,7 +433,7 @@ class EfficientNetAutoEncoder(EfficientNet):
     Example:
         
         
-        import torch
+        >>> import torch
         >>> from efficientnet.model import EfficientNet
         >>> inputs = torch.rand(1, 3, 224, 224)
         >>> model = EfficientNetAutoEncoder.from_pretrained('efficientnet-b0')
@@ -441,15 +443,18 @@ class EfficientNetAutoEncoder(EfficientNet):
 
     def __init__(self, blocks_args=None, global_params=None):
         super().__init__(blocks_args=blocks_args, global_params=global_params)
-        
+        bn_mom = self._bn_mon
+        bn_eps = self._bn_eps
+        image_size = self._image_size
+
         # EfficientNet Decoder
         # use dynamic image size for decoder
         TransposedConv2d = get_same_padding_conv2d(image_size=image_size, transposed=True)
 
         # Stem
-        # number of output channels from encoder model
-        in_channels, out_channels = out_channels, in_channels
         # self._decoder_conv_stem symmetry to self._conv_head
+        in_channels = round_filters(1280, self._global_params)
+        out_channels = block_args.output_filters  # output of final block
         self._decoder_conv_stem = TransposedConv2d(in_channels, out_channels, kernel_size=1, bias=False)
         image_size = calculate_output_image_size(image_size, 1, transposed=True)
         self._decoder_bn0 = nn.BatchNorm2d(num_features=out_channels, momentum=bn_mom, eps=bn_eps)
@@ -460,7 +465,7 @@ class EfficientNetAutoEncoder(EfficientNet):
         for block_args in reversed(self._blocks_args):
 
             # Update block input and output filters based on depth multiplier.
-            # NOTE: input/output are flip here to support deconvolution
+            # input/output are flip here to support deconvolution
             block_args = block_args._replace(
                 input_filters=round_filters(block_args.output_filters, self._global_params),
                 output_filters=round_filters(block_args.input_filters, self._global_params),
