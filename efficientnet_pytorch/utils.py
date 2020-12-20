@@ -167,7 +167,7 @@ def get_width_and_height_from_size(x):
         raise TypeError()
 
 
-def calculate_output_image_size(input_image_size, stride):
+def calculate_output_image_size(input_image_size, stride, transposed=False):
     """Calculates the output image size when using Conv2dSamePadding with a stride.
        Necessary for static padding. Thanks to mannatsingh for pointing this out.
 
@@ -182,8 +182,12 @@ def calculate_output_image_size(input_image_size, stride):
         return None
     image_height, image_width = get_width_and_height_from_size(input_image_size)
     stride = stride if isinstance(stride, int) else stride[0]
-    image_height = int(math.ceil(image_height / stride))
-    image_width = int(math.ceil(image_width / stride))
+    if transposed:
+        image_height = int(image_height * stride)
+        image_width = int(image_width * stride)
+    else:
+        image_height = int(math.ceil(image_height / stride))
+        image_width = int(math.ceil(image_width / stride))
     return [image_height, image_width]
 
 
@@ -192,16 +196,20 @@ def calculate_output_image_size(input_image_size, stride):
 # Only when stride equals 1, can the output size be the same as input size.
 # Don't be confused by their function names ! ! !
 
-def get_same_padding_conv2d(image_size=None):
+def get_same_padding_conv2d(image_size=None, transposed=False):
     """Chooses static padding if you have specified an image size, and dynamic padding otherwise.
        Static padding is necessary for ONNX exporting of models.
 
     Args:
         image_size (int or tuple): Size of the image.
+        transposed (bool): use nn.functional.conv_transpose2d if true, and nn.functional.conv2d otherwise.
 
     Returns:
         Conv2dDynamicSamePadding or Conv2dStaticSamePadding.
     """
+    if transposed:
+        return TransposedConv2dDynamicSamePadding
+
     if image_size is None:
         return Conv2dDynamicSamePadding
     else:
@@ -271,6 +279,47 @@ class Conv2dStaticSamePadding(nn.Conv2d):
         x = F.conv2d(x, self.weight, self.bias, self.stride, self.padding, self.dilation, self.groups)
         return x
 
+class TransposedConv2dDynamicSamePadding(nn.ConvTranspose2d):
+    """2D Convolutions like TensorFlow, for a dynamic image size.
+       The padding is operated in forward function by calculating dynamically.
+    """
+
+    # Tips for 'SAME' mode padding.
+    #     Given the following:
+    #         i: width or height
+    #         s: stride
+    #         k: kernel size
+    #         d: dilation
+    #         p: padding
+    #         op: output padding
+    #     Output after ConvTranspose2d:
+    #         (i-1)*s + (k-1)*d + op + 1
+
+    def __init__(self, in_channels, out_channels, kernel_size, stride=1, output_padding=0, groups=1, bias=True, dilation=1):
+        super().__init__(in_channels, out_channels, kernel_size, stride, 0, output_padding, groups, bias, dilation)
+        self.stride = self.stride if len(self.stride) == 2 else [self.stride[0]] * 2
+        self.output_padding = output_padding
+
+    def forward(self, x):
+        ih, iw = x.size()[-2:]
+        kh, kw = self.weight.size()[-2:]
+        sh, sw = self.stride
+        oh, ow = ih * sh, iw * sw # change the output size according to stride ! ! !
+        # actual height/width after TransposedConv2d
+        actual_oh = (ih - 1) * self.stride[0] + (kh - 1) * self.dilation[0] + self.output_padding + 1
+        actual_ow = (iw - 1) * self.stride[1] + (kw - 1) * self.dilation[1] + self.output_padding + 1
+        crop_h = actual_oh - oh
+        crop_w = actual_ow - ow
+        assert crop_h >= 0 and crop_w >= 0
+        
+        x = F.conv_transpose2d(x, self.weight, self.bias, self.stride, self.padding,
+                                  self.output_padding, self.groups, self.dilation)
+        assert x.size()[-2:] == (actual_oh,  actual_ow)
+        if crop_h > 0 or crop_w > 0:
+            x = x[:, :, crop_h // 2 : - (crop_h - crop_h // 2), crop_w // 2 : - (crop_w - crop_w // 2)]
+
+        assert x.size()[-2:] == (oh, ow)
+        return x
 
 def get_same_padding_maxPool2d(image_size=None):
     """Chooses static padding if you have specified an image size, and dynamic padding otherwise.
@@ -598,13 +647,23 @@ def load_pretrained_weights(model, model_name, weights_path=None, load_fc=True, 
 
     if load_fc:
         ret = model.load_state_dict(state_dict, strict=False)
-        assert not ret.missing_keys, 'Missing keys when loading pretrained weights: {}'.format(ret.missing_keys)
+        
+        # weights for decoder are not loaded
+        # TODO: add initialization to missing layers
+        missing_keys = []
+        for key in ret.missing_keys:
+            if not key.startswith('_decoder'):
+                missing_keys.append(key)
+
+        assert not missing_keys, 'Missing keys when loading pretrained weights: {}'.format(
+            missing_keys)
     else:
         state_dict.pop('_fc.weight')
         state_dict.pop('_fc.bias')
         ret = model.load_state_dict(state_dict, strict=False)
         assert set(ret.missing_keys) == set(
             ['_fc.weight', '_fc.bias']), 'Missing keys when loading pretrained weights: {}'.format(ret.missing_keys)
-    assert not ret.unexpected_keys, 'Missing keys when loading pretrained weights: {}'.format(ret.unexpected_keys)
+    assert not ret.unexpected_keys, 'Missing keys when loading pretrained weights: {}'.format(
+        ret.unexpected_keys)
 
     print('Loaded pretrained weights for {}'.format(model_name))
