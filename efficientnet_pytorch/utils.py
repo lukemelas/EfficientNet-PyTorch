@@ -208,7 +208,10 @@ def get_same_padding_conv2d(image_size=None, transposed=False):
         Conv2dDynamicSamePadding or Conv2dStaticSamePadding.
     """
     if transposed:
-        return TransposedConv2dDynamicSamePadding
+        if image_size is None:
+            raise NotImplementedError('Unable to dynamically upsample to odd image size.')
+        else:
+            return partial(TransposedConv2dStaticSamePadding, image_size=image_size)
 
     if image_size is None:
         return Conv2dDynamicSamePadding
@@ -279,7 +282,7 @@ class Conv2dStaticSamePadding(nn.Conv2d):
         x = F.conv2d(x, self.weight, self.bias, self.stride, self.padding, self.dilation, self.groups)
         return x
 
-class TransposedConv2dDynamicSamePadding(nn.ConvTranspose2d):
+class TransposedConv2dStaticSamePadding(nn.ConvTranspose2d):
     """2D Convolutions like TensorFlow, for a dynamic image size.
        The padding is operated in forward function by calculating dynamically.
     """
@@ -295,31 +298,40 @@ class TransposedConv2dDynamicSamePadding(nn.ConvTranspose2d):
     #     Output after ConvTranspose2d:
     #         (i-1)*s + (k-1)*d + op + 1
 
-    def __init__(self, in_channels, out_channels, kernel_size, stride=1, output_padding=0, groups=1, bias=True, dilation=1):
+    def __init__(self, in_channels, out_channels, kernel_size, image_size, stride=1, output_padding=0, groups=1, bias=True, dilation=1):
         super().__init__(in_channels, out_channels, kernel_size, stride, 0, output_padding, groups, bias, dilation)
         self.stride = self.stride if len(self.stride) == 2 else [self.stride[0]] * 2
         self.output_padding = output_padding
-
-    def forward(self, x):
-        ih, iw = x.size()[-2:]
-        kh, kw = self.weight.size()[-2:]
+        # NOTE: image_size here represents the desired output image_size
+        oh, ow = (image_size, image_size) if isinstance(image_size, int) else image_size
+        self._oh, self._ow = oh, ow
         sh, sw = self.stride
-        oh, ow = ih * sh, iw * sw # change the output size according to stride ! ! !
+        ih, iw = math.ceil(oh / sh), math.ceil(ow / sw) # using same calculation in Conv2dStaticSamePadding
+        self._ih, self._iw = ih, iw
+        kh, kw = self.weight.size()[-2:]
         # actual height/width after TransposedConv2d
         actual_oh = (ih - 1) * self.stride[0] + (kh - 1) * self.dilation[0] + self.output_padding + 1
         actual_ow = (iw - 1) * self.stride[1] + (kw - 1) * self.dilation[1] + self.output_padding + 1
         crop_h = actual_oh - oh
         crop_w = actual_ow - ow
         assert crop_h >= 0 and crop_w >= 0
-        
+        self._crop_h = crop_h
+        self._crop_w = crop_w
+        self._actual_oh = actual_oh
+        self._actual_ow = actual_ow
+
+    def forward(self, x):
+        # print(f" - Transposed2dStaticPadding input:{x.size()} expected:{self._ih, self._iw}")
+        # assert x.size()[-2:] == (self._ih, self._iw)
         x = F.conv_transpose2d(x, self.weight, self.bias, self.stride, self.padding,
                                   self.output_padding, self.groups, self.dilation)
-        assert x.size()[-2:] == (actual_oh,  actual_ow)
+        # assert x.size()[-2:] == (self._actual_oh,  self._actual_ow)
+        crop_h, crop_w = self._crop_h, self._crop_w
         if crop_h > 0 or crop_w > 0:
             x = x[:, :, crop_h // 2 : - (crop_h - crop_h // 2), crop_w // 2 : - (crop_w - crop_w // 2)]
-
-        assert x.size()[-2:] == (oh, ow)
+        # assert x.size()[-2:] == (self._oh, self._ow)
         return x
+
 
 def get_same_padding_maxPool2d(image_size=None):
     """Chooses static padding if you have specified an image size, and dynamic padding otherwise.
@@ -652,7 +664,7 @@ def load_pretrained_weights(model, model_name, weights_path=None, load_fc=True, 
         # TODO: add initialization to missing layers
         missing_keys = []
         for key in ret.missing_keys:
-            if not key.startswith('_decoder'):
+            if not key.startswith(('_decoder', '_feature', '_upsample', '_downsample')):
                 missing_keys.append(key)
 
         assert not missing_keys, 'Missing keys when loading pretrained weights: {}'.format(
