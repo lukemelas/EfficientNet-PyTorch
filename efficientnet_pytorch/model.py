@@ -296,18 +296,15 @@ class EfficientNet(nn.Module):
         """
         # Stem
         x = self._swish(self._bn0(self._conv_stem(inputs)))
-        # print(f"after conv_stem: {x.size()}")
         # Blocks
         for idx, block in enumerate(self._blocks):
             drop_connect_rate = self._global_params.drop_connect_rate
             if drop_connect_rate:
                 drop_connect_rate *= float(idx) / len(self._blocks) # scale drop connect_rate
             x = block(x, drop_connect_rate=drop_connect_rate)
-            # print(f"after block: {x.size()}")
 
         # Head
         x = self._swish(self._bn1(self._conv_head(x)))
-        # print(f"after conv_head: {x.size()}")
         return x
 
     def forward(self, inputs):
@@ -479,10 +476,8 @@ class EfficientNetAutoEncoder(EfficientNet):
 
         # Build blocks
         self._decoder_blocks = nn.ModuleList([])
-        # print(f"foward size:\n{self._blocks_image_size}")
         assert len(self._blocks_image_size) == len(self._blocks_args) + 1
         self._blocks_image_size = list(reversed(self._blocks_image_size))
-        # print(f"backward size:\n{self._blocks_image_size}")
         for i, block_args in enumerate(reversed(self._blocks_args)):
             image_size = self._blocks_image_size[i]
             # Update block input and output filters based on depth multiplier.
@@ -492,7 +487,6 @@ class EfficientNetAutoEncoder(EfficientNet):
                 output_filters=round_filters(block_args.input_filters, self._global_params),
                 num_repeat=round_repeats(block_args.num_repeat, self._global_params)
             )
-            # print(f"input filter: {block_args.input_filters}, output filter: {block_args.output_filters}")
             # The first block needs to take care of stride and filter size increase.
             self._decoder_blocks.append(MBConvBlock(block_args, self._global_params, image_size=image_size,
                                                     decoder_mode=True, decoder_output_image_size=self._blocks_image_size[i+1]))
@@ -523,7 +517,6 @@ class EfficientNetAutoEncoder(EfficientNet):
             layer in the efficientnet model.
         """
         x = super().extract_features(inputs)
-        # print(f"before downsample size: {x.size()}")
         x = self._swish(self._downsample_bn(self._feature_downsample(x)))
         return x
 
@@ -541,10 +534,8 @@ class EfficientNetAutoEncoder(EfficientNet):
         """
         # upsample
         x = self._swish(self._upsample_bn(self._feature_upsample(inputs)))
-        # print(f"after upsample size: {x.size()}")
         # Stem
         x = self._swish(self._decoder_bn0(self._decoder_conv_stem(x)))
-        # print(f"after decoder_conv_stem: {x.size()}")
         # Blocks
         for idx, block in enumerate(self._decoder_blocks):
             drop_connect_rate = self._global_params.drop_connect_rate
@@ -552,11 +543,9 @@ class EfficientNetAutoEncoder(EfficientNet):
                 # scale drop connect_rate
                 drop_connect_rate *= float(idx) / len(self._blocks)
             x = block(x, drop_connect_rate=drop_connect_rate)
-            # print(f"after block: {x.size()}")
 
         # Head
         x = self._swish(self._decoder_bn1(self._decoder_conv_head(x)))
-        # print(f"after decoder_conv_head: {x.size()}")
         return x
 
 
@@ -572,14 +561,11 @@ class EfficientNetAutoEncoder(EfficientNet):
             (AE output tensor, latent representation tensor)
         """
         # Convolution layers
-        # print(f"input size: {inputs.size()}")
         x = self.extract_features(inputs)
         
         # Pooling and final linear layer
         latent_rep = x.flatten(start_dim=1)
-        # print(latent_rep.size())
 
         # Deconvolution - decoder
         x = self.decode_features(x)
-        # print(f"final output size: {x.size()}")
         return x, latent_rep

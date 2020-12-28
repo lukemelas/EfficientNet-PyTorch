@@ -321,7 +321,6 @@ class TransposedConv2dStaticSamePadding(nn.ConvTranspose2d):
         self._actual_ow = actual_ow
 
     def forward(self, x):
-        # print(f" - Transposed2dStaticPadding input:{x.size()} expected:{self._ih, self._iw}")
         # assert x.size()[-2:] == (self._ih, self._iw)
         x = F.conv_transpose2d(x, self.weight, self.bias, self.stride, self.padding,
                                   self.output_padding, self.groups, self.dilation)
