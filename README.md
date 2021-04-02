@@ -12,7 +12,7 @@ model = EfficientNet.from_pretrained('efficientnet-b0')
 
 #### Update (April 2, 2021)
 
-The [EfficientNet-v2 paper]() has been released! I am working on implementing it as you read this :) 
+The <a href='https://arxiv.org/abs/2104.00298'>[EfficientNet-v2 paper]</a> has been released! I am working on implementing it as you read this :) 
 
 About EfficientNet-v2:
 > EfficientNetV2 is a new family of convolutional networks that have faster training speed and better parameter efficiency than previous models. To develop this family of models, we use a combination of training-aware neural architecture search and scaling, to jointly optimize training speed and parameter efficiency. The models were searched from the search space enriched with new ops such as Fused-MBConv. 
