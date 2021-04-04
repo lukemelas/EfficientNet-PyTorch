@@ -18,7 +18,7 @@ About EfficientNetV2:
 > EfficientNetV2 is a new family of convolutional networks that have faster training speed and better parameter efficiency than previous models. To develop this family of models, we use a combination of training-aware neural architecture search and scaling, to jointly optimize training speed and parameter efficiency. The models were searched from the search space enriched with new ops such as Fused-MBConv. 
 
 Here is a comparison: 
-> <img src="https://github.com/lukemelas/EfficientNet-v2-PyTorch/releases/download/v0.0.1/image.png" width="100%" />
+> <img src="https://github.com/lukemelas/EfficientNet-PyTorch/releases/download/1.0/efficientnetv2-image.png" width="100%" />
 
 
 #### Update (Aug 25, 2020)
