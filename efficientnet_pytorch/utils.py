@@ -17,7 +17,7 @@ from torch.utils import model_zoo
 
 
 ################################################################################
-### Help functions for model architecture
+# Help functions for model architecture
 ################################################################################
 
 # GlobalParams and BlockArgs: Two namedtuples
@@ -50,11 +50,14 @@ BlockArgs = collections.namedtuple('BlockArgs', [
 GlobalParams.__new__.__defaults__ = (None,) * len(GlobalParams._fields)
 BlockArgs.__new__.__defaults__ = (None,) * len(BlockArgs._fields)
 
-
-# An ordinary implementation of Swish function
-class Swish(nn.Module):
-    def forward(self, x):
-        return x * torch.sigmoid(x)
+# Swish activation function
+if hasattr(nn, 'SiLU'):
+    Swish = nn.SiLU
+else:
+    # For compatibility with old PyTorch versions
+    class Swish(nn.Module):
+        def forward(self, x):
+            return x * torch.sigmoid(x)
 
 
 # A memory-efficient implementation of Swish function
@@ -70,6 +73,7 @@ class SwishImplementation(torch.autograd.Function):
         i = ctx.saved_tensors[0]
         sigmoid_i = torch.sigmoid(i)
         return grad_output * (sigmoid_i * (1 + i * (1 - sigmoid_i)))
+
 
 class MemoryEfficientSwish(nn.Module):
     def forward(self, x):
@@ -96,10 +100,10 @@ def round_filters(filters, global_params):
     divisor = global_params.depth_divisor
     min_depth = global_params.min_depth
     filters *= multiplier
-    min_depth = min_depth or divisor # pay attention to this line when using min_depth
+    min_depth = min_depth or divisor  # pay attention to this line when using min_depth
     # follow the formula transferred from official TensorFlow implementation
     new_filters = max(min_depth, int(filters + divisor / 2) // divisor * divisor)
-    if new_filters < 0.9 * filters: # prevent rounding by more than 10%
+    if new_filters < 0.9 * filters:  # prevent rounding by more than 10%
         new_filters += divisor
     return int(new_filters)
 
@@ -233,7 +237,7 @@ class Conv2dDynamicSamePadding(nn.Conv2d):
         ih, iw = x.size()[-2:]
         kh, kw = self.weight.size()[-2:]
         sh, sw = self.stride
-        oh, ow = math.ceil(ih / sh), math.ceil(iw / sw) # change the output size according to stride ! ! !
+        oh, ow = math.ceil(ih / sh), math.ceil(iw / sw)  # change the output size according to stride ! ! !
         pad_h = max((oh - 1) * self.stride[0] + (kh - 1) * self.dilation[0] + 1 - ih, 0)
         pad_w = max((ow - 1) * self.stride[1] + (kw - 1) * self.dilation[1] + 1 - iw, 0)
         if pad_h > 0 or pad_w > 0:
@@ -311,6 +315,7 @@ class MaxPool2dDynamicSamePadding(nn.MaxPool2d):
         return F.max_pool2d(x, self.kernel_size, self.stride, self.padding,
                             self.dilation, self.ceil_mode, self.return_indices)
 
+
 class MaxPool2dStaticSamePadding(nn.MaxPool2d):
     """2D MaxPooling like TensorFlow's 'SAME' mode, with the given input image size.
        The padding mudule is calculated in construction function, then used in forward.
@@ -343,7 +348,7 @@ class MaxPool2dStaticSamePadding(nn.MaxPool2d):
 
 
 ################################################################################
-### Helper functions for loading model params
+# Helper functions for loading model params
 ################################################################################
 
 # BlockDecoder: A Class for encoding and decoding BlockArgs
@@ -576,7 +581,7 @@ url_map_advprop = {
 # TODO: add the petrained weights url map of 'efficientnet-l2'
 
 
-def load_pretrained_weights(model, model_name, weights_path=None, load_fc=True, advprop=False):
+def load_pretrained_weights(model, model_name, weights_path=None, load_fc=True, advprop=False, verbose=True):
     """Loads pretrained weights from weights path or download using url.
 
     Args:
@@ -607,4 +612,5 @@ def load_pretrained_weights(model, model_name, weights_path=None, load_fc=True, 
             ['_fc.weight', '_fc.bias']), 'Missing keys when loading pretrained weights: {}'.format(ret.missing_keys)
     assert not ret.unexpected_keys, 'Missing keys when loading pretrained weights: {}'.format(ret.unexpected_keys)
 
-    print('Loaded pretrained weights for {}'.format(model_name))
+    if verbose:
+        print('Loaded pretrained weights for {}'.format(model_name))
