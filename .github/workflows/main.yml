@@ -6,9 +6,13 @@ on:
     - master
 
 jobs:
-  validate-data:
+  pypi-job:
     runs-on: ubuntu-latest
     steps:
+      - name: Install twine
+        run: pip install twine
+      - name: Build package
+        run: python setup.py sdist
       - name: Publish a Python distribution to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
