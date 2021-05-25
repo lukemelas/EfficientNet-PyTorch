@@ -376,7 +376,7 @@ class EfficientNet(nn.Module):
         """
         model = cls.from_name(model_name, num_classes=num_classes, **override_params)
         load_pretrained_weights(model, model_name, weights_path=weights_path,
-                                load_fc=(num_classes == 1000), advprop=advprop)
+                                load_fc=(num_classes == 1000) and model._global_params.include_top, advprop=advprop)
         model._change_in_channels(in_channels)
         return model
 
