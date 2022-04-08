@@ -347,7 +347,8 @@ class EfficientNet(nn.Module):
 
     @classmethod
     def from_pretrained(cls, model_name, weights_path=None, advprop=False,
-                        in_channels=3, num_classes=1000, **override_params):
+                        in_channels=3, num_classes=1000, verbose=True,
+                        **override_params):
         """Create an efficientnet model according to name.
 
         Args:
@@ -362,6 +363,8 @@ class EfficientNet(nn.Module):
             num_classes (int):
                 Number of categories for classification.
                 It controls the output size for final linear layer.
+            verbose (bool):
+                Whether to print a message after loading pretrained weights.
             override_params (other key word params):
                 Params to override model's global_params.
                 Optional key:
@@ -376,7 +379,8 @@ class EfficientNet(nn.Module):
         """
         model = cls.from_name(model_name, num_classes=num_classes, **override_params)
         load_pretrained_weights(model, model_name, weights_path=weights_path,
-                                load_fc=(num_classes == 1000), advprop=advprop)
+                                load_fc=(num_classes == 1000), advprop=advprop,
+                                verbose=verbose)
         model._change_in_channels(in_channels)
         return model
 
