@@ -1,0 +1,453 @@
+﻿filename,patient_id,sex,age,view,label,pcr_test,survival,location,admission_offset,symptom_offset,also_had_ct,has_fever,has_cough,has_dyspnea,has_diarrhea,spo2,other_symptoms,medical_background,opacification,other,is_bilateral,url
+260.jpg,10,female,68,,COVID-19,positive,,Spain,,,,1,1,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+261.jpg,11,male,47,,COVID-19,positive,,Spain,1,,,1,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+262.jpg,11,male,47,,COVID-19,positive,,Spain,4,,,1,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+263.jpg,11,male,47,,COVID-19,positive,,Spain,8,,,1,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+264.jpg,11,male,47,,COVID-19,positive,,Spain,12,,,1,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+265.jpg,12,male,49,,COVID-19,positive,,Spain,1,,,1,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+266.jpg,12,male,49,,COVID-19,positive,,Spain,5,,,1,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+267.jpg,12,male,49,,COVID-19,positive,,Spain,11,,,1,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+268.jpg,13,male,86,,COVID-19,positive,,Spain,1,,,1,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+269.jpg,13,male,86,,COVID-19,positive,,Spain,3,,,1,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+270.jpg,13,male,86,,COVID-19,positive,,Spain,4,,,1,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+271.jpg,13,male,86,,COVID-19,positive,,Spain,8,,,1,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+272.jpg,14,male,94,,COVID-19,positive,,Spain,1,,,,,,,,upper gastrointestinal bleeding,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+273.jpg,14,male,94,,COVID-19,positive,,Spain,5,,,,,,,,upper gastrointestinal bleeding,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+274.jpg,15,male,80,,COVID-19,positive,,Spain,,,,,,,,,chest pain,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+275.jpg,16,male,70,,COVID-19,positive,,Spain,1,,,1,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+276.jpg,16,male,70,,COVID-19,positive,,Spain,3,,,1,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+277.jpg,16,male,70,,COVID-19,positive,,Spain,5,,,1,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+278.jpg,16,male,70,,COVID-19,positive,,Spain,7,,,1,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+279.jpg,17,female,78,,COVID-19,positive,,Spain,,,,,,,,,hypoxemia,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+280-.jpg,18,male,67,PA,COVID-19,positive,,Spain,1,,,1,1,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+281.jpg,18,male,67,PA,COVID-19,positive,,Spain,7,,,1,1,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+282-.jpg,19,male,76,,COVID-19,positive,,Spain,1,,,,,2,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+283.jpg,19,male,76,,COVID-19,positive,,Spain,3,,,,,2,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+284.jpg,19,male,76,,COVID-19,positive,,Spain,5,,,,,2,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+285.jpg,19,male,76,,COVID-19,positive,,Spain,8,,,,,2,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+286.jpg,20,female,79,,COVID-19,positive,,Spain,1,,,1,1,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+287.jpg,20,female,79,,COVID-19,positive,,Spain,4,,,1,1,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+288.jpg,20,female,79,,COVID-19,positive,,Spain,8,,,1,1,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+289.jpg,21,male,73,,COVID-19,positive,,Spain,1,,,1,,1,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+290.jpg,21,male,73,,COVID-19,positive,,Spain,3,,,1,,1,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+291.jpg,22,female,77,,COVID-19,positive,,Spain,1,,,,,,,,abdominal pain,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+292.jpg,22,female,77,,COVID-19,positive,,Spain,2,,,,,,,,abdominal pain,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+293.jpg,22,female,77,,COVID-19,positive,,Spain,7,,,,,,,,abdominal pain,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+294.jpg,22,female,77,,COVID-19,positive,,Spain,8,,,,,,,,abdominal pain,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+295.jpg,23,female,77,,COVID-19,positive,,Spain,,,,,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+296-.jpg,24,male,44,,COVID-19,positive,,Spain,1,,,1,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+297.jpg,24,male,44,,COVID-19,positive,,Spain,4,,,1,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+298.jpg,24,male,44,,COVID-19,positive,,Spain,6,,,1,1,1,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+299.jpg,24,male,44,,COVID-19,positive,,Spain,7,,,1,1,1,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+300.jpg,24,male,44,,COVID-19,positive,,Spain,8,,,1,1,1,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+301.jpg,24,male,44,,COVID-19,positive,,Spain,10,,,1,1,1,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+302.jpg,24,male,44,,COVID-19,positive,,Spain,14,,,1,1,1,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+303.jpg,24,male,44,,COVID-19,positive,,Spain,17,,,1,1,1,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+304.jpg,25,male,77,,COVID-19,positive,,Spain,1,,,,,1,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+305.jpg,25,male,77,,COVID-19,positive,,Spain,3,,,,,1,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+306.jpg,26,male,50,,COVID-19,positive,,Spain,1,,,,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+307.jpg,26,male,50,,COVID-19,positive,,Spain,4,,,,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+308.jpg,26,male,50,,COVID-19,positive,,Spain,6,,,,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+309.jpg,26,male,50,,COVID-19,positive,,Spain,8,,,,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+310.jpg,27,male,64,,COVID-19,positive,,Spain,,,,1,,1,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+311.jpg,28,female,67,,COVID-19,positive,,Spain,,,,,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+312.jpg,29,female,58,,COVID-19,positive,,Spain,1,,,,1,1,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+313.jpg,29,female,58,,COVID-19,positive,,Spain,4,,,,1,1,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+314.jpg,30,male,75,,COVID-19,positive,,Spain,,,,1,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+315.jpg,31,male,54,,COVID-19,positive,,Spain,1,,,,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+316.jpg,31,male,54,,COVID-19,positive,,Spain,3,,,,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+317.jpg,32,male,46,,COVID-19,positive,,Spain,,,,,,1,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+318.jpg,33,female,93,,COVID-19,positive,,Spain,,,,,,1,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+319.jpg,34,female,63,,COVID-19,positive,,Spain,1,,,1,1,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+320.jpg,34,female,63,,COVID-19,positive,,Spain,4,,,1,1,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+321.jpg,35,female,42,,COVID-19,positive,,Spain,1,,,,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+322.jpg,35,female,42,,COVID-19,positive,,Spain,2,,,,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+323.jpg,35,female,42,,COVID-19,positive,,Spain,4,,,,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+324.jpg,36,female,76,,COVID-19,positive,,Spain,1,,,1,1,1,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+325.jpg,36,female,76,,COVID-19,positive,,Spain,1,,,1,1,1,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+326.jpg,36,female,76,,COVID-19,positive,,Spain,3,,,1,1,1,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+327.jpg,36,female,76,,COVID-19,positive,,Spain,6,,,1,1,1,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+328.jpg,37,female,76,,COVID-19,positive,,Spain,1,,,1,1,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+329.jpg,37,female,76,,COVID-19,positive,,Spain,4,,,1,1,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+330.jpg,38,male,41,,COVID-19,positive,,Spain,1,,,1,1,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+331.jpg,38,male,41,,COVID-19,positive,,Spain,2,,,1,1,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+332.jpg,38,male,41,,COVID-19,positive,,Spain,4,,,1,1,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+333.jpg,39,male,77,,COVID-19,positive,,Spain,1,,,,,1,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+334.jpg,39,male,77,,COVID-19,positive,,Spain,2,,,,,1,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+335.jpg,39,male,77,,COVID-19,positive,,Spain,4,,,,,1,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+336.jpg,40,male,76,,COVID-19,positive,,Spain,1,,,,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+337.jpg,40,male,76,,COVID-19,positive,,Spain,4,,,,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+338.jpg,40,male,76,,COVID-19,positive,,Spain,6,,,,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+339.jpg,40,male,76,,COVID-19,positive,,Spain,8,,,,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+340.jpg,41,male,61,,COVID-19,positive,,Spain,,,,,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+341.jpg,42,male,43,,COVID-19,positive,,Spain,,,,,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+342.jpg,43,female,62,,COVID-19,positive,,Spain,,,,1,1,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+343.jpg,44,male,43,,COVID-19,positive,,Spain,,,,,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+344.jpg,45,male,56,,COVID-19,positive,,Spain,,,,,,1,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+345.jpg,46,male,59,,COVID-19,positive,,Spain,,,,,1,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+346.jpg,47,female,53,PA,COVID-19,positive,,Spain,1,,,,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+347.jpg,47,female,53,,COVID-19,positive,,Spain,2,,,,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+348.jpg,47,female,53,,COVID-19,positive,,Spain,4,,,,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+349.jpg,48,male,41,PA,COVID-19,positive,,Spain,1,,,1,1,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+350.jpg,48,male,41,,COVID-19,positive,,Spain,3,,,1,1,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+351.jpg,48,male,41,,COVID-19,positive,,Spain,4,,,1,1,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+352.jpg,49,male,76,,COVID-19,positive,,Spain,1,,,1,1,1,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+353.jpg,49,male,76,,COVID-19,positive,,Spain,2,,,1,1,1,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+354.jpg,49,male,76,,COVID-19,positive,,Spain,3,,,1,1,1,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+355.jpg,49,male,76,,COVID-19,positive,,Spain,5,,,1,1,1,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+356.jpg,50,male,83,,COVID-19,positive,,Spain,,,,,,1,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+357.jpg,51,female,45,,COVID-19,positive,,Spain,1,,,,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+358.jpg,51,female,45,,COVID-19,positive,,Spain,1,,,,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+359.jpg,51,female,45,,COVID-19,positive,,Spain,2,,,,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+360.jpg,52,female,64,,COVID-19,positive,,Spain,,,,,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+361.jpg,53,female,62,,COVID-19,positive,,Spain,,,,,,1,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+362.jpg,54,female,58,,COVID-19,positive,,Spain,1,,,1,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+363.jpg,54,female,58,,COVID-19,positive,,Spain,2,,,1,,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+364.jfif,55,male,56,,COVID-19,positive,,Spain,1,,,1,1,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+365.jfif,55,male,56,,COVID-19,positive,,Spain,5,,,1,1,,,,,,,,,https://twitter.com/ChestImaging/status/1243928581983670272
+366.jfif,56,male,54,,COVID-19,positive,,Spain,1,,,1,1,,,,,,1,,1,https://twitter.com/ChestImaging/status/1243928581983670272
+367.jfif,56,male,54,,COVID-19,positive,,Spain,5,,,1,1,,,,,,1,,1,https://twitter.com/ChestImaging/status/1243928581983670272
+368.jfif,56,male,54,,COVID-19,positive,,Spain,7,,,1,1,,,,,,1,,1,https://twitter.com/ChestImaging/status/1243928581983670272
+369.jfif,56,male,54,,COVID-19,positive,,Spain,9,,,1,1,,,,,,1,,1,https://twitter.com/ChestImaging/status/1243928581983670272
+370.jfif,57,female,62,,COVID-19,positive,,Spain,,,,,,1,,,,,1,,1,https://twitter.com/ChestImaging/status/1243928581983670272
+371.jfif,58,male,66,,COVID-19,positive,,Spain,,,,1,1,,,,,,1,,0,https://twitter.com/ChestImaging/status/1243928581983670272
+372.jfif,59,male,24,,COVID-19,positive,,Spain,1,,,1,1,,,,,,1,,0,https://twitter.com/ChestImaging/status/1243928581983670272
+373.jfif,59,male,24,,COVID-19,positive,,Spain,4,,,1,1,,,,,,1,,0,https://twitter.com/ChestImaging/status/1243928581983670272
+374.png,60,,,,COVID-19,,,US,,,1,,,,,,,,1,,0,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7141645/
+375.png,61,,,,COVID-19,,,US,,,1,,,,,,,,1,,0,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7141645/
+376.png,62,,,,COVID-19,,,US,,,1,,,,,,,,1,,0,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7141645/
+377.png,63,,,,COVID-19,,,US,,,1,,,,,,,,1,,1,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7141645/
+378.png,64,,,,COVID-19,,,US,,,,,,,,,,,1,,1,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7141645/
+379.png,65,,,,COVID-19,,,US,,,,,,,,,,,1,,1,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7141645/
+380.png,66,,,,COVID-19,,,US,,,,,,,,,,,1,,1,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7141645/
+381.png,67,,,,COVID-19,,,US,,,,,,,,,,,1,,1,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7141645/
+382.png,68,,,,COVID-19,,,US,,,,,,,,,,,1,,1,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7141645/
+383.png,69,,,,COVID-19,,,US,,,,,,,,,,,1,,1,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7141645/
+384.png,70,,,,COVID-19,,,US,,,,,,,,,,,1,,1,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7141645/
+385.png,71,,,,COVID-19,,,US,,,,,,,,,,,1,,1,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7141645/
+386.png,72,,,,COVID-19,,,US,,,,,,,,,,,1,,1,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7141645/
+387.png,73,,,,COVID-19,,,US,,,,,,,,,,,1,,1,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7141645/
+388.png,74,,,,COVID-19,,,US,,,1,,,,,,,,1,,1,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7141645/
+389.png,75,,,,COVID-19,,,US,,,,,,,,,,,1,,1,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7141645/
+390.png,76,,,,COVID-19,,,US,,,,,,,,,,,1,,1,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7141645/
+391.png,77,,,,COVID-19,,,US,4,,,,,,,,,,,,,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7141645/
+392.png,78,,,,COVID-19,,,US,6,,,,,,,,,,,,,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7141645/
+393.png,79,,,,COVID-19,,,US,11,,,,,,,,,,,,,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7141645/
+394.png,80,,,,COVID-19,,,US,,,,,,,,,,,1,diffuse lung opacities,1,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7141645/
+395.png,81,,,,COVID-19,,,US,,,,,,,,,,,1,tension pneumothorax,1,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7141645/
+396.png,82,,,,COVID-19,,,US,1,,,,,,,,,,,lung nodule,,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7141645/
+397.png,83,,,,COVID-19,,,US,5,,,,,,,,,,,lung nodule,,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7141645/
+400.png,84,male,44,,COVID-19,,0,China,1,13,1,2,2,,,,,,1,,1,https://pubs.rsna.org/doi/full/10.1148/ryct.2020200033
+401.png,84,male,44,,COVID-19,,0,China,2,14,1,2,2,,,,,,1,,1,https://pubs.rsna.org/doi/full/10.1148/ryct.2020200033
+402.png,84,male,44,,COVID-19,,0,China,3,15,1,2,2,,,,,,1,,1,https://pubs.rsna.org/doi/full/10.1148/ryct.2020200033
+403.jpg,100,female,45,,COVID-19,positive,,Pakistan,,,,1,1,1,,75,,,1,,,https://radiopaedia.org/cases/covid-19-pneumonia-101
+404.jfif,101,,,,COVID-19,,,,,,,,,,,,,,,,,https://radiopaedia.org/cases/progression-of-covid-19-pneumonia
+405.jfif,101,,,,COVID-19,,,,,,,,,,,,,,,,,https://radiopaedia.org/cases/progression-of-covid-19-pneumonia
+406.jfif,101,,,,COVID-19,,,,,,,,,,,,,,,,,https://radiopaedia.org/cases/progression-of-covid-19-pneumonia
+407.jfif,101,,,,COVID-19,,,,,,,,,,,,,,,,,https://radiopaedia.org/cases/progression-of-covid-19-pneumonia
+408.jfif,101,,,,COVID-19,,,,,,,,,,,,,,,,,https://radiopaedia.org/cases/progression-of-covid-19-pneumonia
+409.jpeg,102,male,70,AP,COVID-19,,,UK,1,,1,,,1,,,,transplant,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-progressive
+410.jpeg,102,male,70,AP,COVID-19,,,UK,3,,1,,,1,,,,transplant,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-progressive
+411.jpeg,102,male,70,AP,COVID-19,,,UK,6,,1,1,,1,,,,transplant,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-progressive
+414.jpeg,103,male,30,,COVID-19,positive,1,Pakistan,,,0,1,1,1,,,,diabete,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-97
+415.jpeg,104,male,55,AP,COVID-19,,1,UK,1,,0,,,,,,,,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-progression-and-regression
+416.jpeg,104,male,55,AP,COVID-19,,1,UK,6,,0,,,,,,,,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-progression-and-regression
+417.jpeg,104,male,55,AP,COVID-19,,1,UK,11,,0,,,,,,,,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-progression-and-regression
+418.jpeg,104,male,55,AP,COVID-19,,1,UK,13,,0,,,,,,,,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-progression-and-regression
+419.jpeg,104,male,55,AP,COVID-19,,1,UK,20,,0,,,,,,,,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-progression-and-regression
+420.jpeg,104,male,55,AP,COVID-19,,1,UK,24,,0,,,,,,,,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-progression-and-regression
+421.jpg,104,male,55,AP,COVID-19,,1,UK,28,,0,,,,,,,,,,,https://radiopaedia.org/cases/covid-19-pneumonia-progression-and-regression
+422.jpg,105,female,46,,COVID-19,positive,1,Taiwan,1,2,1,1,1,1,,,,,1,,0,https://www.sciencedirect.com/science/article/pii/S1684118220300608
+423.jpg,105,female,46,,COVID-19,positive,1,Taiwan,14,16,1,,,,,,,,0,,0,https://www.sciencedirect.com/science/article/pii/S1684118220300608
+424.png,106,male,94,,COVID-19,positive,0,UK,,,0,1,,,,,"delirium, abdominal pain",schizoaffective ,,,,https://academic.oup.com/ageing/article/49/4/523/5823067
+425.jpg,107,male,56,,COVID-19,positive,1,Italy,1,4,0,1,,,,,,tetraplegia,1,,1,https://www.nature.com/articles/s41394-020-0274-9
+426.jpg,107,male,56,,COVID-19,positive,1,Italy,3,7,0,1,0,1,,,,tetraplegia,1,,1,https://www.nature.com/articles/s41394-020-0274-9
+427.jpg,108,female,63,,COVID-19,positive,1,Italy,1,,0,2,,1,,,,cancer,,pleural effusion,,https://link.springer.com/article/10.1007/s00270-020-02470-0
+428.jpg,108,female,63,,COVID-19,positive,1,Italy,2,,0,1,,1,,,,cancer,,,,https://link.springer.com/article/10.1007/s00270-020-02470-0
+429.jpeg,109,male,50,AP,COVID-19,,,UK,,,0,,,1,,,,,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-serial-radiographs-1
+430.jpeg,109,male,50,AP,COVID-19,,,UK,,,0,,,1,,,,,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-serial-radiographs-1
+431.jpeg,109,male,50,AP,COVID-19,,,UK,,,0,,,1,,,,,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-serial-radiographs-1
+432.png,109,male,50,,COVID-19,,,UK,,,0,,,1,,,,,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-serial-radiographs-1
+433.png,109,male,50,,COVID-19,,,UK,,,0,,,1,,,,,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-serial-radiographs-1
+434.jpeg,110,male,45,PA,COVID-19,positive,,Turkey,,,1,1,1,1,,,,,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-93?lang=gb
+435.jpg,111,male,58,AP,COVID-19,positive,,Greece,1,5,1,1,1,2,,,"sore throat, hypoxemia",chronic sinusitis,1,,1,https://eurorad.org/case/16744
+436.jpg,112,male,48,,COVID-19,,1,Austria,1,5,0,1,1,,,,"dysosmia, anosmia",,1,,1,https://www.eurorad.org/case/16747
+437.jpg,112,male,48,AP,COVID-19,,1,Austria,4,8,0,1,1,,,,"dysosmia, anosmia",,1,,1,https://www.eurorad.org/case/16747
+438.jpg,112,male,48,,COVID-19,,1,Austria,11,15,0,,,,,,,,0,,,https://www.eurorad.org/case/16747
+439-.png,113,male,27,,COVID-19,positive,,Italy,,,1,1,,,,,,,0,,,https://www.eurorad.org/case/16745
+440-.png,114,male,39,,COVID-19,positive,,Italy,,3,1,1,1,,,,,,0,,,https://www.eurorad.org/case/16745
+441.png,115,female,43,,COVID-19,positive,,Italy,,6,1,,1,,,,,,1,,1,https://www.eurorad.org/case/16745
+442.png,116,male,46,,COVID-19,positive,,Italy,,8,1,1,1,,,,,,,,,https://www.eurorad.org/case/16745
+443-.png,117,female,43,,COVID-19,positive,,Italy,,10,1,1,1,,,,myalgia,,0,,,https://www.eurorad.org/case/16745
+444.png,118,female,38,,COVID-19,negative,,Italy,,11,1,1,1,1,,,,,1,,1,https://www.eurorad.org/case/16745
+445.jpg,119,male,62,,COVID-19,positive,,Spain,,,1,,,,,,"syncope, traumatism",cancer,1,,0,https://www.eurorad.org/case/16751
+446p.jpg,120,female,7,,COVID-19,positive,,Pakistan,,,0,1,1,2,,,flu,,1,,1,http://pjms.org.pk/index.php/pjms/article/view/2778
+447.jpg,121,male,56,,COVID-19,positive,,Pakistan,,2,0,2,1,,,,sore throat,,1,,1,http://pjms.org.pk/index.php/pjms/article/view/2778
+448.jpg,122,female,59,AP,COVID-19,positive,0,US,1,3,0,1,1,1,1,92,"myalgia, fatigue",nonischemic cardiomyopathy,1,,1,https://onlinelibrary.wiley.com/doi/full/10.1111/ajt.15982
+449.jpg,122,female,59,AP,COVID-19,positive,0,US,4,6,0,1,1,1,1,,"myalgia, fatigue",nonischemic cardiomyopathy,1,,1,https://onlinelibrary.wiley.com/doi/full/10.1111/ajt.15982
+450.jpg,123,male,75,AP,COVID-19,positive,1,US,1,4,0,1,1,,1,99,"fatigue, lack of appetite",ischemic cardiomyopathy,1,,0,https://onlinelibrary.wiley.com/doi/full/10.1111/ajt.15982
+451.jpg,123,male,75,AP,COVID-19,positive,1,US,4,7,0,1,1,,1,85,"fatigue, lack of appetite",ischemic cardiomyopathy,1,,,https://onlinelibrary.wiley.com/doi/full/10.1111/ajt.15982
+452.jpg,124,male,77,,COVID-19,positive,,Italy,,5,1,,1,1,,,abdominal pain,,,,,https://www.sirm.org/2020/05/12/covid-19-caso-72/
+453.png,125,male,83,AP,COVID-19,positive,,Italy,,3,1,1,1,,,92,,"arterial hypertension, diabetes, ",1,,1,https://www.sirm.org/2020/05/12/covid-19-caso-76/
+454.png,126,female,49,,COVID-19,positive,1,Italy,,7,1,2,1,,,85,anosmia,,1,,1,https://www.sirm.org/2020/05/14/covid-19-caso-82/
+455p.jpg,127,male,1.5,AP,COVID-19,,1,Italy,,,0,1,1,1,,94,,,1,,1,https://www.sirm.org/2020/05/14/covid-19-caso-83/
+456.png,128,female,47,AP,COVID-19,positive,,Italy,1,,1,1,,1,,,,"hypertension, obesity",,,,https://www.sirm.org/2020/05/14/covid-19-caso-85/
+457.png,128,female,47,AP,COVID-19,positive,,Italy,1,,1,1,,1,,,,"hypertension, obesity",,,,https://www.sirm.org/2020/05/14/covid-19-caso-85/
+458.png,128,female,47,AP,COVID-19,positive,,Italy,4,,1,2,,2,,,,"hypertension, obesity",,,,https://www.sirm.org/2020/05/14/covid-19-caso-85/
+459.jfif,129,,,AP,COVID-19,positive,0,Canada,,,0,,,,,,,,1,,1,https://app.figure1.com/images/5eaafd9d465f040606503ef2
+460.jfif,129,,,AP,COVID-19,positive,0,Canada,,,0,,,,,,,,1,,1,https://app.figure1.com/images/5eaafd9d465f040606503ef2
+461-.jpg,130,male,37,PA,COVID-19,positive,1,Italy,,2,1,1,1,,,99,,,0,,,https://www.sciencedirect.com/science/article/pii/S1078817420300699
+462-.jpg,131,female,37,PA,COVID-19,positive,1,Italy,,4,1,1,1,,,99,,,0,,,https://www.sciencedirect.com/science/article/pii/S1078817420300699
+463-.jpg,132,female,33,PA,COVID-19,positive,1,Italy,,4,1,1,1,,,99,,,0,,,https://www.sciencedirect.com/science/article/pii/S1078817420300699
+464-.jpg,133,female,56,PA,COVID-19,positive,1,Italy,,4,1,1,1,1,,98,chest pain,,0,,,https://www.sciencedirect.com/science/article/pii/S1078817420300699
+465.webp,134,female,99,,COVID-19,negative,1,Italy,1,3,0,1,1,1,,90.6,"chest pain, fatigue","hypertension, coronary artery disease",,,,https://link.springer.com/article/10.1007/s11739-020-02362-8
+466.jpg,135,male,38,AP,COVID-19,positive,,UK,1,7,0,1,1,1,,,,,1,,1,https://www.sciencedirect.com/science/article/pii/S2049080120300996
+467.jpg,135,male,38,AP,COVID-19,positive,,UK,6,12,0,1,1,2,,,,,1,,1,https://www.sciencedirect.com/science/article/pii/S2049080120300996
+468.jpg,136,male,30,AP,COVID-19,positive,1,Pakistan,1,7,0,2,,1,,,chills,,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-92
+469.jpg,136,male,30,AP,COVID-19,positive,1,Pakistan,6,7,0,2,,1,,,chills,,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-92
+470.jpg,136,male,30,AP,COVID-19,positive,1,Pakistan,6,7,0,2,,1,,,chills,,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-92
+471.jpeg,137,female,65,AP,COVID-19,positive,1,UK,1,,0,,,1,,,myalgia,,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-radiological-resolution
+472.jpg,138,,,,COVID-19,positive,,US,,,0,,,,,,,,1,,0,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7217591/
+473.jpg,139,,,,COVID-19,positive,,US,,,0,,,,,,,,1,,1,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7217591/
+474.jpg,140,,,AP,COVID-19,positive,,Italy,,,0,,,,,,,,1,,1,https://europepmc.org/article/med/32404797
+475.jpg,141,,,AP,COVID-19,positive,,Italy,,,0,,,,,,,,1,,0,https://europepmc.org/article/med/32404797
+476.jpg,142,female,69,,COVID-19,positive,1,Italy,1,,1,,1,1,,,,,1,,1,https://www.ajtmh.org/view/journals/tpmd/103/1/article-p6.xml
+477.jpg,142,female,69,,COVID-19,positive,1,Italy,14,,1,,1,1,,,,,1,,1,https://www.ajtmh.org/view/journals/tpmd/103/1/article-p6.xml
+478.jpg,142,female,69,,COVID-19,positive,1,Italy,25,,1,,,,,,,,,,,https://www.ajtmh.org/view/journals/tpmd/103/1/article-p6.xml
+479.jpg,143,male,78,AP,COVID-19,positive,,Italy,1,3,1,1,1,,,92,,"diabete, obesity, hypertension, psoriasis",1,,1,https://www.sirm.org/2020/05/20/covid-19-caso-86/
+480.jpg,143,male,78,AP,COVID-19,positive,,Italy,7,9,1,1,1,,,,,"diabete, obesity, hypertension, psoriasis",1,,1,https://www.sirm.org/2020/05/20/covid-19-caso-86/
+481p-.jpg,144,male,6,AP,COVID-19,positive,,Italy,,5,0,1,,,,,,,1,,1,https://www.sirm.org/2020/05/20/covid-19-caso-87/
+482p-.jpg,145,male,0.25,AP,COVID-19,positive,,Italy,,,0,1,1,,,100,,,1,,1,https://www.sirm.org/2020/05/20/covid-19-caso-88/
+483.png,146,female,78,PA,COVID-19,negative,1,Italy,6,,1,1,,,,,,,1,,0,https://www.sirm.org/2020/05/20/covid-19-caso-91/
+484p.png,147,male,0.1,AP,COVID-19,positive,1,Italy,1,,0,,,,,100,,,1,,,https://www.sirm.org/2020/05/20/covid-19-caso-92-mini-review-pediatrica/
+485-.png,148,female,17,AP,COVID-19,positive,1,Italy,,,0,1,1,,1,100,asthenia,,0,,,https://www.sirm.org/2020/05/20/covid-19-caso-92-mini-review-pediatrica/
+486p.png,149,male,13,AP,COVID-19,positive,1,Italy,,,0,1,,,,99,"pharyngodynia, dysphagia",,,,,https://www.sirm.org/2020/05/20/covid-19-caso-92-mini-review-pediatrica/
+487.png,150,male,17,AP,COVID-19,positive,1,Italy,,,0,1,1,1,,98,chest pain,,1,,0,https://www.sirm.org/2020/05/20/covid-19-caso-92-mini-review-pediatrica/
+488p.png,151,male,0.1,AP,COVID-19,positive,1,Italy,,,0,1,,,,100,UTI,,0,,,https://www.sirm.org/2020/05/20/covid-19-caso-92-mini-review-pediatrica/
+489.png,152,female,64,AP,COVID-19,positive,,Italy,,7,1,2,1,1,,,,hiatal hernia,1,,1,https://www.sirm.org/2020/05/20/covid-19-caso-94/
+490-.png,153,female,39,PA,COVID-19,positive,1,Italy,1,,1,1,1,,,,asthenia,,0,,,https://www.sirm.org/2020/05/20/covid-19-caso-95/
+491-.png,153,female,39,PA,COVID-19,positive,1,Italy,11,,1,1,1,,,,asthenia,,0,,,https://www.sirm.org/2020/05/20/covid-19-caso-95/
+492.png,154,male,75,AP,COVID-19,positive,1,Italy,,3,,1,1,1,,89,,,1,,1,https://www.sirm.org/2020/05/20/covid-19-caso-99/
+493.jpg,155,female,65,AP,COVID-19,positive,0,Thailand,1,,0,1,,1,,,,,1,,0,https://he01.tci-thaijo.org/index.php/jnkp/article/view/241976/164804
+494.jpg,155,female,65,AP,COVID-19,positive,0,Thailand,3,,0,1,,1,,,,,1,,1,https://he01.tci-thaijo.org/index.php/jnkp/article/view/241976/164804
+495.jpg,155,female,65,AP,COVID-19,positive,0,Thailand,7,,0,1,,1,,,,,1,,1,https://he01.tci-thaijo.org/index.php/jnkp/article/view/241976/164804
+496.jpg,155,female,65,AP,COVID-19,positive,0,Thailand,14,,0,1,,1,,,,,1,,1,https://he01.tci-thaijo.org/index.php/jnkp/article/view/241976/164804
+497.jpg,156,female,65,PA,COVID-19,positive,,Thailand,,,0,1,,1,,,,,1,,0,https://he01.tci-thaijo.org/index.php/jnkp/article/view/241976/164804
+498.jpg,157,male,23,PA,COVID-19,positive,,Thailand,,,0,,,,,,,,1,,0,https://he01.tci-thaijo.org/index.php/jnkp/article/view/241976/164804
+499.jpg,158,male,72,PA,COVID-19,positive,,Thailand,,,0,,,,,,,,1,,1,https://he01.tci-thaijo.org/index.php/jnkp/article/view/241976/164804
+500.jpg,159,male,52,PA,COVID-19,positive,,Thailand,,,0,,,,,,,,1,,1,https://he01.tci-thaijo.org/index.php/jnkp/article/view/241976/164804
+501.jpg,160,,,,COVID-19,positive,,Russia,,,0,,,,,,,,1,,1,https://doi.org/10.20862/0042-4676-2020-101-2-72-89
+502.jpg,161,,,,COVID-19,positive,,Russia,,,0,,,,,,,,1,,1,https://doi.org/10.20862/0042-4676-2020-101-2-72-89
+503.jpg,162,,,,COVID-19,positive,,Russia,,,0,,,,,,,,1,,1,https://doi.org/10.20862/0042-4676-2020-101-2-72-89
+504-.jpg,163,,,,COVID-19,positive,,Russia,,,0,,,,,,,,0,,,https://doi.org/10.20862/0042-4676-2020-101-2-72-89
+505.jpg,164,male,65,AP,COVID-19,positive,0,Germany,1,,0,1,1,1,,92,body ache,"coronary heart disease, myocardial infarction, diabetes, hypertension, hyperlipidaemia",1,,1,https://ncbi.nlm.nih.gov/pmc/articles/PMC7235975/
+506.webp,165,male,55,,COVID-19,negative,,Guatemala,,7,0,1,,1,,,anosmia,,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-130
+507.webp,166,male,25,,COVID-19,positive,,Guatemala,,,0,1,1,2,,,,,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-131
+508.jpeg,167,male,30,AP,COVID-19,positive,1,Pakistan,1,7,0,2,,1,,,chills,,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-92
+509.jpeg,167,male,30,AP,COVID-19,positive,1,Pakistan,7,13,0,2,,1,,,chills,,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-92
+674.jpg,168,female,68,AP,COVID-19,positive,1,UK,1,7,0,,,,,92,facial pain,"kidney disease, dental abscess",1,,1,https://doi.org/10.1016/j.idcr.2020.e00834
+675.jpg,168,female,68,AP,COVID-19,positive,1,UK,3,9,0,,,,,80,,"kidney disease, dental abscess",1,,1,https://doi.org/10.1016/j.idcr.2020.e00834
+676.jpg,168,female,68,AP,COVID-19,positive,1,UK,8,14,0,,,,,,,"kidney disease, dental abscess",1,,1,https://doi.org/10.1016/j.idcr.2020.e00834
+677.jpg,168,female,68,AP,COVID-19,positive,1,UK,9,15,0,,,,,,,"kidney disease, dental abscess",1,,1,https://doi.org/10.1016/j.idcr.2020.e00834
+678.jpg,168,female,68,AP,COVID-19,positive,1,UK,12,18,0,,,,,,,"kidney disease, dental abscess",1,,1,https://doi.org/10.1016/j.idcr.2020.e00834
+679.jpg,168,female,68,AP,COVID-19,positive,1,UK,15,21,0,,,,,,,"kidney disease, dental abscess",1,,1,https://doi.org/10.1016/j.idcr.2020.e00834
+680.jpg,168,female,68,AP,COVID-19,positive,1,UK,18,24,0,,,,,,,"kidney disease, dental abscess",1,,1,https://doi.org/10.1016/j.idcr.2020.e00834
+681.jpg,168,female,68,AP,COVID-19,negative,1,UK,22,28,0,,,,,,,"kidney disease, dental abscess",1,,1,https://doi.org/10.1016/j.idcr.2020.e00834
+682.jpg,168,female,68,AP,COVID-19,negative,1,UK,27,33,0,,,,,,,"kidney disease, dental abscess",1,,1,https://doi.org/10.1016/j.idcr.2020.e00834
+683.jpg,168,female,68,AP,COVID-19,negative,1,UK,30,36,0,,,,,,,"kidney disease, dental abscess",1,,1,https://doi.org/10.1016/j.idcr.2020.e00834
+684.jpg,168,female,68,AP,COVID-19,negative,1,UK,33,39,0,,,,,,,"kidney disease, dental abscess",1,,1,https://doi.org/10.1016/j.idcr.2020.e00834
+685.jpg,168,female,68,AP,COVID-19,negative,1,UK,41,47,0,,,,,,,"kidney disease, dental abscess",0,,,https://doi.org/10.1016/j.idcr.2020.e00834
+707-.jpg,169,male,47,AP,COVID-19,negative,,Italy,1,5,1,2,1,,,99,,,0,,,https://www.eurorad.org/case/16755
+708.jpg,169,male,47,AP,COVID-19,positive,,Italy,4,8,1,2,1,,,,,,1,,1,https://www.eurorad.org/case/16755
+709.jpg,170,male,70,AP,COVID-19,positive,0,Italy,,,1,2,,1,,,,"hepatosplenomegaly, anemia",1,,1,https://link.springer.com/article/10.1007/s00277-020-04098-z
+710.png,171,male,43,,COVID-19,positive,1,Spain,,14,0,1,1,,,91,hemoptysis,,1,,1,https://academic.oup.com/ehjcr/article/4/FI1/1/5843429
+711.jpeg,172,male,55,AP,COVID-19,positive,,US,1,,1,,,,,,,,1,,1,https://www.nejm.org/doi/10.1056/NEJMoa2004500
+712.jpeg,172,male,55,AP,COVID-19,positive,,US,2,,1,,,,,,,,1,,1,https://www.nejm.org/doi/10.1056/NEJMoa2004500
+713.jpg,173,,,AP,COVID-19,positive,,US,,,1,,,,,,,,1,,1,https://www.degruyter.com/document/doi/10.1515/dx-2020-0046/html
+714.jpg,174,,,AP,COVID-19,positive,,Taiwan,,,0,,,,,,,,1,,1,https://ccforum.biomedcentral.com/articles/10.1186/s13054-020-02973-9
+715.png,175,male,57,AP,COVID-19,positive,1,Italy,,7,1,1,1,1,,85,,"hypertension, dyslipidemia",1,,1,https://www.sirm.org/2020/05/31/covid-19-caso-111/
+716.png,176,male,70,AP,COVID-19,positive,,Italy,1,4,1,2,1,1,,80,chest pain,"cancer, carotid atheromas",1,,1,https://www.sirm.org/2020/05/31/covid-19-caso-112/
+717.png,176,male,70,AP,COVID-19,positive,,Italy,6,9,1,2,1,1,,80,chest pain,"cancer, carotid atheromas",1,,1,https://www.sirm.org/2020/05/31/covid-19-caso-112/
+718.jpg,177,male,78,,COVID-19,positive,,Italy,,2,0,,,,,,,,1,,1,https://link.springer.com/article/10.1007%2Fs00330-020-06967-7
+719.jpg,178,male,79,,COVID-19,positive,,Italy,,4,0,,,,,,,,1,,1,https://link.springer.com/article/10.1007%2Fs00330-020-06967-7
+720.jpg,179,female,60,,COVID-19,positive,,Italy,,8,0,,,,,,,,1,,1,https://link.springer.com/article/10.1007%2Fs00330-020-06967-7
+721.jpg,180,female,61,,COVID-19,positive,,Italy,,10,0,,,,,,,,1,,1,https://link.springer.com/article/10.1007%2Fs00330-020-06967-7
+722.png,181,male,49,AP,COVID-19,positive,,US,,5,1,2,1,1,,94,"myalgia, tiredness, chills, muscle aches","hypertension, hyperlipidemia, pre-diabetes",1,,1,https://doi.org/10.7759/cureus.7473
+723.jpg,182,male,80,AP,COVID-19,positive,,US,1,14,0,,1,1,,90,"fatigue, confusion, sore throat, chills","hypertension, kidney disease, coronary artery disease",1,,0,https://doi.org/10.7759/cureus.7482
+724.jpg,182,male,80,,COVID-19,positive,,US,2,15,0,2,1,1,,,"fatigue, confusion, sore throat, chills, tachycardia, hypoxemia","hypertension, kidney disease, coronary artery disease",1,,1,https://doi.org/10.7759/cureus.7482
+725.jpg,183,,,AP,COVID-19,positive,,Italy,,,0,,,,,,,,1,,1,https://www.researchsquare.com/article/rs-32480/v1
+726.jpg,184,,,AP,COVID-19,positive,,Italy,,,0,,,,,,,,1,,1,https://www.researchsquare.com/article/rs-32480/v1
+727.jpg,185,,,PA,COVID-19,positive,,Italy,,,0,,,,,,,,1,,0,https://www.researchsquare.com/article/rs-32480/v1
+728.jpg,186,,,AP,COVID-19,positive,,Italy,1,,0,,,,,,,,1,,0,https://www.researchsquare.com/article/rs-32480/v1
+729.jpg,186,,,AP,COVID-19,positive,,Italy,5,,0,,,,,,,,1,,1,https://www.researchsquare.com/article/rs-32480/v1
+730-.jpg,187,female,54,AP,COVID-19,positive,,Italy,,,1,,,,,,,,0,,,https://www.researchsquare.com/article/rs-32480/v1
+731.jpg,188,,,AP,COVID-19,positive,,Italy,,,0,,,,,,,,1,,1,https://www.researchsquare.com/article/rs-32480/v1
+732.jpg,189,,,AP,COVID-19,positive,,Italy,,,0,,,,,,,,1,,1,https://www.researchsquare.com/article/rs-32480/v1
+733.jpg,190,,,AP,COVID-19,positive,,Italy,,,0,,,,,,,,1,,1,https://www.researchsquare.com/article/rs-32480/v1
+734.jpg,191,male,68,AP,COVID-19,positive,,India,,5,0,1,1,1,,,"hypoxemia, vomit",,1,,1,https://dx.doi.org/10.2139/ssrn.3588540
+735.jpg,192,female,64,AP,COVID-19,positive,,India,,7,0,1,1,1,,,drowsiness,,1,,1,https://dx.doi.org/10.2139/ssrn.3588540
+736.jpg,193,female,52,AP,COVID-19,positive,,India,,3,0,1,1,1,,,drowsiness,,1,,1,https://dx.doi.org/10.2139/ssrn.3588540
+737.jpg,194,male,60,AP,COVID-19,positive,,India,,,0,1,1,,,,,,0,,,https://dx.doi.org/10.2139/ssrn.3588540
+738.jpg,195,male,55,PA,COVID-19,positive,,India,,,0,1,1,,,,,,1,,1,https://dx.doi.org/10.2139/ssrn.3588540
+739.jpg,196,male,51,PA,COVID-19,positive,1,Indonesia,10,,1,1,1,1,1,97,,"hypertension, diabetes, dyslipidemia, hyperuricemia",1,,,https://onlinelibrary.wiley.com/doi/full/10.1111/jdv.16622
+740.jpeg,197,female,50,AP,COVID-19,,,UK,,,1,,,2,,,,,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-108
+741.png,198,,81,AP,COVID-19,positive,,Italy,,,0,,,,,,,,1,,1,https://link.springer.com/article/10.1007/s11547-020-01232-9#ref-CR10
+742.png,199,,81,AP,COVID-19,positive,,Italy,,,0,,,,,,,,1,,1,https://link.springer.com/article/10.1007/s11547-020-01232-9#ref-CR10
+743.png,200,,81,AP,COVID-19,positive,,Italy,,,0,,,,,,,,1,,1,https://link.springer.com/article/10.1007/s11547-020-01232-9#ref-CR10
+744.png,201,,81,AP,COVID-19,positive,,Italy,,,0,,,,,,,,1,,1,https://link.springer.com/article/10.1007/s11547-020-01232-9#ref-CR10
+745.png,202,,,AP,COVID-19,positive,,Italy,,,0,,,,,,,,1,,1,https://link.springer.com/article/10.1007/s11547-020-01232-9#ref-CR10
+746.png,203,,,AP,COVID-19,positive,,Italy,,,0,,,,,,,,1,,1,https://link.springer.com/article/10.1007/s11547-020-01232-9#ref-CR10
+747.png,204,,,AP,COVID-19,positive,,Italy,,,0,,,,,,,,1,,1,https://link.springer.com/article/10.1007/s11547-020-01232-9#ref-CR10
+748.png,205,male,,AP,COVID-19,positive,,Italy,,,0,,,,,,,,1,,1,https://link.springer.com/article/10.1007/s11547-020-01232-9#ref-CR10
+749.png,206,male,,AP,COVID-19,positive,,Italy,,,0,,,,,,,,1,,1,https://link.springer.com/article/10.1007/s11547-020-01232-9#ref-CR10
+750.png,207,male,,AP,COVID-19,positive,,Italy,,,0,,,,,,,,1,,1,https://link.springer.com/article/10.1007/s11547-020-01232-9#ref-CR10
+751.png,208,,,AP,COVID-19,positive,,Italy,,,0,,,,,,,,1,,0,https://link.springer.com/article/10.1007/s11547-020-01232-9#ref-CR10
+752.png,209,,,AP,COVID-19,positive,,Italy,,,0,,,,,,,,1,,1,https://link.springer.com/article/10.1007/s11547-020-01232-9#ref-CR10
+753.jpg,210,male,64,AP,COVID-19,positive,1,Egypt,,3,0,0,0,0,0,,hiccups,,1,,1,https://www.researchsquare.com/article/rs-34617/v1
+754.png,211,male,57,AP,COVID-19,positive,1,US,2,,0,,1,1,,,,,1,,1,https://doi.org/10.1093/ehjci/jeaa181
+755.png,212,male,69,AP,COVID-19,positive,1,Japan,,6,1,1,2,1,,,,diabetes,1,,0,https://doi.org/10.1007/s13730-020-00495-5
+756.jpg,213,male,28,AP,,negative,,Austria,,,0,1,1,2,,72,headache,,1,,1,https://dx.doi.org/10.1016%2FS1473-3099(20)30468-0
+757p.jpg,214,male,0.03,AP,COVID-19,positive,1,US,1,,0,0,0,0,0,90,,,1,,1,https://dx.doi.org/10.1093%2Fjpids%2Fpiaa064
+758p.jpg,214,male,0.03,AP,COVID-19,positive,1,US,1,,0,0,0,0,0,99,,,1,,1,https://dx.doi.org/10.1093%2Fjpids%2Fpiaa064
+759.jpeg,215,male,50,,COVID-19,positive,,Saudi Arabia,,14,1,2,1,2,,,"myalgia, ageusia",,1,,0,https://radiopaedia.org/cases/covid-19-pneumonia-103?lang=us
+760.jpg,216,male,57,,COVID-19,negative,,Portugal,,14,1,1,1,2,,,,,1,,1,https://www.eurorad.org/case/16832
+761.jpg,217,male,74,,COVID-19,positive,,Spain,1,,1,1,1,1,,89,tachypnea,"hypertension, diabetes",1,,0,https://www.eurorad.org/case/16844
+762.jpg,217,male,74,,COVID-19,positive,,Spain,18,,1,1,1,1,,89,tachypnea,"hypertension, diabetes",1,"pneumothorax, pneumomediastinum",0,https://www.eurorad.org/case/16844
+763.jpg,218,female,38,AP,COVID-19,positive,1,Spain,5,11,0,2,1,,,96,"arthalgia, malaise",,1,,1,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7319919/
+764-.jpg,218,female,38,PA,COVID-19,positive,1,Spain,20,36,0,,,,,,,,0,,,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7319919/
+765.jpg,219,female,36,AP,COVID-19,,,UK,,7,1,1,1,1,,92,"chest pain, tachypnea, tachycardia",asthma,1,pulmonary embolism,1,http://www.academia.edu/download/63760191/D190611192220200627-29892-1ktk8cp.pdf
+766p.jpg,220,female,5,,COVID-19,positive,0,Italy,,,0,2,,1,,,rhinorrhea,mucolipidosis,1,ARDS,1,https://doi.org/10.1111/jpc.14994
+767.jpg,221,male,28,AP,COVID-19,positive,,Finland,,9,,,,,,,,,1,,1,https://www.medrxiv.org/content/10.1101/2020.06.29.20140632v1
+768.jpg,221,female,51,AP,COVID-19,positive,,Finland,,13,,,,,,,,,1,,1,https://www.medrxiv.org/content/10.1101/2020.06.29.20140632v1
+769.jpg,221,male,68,AP,COVID-19,positive,,Finland,,3,,,,,,,,,1,,1,https://www.medrxiv.org/content/10.1101/2020.06.29.20140632v1
+770.png,222,male,44,,COVID-19,positive,1,US,1,4,1,1,,1,1,95,"headache, fatigue, myalgia, nausea, tachycardia, hypotension","colon cancer, mild obesity",1,ARDS,1,https://www.karger.com/Article/FullText/509507
+771.png,222,male,44,,COVID-19,negative,1,US,2,5,1,0,,,,,,"colon cancer, mild obesity",,ARDS,,https://www.karger.com/Article/FullText/509507
+772.png,223,female,,,COVID-19,,,Denmark,,,,,,,,,,,1,,,https://doi.org/10.3390/diagnostics10070447
+773.jpg,224,male,61,PA,COVID-19,positive,,UK,1,7,1,,,2,,,,,1,,1,https://erj.ersjournals.com/content/early/2020/06/25/13993003.01809-2020
+774.jpg,224,male,61,,COVID-19,positive,,UK,30,37,1,,,,,,,,1,,1,https://erj.ersjournals.com/content/early/2020/06/25/13993003.01809-2020
+775p.jpg,225,female,7,,COVID-19,,,Turkey,,,,0,0,1,0,85,"chest pain, fatigue","cardiomyopathy, chronic lung disease",1,cardiomegaly,0,https://www.indianpediatrics.net/june2020/june-577-578.htm
+776.png,226,male,50,AP,COVID-19,positive,,US,1,,1,,2,1,,,"myalgia, nausea",obesity,1,mycoplasma pneumoniae,1,https://www.eurorad.org/case/16858
+777.png,226,male,50,AP,COVID-19,positive,,US,2,,1,,2,1,,,"myalgia, nausea",obesity,1,mycoplasma pneumoniae,1,https://www.eurorad.org/case/16858
+778.jpg,227,male,25,PA,COVID-19,positive,,Spain,,3,1,1,,,,,"odynophagia, myalgia, malaise",,1,,0,https://www.eurorad.org/case/16865
+779.jpg,228,female,74,,COVID-19,negative,,Spain,,3,1,1,,1,,,asthenia,,1,pulmonary embolism,1,https://www.eurorad.org/case/16866
+780.png,229,male,71,AP,COVID-19,positive,,US,,7,1,1,1,1,,,myalgia,,1,,1,https://www.eurorad.org/case/16883
+781.jpg,230,male,37,,COVID-19,positive,1,US,1,4,1,,1,1,,,,,1,,1,https://doi-org.cyber.usask.ca/10.4269/ajtmh.20-0736
+782.jpg,230,male,37,,COVID-19,positive,1,US,17,21,1,,,1,,,chest pain,,,pneumothorax,,https://doi-org.cyber.usask.ca/10.4269/ajtmh.20-0736
+783.jpg,230,male,37,,COVID-19,positive,1,US,17,21,1,,,1,,,chest pain,,,pneumothorax,,https://doi-org.cyber.usask.ca/10.4269/ajtmh.20-0736
+784.png,231,male,47,AP,COVID-19,,,US,,7,1,1,,,,,"nausea, vomiting, epigastric pain",,1,,,https://www.eurorad.org/case/16892
+785p.png,232,male,1,,COVID-19,positive,1,Iran,,10,1,0,0,1,,82,cyanosis,,1,,1,https://dx.doi.org/10.5812/ijp.103807
+786.jpg,233,male,50,AP,COVID-19,,,Pakistan,,,1,1,1,1,,,,,1,pneumomediastinum,1,https://radiopaedia.org/cases/covid-19-pneumonia-with-pneumomediastinum-and-extensive-subcutaneous-emphysema?lang=us
+787.jpeg,234,male,55,,COVID-19,positive,,Saudi Arabia,,,1,1,0,0,1,,abdominal pain,,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-139
+788.jpeg,235,male,70,AP,COVID-19,,1,UK,1,,1,,,1,,,,,1,,1,https://radiopaedia.org/cases/covid-pneumonia-and-recovery
+789.jpeg,235,male,70,AP,COVID-19,,1,UK,3,,1,,,1,,,,,1,,1,https://radiopaedia.org/cases/covid-pneumonia-and-recovery
+790.jpeg,235,male,70,AP,COVID-19,,1,UK,6,,1,,,1,,,,,1,,1,https://radiopaedia.org/cases/covid-pneumonia-and-recovery
+791-.jpeg,235,male,70,,COVID-19,,1,UK,80,,1,,,,,,,,,,,https://radiopaedia.org/cases/covid-pneumonia-and-recovery
+792.jpg,236,male,65,AP,COVID-19,,,Spain,,5,1,1,1,1,,,,"hypertension, dyslipidemia",1,pulmonary embolism,1,https://www.eurorad.org/case/16895
+793-.jpg,237,male,19,,COVID-19,positive,,Turkey,,,1,1,1,,,,,,1,,0,https://www.eurorad.org/case/16903
+794.jpg,238,male,51,AP,COVID-19,positive,,US,,,1,,,,,86,,AIDS,1,,1,https://dx.doi.org/10.1002%2Fjmv.26255
+795.jpg,239,male,20,AP,COVID-19,positive,1,UK,1,,1,1,1,,,,,asthma,1,pulmonary embolism,1,https://www.eurorad.org/case/16953
+796.jpg,239,male,20,PA,COVID-19,positive,1,UK,1,,1,1,1,,,,,asthma,1,pulmonary embolism,1,https://www.eurorad.org/case/16953
+797.jpg,239,male,20,PA,COVID-19,positive,1,UK,21,,1,,,,,,,asthma,1,pulmonary embolism,,https://www.eurorad.org/case/16953
+798.jpg,239,male,20,,COVID-19,positive,1,UK,42,,1,,,,,,,asthma,1,"atelectasis, pulmonary embolism",,https://www.eurorad.org/case/16953
+799.png,240,,,,COVID-19,positive,,Pakistan,,,0,0,0,0,0,,,,1,,,http://www.annalskemu.org/journal/index.php/annals/article/view/3748
+800.jpg,241,female,61,AP,COVID-19,positive,1,UK,1,14,0,1,1,1,,,fatigue,chronic lymphocyctic leukaemia,1,,1,https://doi.org/10.1111/ijlh.13307
+801.jpg,241,female,61,AP,COVID-19,positive,1,UK,3,16,0,,,,,,,chronic lymphocyctic leukaemia,1,,1,https://doi.org/10.1111/ijlh.13307
+802.jpg,241,female,61,AP,COVID-19,positive,1,UK,14,27,0,,,,,,,chronic lymphocyctic leukaemia,1,,1,https://doi.org/10.1111/ijlh.13307
+803.jpg,241,female,61,AP,COVID-19,positive,1,UK,21,34,0,,,,,,,chronic lymphocyctic leukaemia,1,,1,https://doi.org/10.1111/ijlh.13307
+804.png,242,male,37,,COVID-19,positive,1,Japan,,8,1,1,,1,,,ageusia,,1,,1,https://link.springer.com/article/10.1007/s11239-020-02248-8
+805.png,243,male,60,,COVID-19,positive,0,Indonesia,1,14,0,1,1,,,,"running nose, sore throat",diabetes,1,,1,https://doi.org/10.21203/rs.3.rs-58296/v1
+806.png,243,male,60,,COVID-19,positive,0,Indonesia,3,17,0,,,,,,,diabetes,,,,https://doi.org/10.21203/rs.3.rs-58296/v1
+807.png,243,male,60,,COVID-19,positive,0,Indonesia,8,25,0,,,,,,,diabetes,,,,https://doi.org/10.21203/rs.3.rs-58296/v1
+808-.png,244,female,40,,COVID-19,positive,,Korea,,5,1,1,0,0,,,sore throat,,0,,0,https://doi.org/10.3904/kjim.2020.180
+809-.png,245,male,60,,COVID-19,positive,,Korea,8,9,1,1,1,,,,"chills, myalgia",,1,,0,https://doi.org/10.3904/kjim.2020.180
+810.png,245,male,60,,COVID-19,positive,,Korea,13,14,1,1,1,,,,"chills, myalgia",,1,,1,https://doi.org/10.3904/kjim.2020.180
+811-.png,246,male,85,,COVID-19,positive,,Korea,1,,1,,,2,,,,,,,,https://doi.org/10.3904/kjim.2020.180
+812-.png,246,male,85,,COVID-19,positive,,Korea,5,,1,,,2,,,,,,,,https://doi.org/10.3904/kjim.2020.180
+813.png,246,male,85,,COVID-19,positive,,Korea,,,1,,,2,,,,,1,,1,https://doi.org/10.3904/kjim.2020.180
+814.png,247,female,62,,COVID-19,positive,,Korea,,,1,1,,1,,,,,1,,1,https://doi.org/10.3904/kjim.2020.180
+815.png,247,female,62,,COVID-19,positive,,Korea,1,,1,1,,1,,,,,1,,1,https://doi.org/10.3904/kjim.2020.180
+816.png,247,female,62,,COVID-19,positive,,Korea,4,,1,,,,,,,,1,,1,https://doi.org/10.3904/kjim.2020.180
+817.png,247,female,62,,COVID-19,positive,,Korea,18,,1,,,,,,,,1,,1,https://doi.org/10.3904/kjim.2020.180
+818-.png,248,female,10,,COVID-19,positive,,Korea,,,1,,,,,,,,0,,,https://doi.org/10.3904/kjim.2020.180
+819.jpeg,249,male,50,PA,COVID-19,,,France,,,1,,1,1,,,,,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-104
+820.jpeg,250,female,93,AP,COVID-19,positive,,Italy,,,0,1,,1,,,,,1,,1,https://radiopaedia.org/cases/covid-19-28
+821.webp,251,male,75,PA,COVID-19,positive,1,Afghanistan,,10,1,2,2,2,,,,,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-69
+822.jpeg,252,female,55,PA,COVID-19,positive,,Jordan,,,0,,1,1,,,headache,,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-149
+823.jpeg,253,male,55,PA,COVID-19,positive,,Jordan,,,1,1,,,1,,vomit,,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-151
+824.jpeg,254,male,60,PA,COVID-19,positive,,Jordan,,,1,,,,,,blood pressure,,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-152
+825.jpg,255,female,55,AP,COVID-19,,,UK,,,1,,,,,,,,1,,1,https://radiopaedia.org/cases/severe-covid-19-pneumonia
+826.jpg,256,male,75,AP,COVID-19,positive,,UK,1,,0,,,1,,,,,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-with-pneumomediastinum
+827.jpg,256,male,75,AP,COVID-19,positive,,UK,8,,0,,,2,,,,,1,pneumediastinum,1,https://radiopaedia.org/cases/covid-19-pneumonia-with-pneumomediastinum
+828.jpg,256,male,75,AP,COVID-19,positive,,UK,,,0,,,2,,,,,1,pneumediastinum,1,https://radiopaedia.org/cases/covid-19-pneumonia-with-pneumomediastinum
+829.jpg,257,male,80,AP,COVID-19,positive,,UK,1,,0,,,2,,,,,1,,1,https://radiopaedia.org/cases/covid-pneumonia-with-barotrauma-complications
+830.jpg,257,male,80,AP,COVID-19,positive,,UK,3,,0,,,,,,,,1,,1,https://radiopaedia.org/cases/covid-pneumonia-with-barotrauma-complications
+831.jpg,257,male,80,AP,COVID-19,positive,,UK,8,,0,,,,,,,,1,pneumediastinum,1,https://radiopaedia.org/cases/covid-pneumonia-with-barotrauma-complications
+832.png,257,male,80,AP,COVID-19,positive,,UK,9,,0,,,,,,,,1,pneumediastinum,1,https://radiopaedia.org/cases/covid-pneumonia-with-barotrauma-complications
+833.jpg,258,male,50,AP,COVID-19,,,UK,,,1,,,,,,,,1,pneumediastinum,1,https://radiopaedia.org/cases/covid-pneumonia-and-barotrauma-complications
+834.jpg,259,male,30,AP,COVID-19,,,UK,,,0,,,1,,,hypoxemia,,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-and-normal-follow-up
+835.jpg,260,male,50,AP,COVID-19,,,UK,,,1,,,1,,,,,1,,1,https://radiopaedia.org/cases/covid-19-pneumonia-rapid-progression-1
+836.png,261,male,40,,COVID-19,positive,,India,,5,1,1,1,1,,,,,1,,1,https://www.eurorad.org/case/17005
+837.png,262,male,35,,COVID-19,positive,,Qatar,,2,0,1,,,,,bodyache,,1,,1,https://radiopaedia.org/cases/covid-19-30
+838.png,263,male,50,AP,COVID-19,positive,,Qatar,1,4,1,1,,1,1,93,,,1,,1,https://doi.org/10.4269/ajtmh.21-0092
+839.png,263,male,50,AP,COVID-19,positive,,Qatar,22,25,1,1,,1,1,,,,1,"emphysema, pneumomediastinum, pneumoperitoneum, pneumothorax",1,https://doi.org/10.4269/ajtmh.21-0092
+840.jpg,264,male,36,AP,COVID-19,negative,1,Indonesia,1,3,1,1,1,0,,97,"fatigue, nausea, myalgia",heart disease,1,,1,https://doi.org/10.1016/j.radcr.2021.03.049
+841.jpg,264,male,36,AP,COVID-19,negative,1,Indonesia,4,6,1,1,1,,,,,heart disease,1,,1,https://doi.org/10.1016/j.radcr.2021.03.049
+842.jpg,264,male,36,AP,COVID-19,negative,1,Indonesia,6,8,1,,,,,,,heart disease,1,,1,https://doi.org/10.1016/j.radcr.2021.03.049
+843.jpg,264,male,36,AP,COVID-19,negative,1,Indonesia,9,11,1,,,,,,vomit,heart disease,1,,1,https://doi.org/10.1016/j.radcr.2021.03.049
+844.jpg,264,male,36,AP,COVID-19,negative,1,Indonesia,12,14,1,,,,,,vomit,heart disease,1,,1,https://doi.org/10.1016/j.radcr.2021.03.049
+845-.jpg,264,male,36,AP,COVID-19,negative,1,Indonesia,21,23,1,,,,,,,heart disease,0,,,https://doi.org/10.1016/j.radcr.2021.03.049
+846.png,265,male,55,AP,COVID-19,positive,1,Indonesia,1,,0,,,1,,97,,,1,,1,https://www.researchgate.net/profile/Yusra-Pintaningrum/publication/350153056_New_atrial_fibrillation_in_patient_with_suspect_pulmonary_embolism_due_to_COVID-19/links/60536c84a6fdccbfeaed7d14/New-atrial-fibrillation-in-patient-with-suspect-pulmonary-embolism-due-to-COVID-19.pdf
+847.jpg,266,male,73,AP,COVID-19,positive,,UAE,1,3,0,1,1,1,,78,fatigue,,1,,1,https://doi.org/10.1016/j.visj.2021.101027
+848.jpg,266,male,73,AP,COVID-19,positive,,UAE,1,3,0,1,1,1,,78,fatigue,,1,,1,https://doi.org/10.1016/j.visj.2021.101027
+849.png,267,male,40,PA,COVID-19,positive,1,China,,10,1,1,1,,,,,,1,,0,https://doi.org/10.1148/cases.20201394
+850.jpeg,268,male,56,PA,COVID-19,positive,,US,1,14,0,1,1,,1,94,chills,,1,,1,https://doi.org/10.1148/cases.20201965
+851.jpeg,268,male,56,AP,COVID-19,positive,,US,3,16,0,1,1,,1,,chills,,1,,1,https://doi.org/10.1148/cases.20201965
+852.jpeg,268,male,56,AP,COVID-19,positive,,US,5,18,0,1,1,,1,,chills,,1,,1,https://doi.org/10.1148/cases.20201965
+853.jpeg,268,male,56,AP,COVID-19,positive,,US,7,21,0,1,1,,1,,chills,,1,,1,https://doi.org/10.1148/cases.20201965
+854.png,269,female,80,AP,COVID-19,positive,0,Jordan,5,,0,,,,,,,,1,,0,https://link.springer.com/article/10.1186/s12890-020-01286-5
+855.png,269,female,80,AP,COVID-19,positive,0,Jordan,7,,0,,,,,,,,1,,0,https://link.springer.com/article/10.1186/s12890-020-01286-5
+856.png,269,female,80,AP,COVID-19,positive,0,Jordan,11,,0,,,,,,,,1,,1,https://link.springer.com/article/10.1186/s12890-020-01286-5
+857.png,269,female,80,AP,COVID-19,positive,0,Jordan,14,,0,,,,,,,,1,,1,https://link.springer.com/article/10.1186/s12890-020-01286-5
+858.png,269,female,80,AP,COVID-19,positive,0,Jordan,17,,0,,,,,,,,1,,1,https://link.springer.com/article/10.1186/s12890-020-01286-5
+859.png,269,female,80,AP,COVID-19,positive,0,Jordan,18,,0,,,,,,,,1,,1,https://link.springer.com/article/10.1186/s12890-020-01286-5
+860.png,270,female,49,AP,COVID-19,positive,1,Jordan,1,,0,,,,,,,,1,,1,https://link.springer.com/article/10.1186/s12890-020-01286-5
+861.png,270,female,49,AP,COVID-19,positive,1,Jordan,5,,0,,,,,,,,1,,1,https://link.springer.com/article/10.1186/s12890-020-01286-5
+862.png,270,female,49,AP,COVID-19,positive,1,Jordan,8,,0,,,,,,,,1,,1,https://link.springer.com/article/10.1186/s12890-020-01286-5
+863.png,270,female,49,AP,COVID-19,positive,1,Jordan,15,,0,,,,,,,,1,,0,https://link.springer.com/article/10.1186/s12890-020-01286-5
+864-.png,271,female,37,PA,COVID-19,positive,,Italy,,3,0,1,1,,,,conjunctivitis,,1,,0,https://doi.org/10.4269/ajtmh.20-0535
+865.png,272,female,86,AP,COVID-19,positive,,Italy,,,0,1,1,1,,88,,,1,,1,https://doi.org/10.4269/ajtmh.20-0535
+866.png,273,male,77,AP,COVID-19,positive,,Italy,,7,0,1,1,1,,84,,"diabetes, hypertension",1,,1,https://doi.org/10.4269/ajtmh.20-0535
+867.jpg,274,,,AP,COVID-19,positive,,Italy,,,0,,,,,,,,1,,0,https://doi.org/10.4269/ajtmh.20-0535
+868.jpg,275,,,PA,COVID-19,positive,,Italy,,,0,,,,,,,,1,,1,https://doi.org/10.4269/ajtmh.20-0535
+869.jpg,276,,,AP,COVID-19,positive,,Italy,,,0,,,,,,,,1,,1,https://doi.org/10.4269/ajtmh.20-0535
+870.jpg,277,,,AP,COVID-19,positive,,Italy,,,0,,,,,,,,1,,1,https://doi.org/10.4269/ajtmh.20-0535
+871.jpg,278,male,59,AP,COVID-19,positive,1,US,1,6,0,2,1,1,,94,"chills, malaise, fatigue, myalgia",,1,,1,https://doi.org/10.4236/aid.2020.103006
+872.jpg,278,male,59,AP,COVID-19,positive,1,US,4,9,0,0,1,1,,95,"chills, malaise, fatigue, myalgia",,1,,1,https://doi.org/10.4236/aid.2020.103006
+873.jpg,279,,,AP,COVID-19,positive,,Germany,,,1,,,,,,,,1,,1,https://doi.org/10.1055/a-1388-8147
+874.jpg,280,,,AP,COVID-19,positive,,Germany,,,0,,,,,,,,1,,1,https://doi.org/10.1055/a-1388-8147
+875.jpg,281,,,AP,COVID-19,positive,,Germany,,,0,,,,,,,,1,,0,https://doi.org/10.1055/a-1388-8147
+876.jpg,282,male,51,,COVID-19,,,Pakistan,1,2,,0,0,0,0,97,"leg pain, paresthesia, swelling",diabetes,1,,1,https://dx.doi.org/10.7759%2Fcureus.13675
+877.jpg,282,male,51,,COVID-19,,,Pakistan,1,2,,0,0,0,0,97,"leg pain, paresthesia, swelling",diabetes,1,,1,https://dx.doi.org/10.7759%2Fcureus.13675
+878.png,283,male,46,AP,COVID-19,positive,1,UK,,3,0,1,1,1,,92,,,1,,1,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8069347/
+879-.png,284,female,62,AP,COVID-19,positive,0,UK,,1,1,1,1,2,,84,"anosmia, ageusia","diabetes, hypertension",0,,,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8069347/
+880.png,285,female,52,AP,COVID-19,positive,1,UK,1,14,1,,1,1,,93,,"asthma, hypertension",1,,1,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8069347/
+881.png,285,female,52,AP,COVID-19,positive,1,UK,8,21,1,,1,2,,,"syncope, chest tightness, tachycardia, hypoxia, hypotension","asthma, hypertension",,,,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8069347/
+882.jpg,286,female,55,PA,COVID-19,negative,1,Austria,,,0,1,,1,,,"fatigue, night sweats",,1,,1,https://doi.org/10.1016/S1473-3099(20)30977-4
+883.png,287,female,56,AP,COVID-19,negative,1,US,,,1,0,1,1,,,night sweats,,1,,0,https://www.atsjournals.org/doi/pdf/10.1164/ajrccm-conference.2021.203.1_MeetingAbstracts.A4085
+884.png,288,female,61,AP,COVID-19,positive,1,US,,,1,,1,1,,,hypoxia,,1,pneumomediastinum,1,https://link.springer.com/article/10.1007/s11606-021-06813-6#Fig1
+885.jpg,289,male,52,AP,COVID-19,positive,1,Turkey,3,,1,,,,,95,hypoxemia,,,pneumomediastinum,,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8051303/
+886.jpg,290,male,83,,COVID-19,positive,0,US,13,,1,0,,1,,,"tachypnea, tachycardia, altered metal status, jaundice, arm weakness, hypoxia","hypertension, osteoarthritis",1,,1,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7935611/
+887.jpg,291,female,17,AP,COVID-19,positive,1,US,,,0,1,1,,,100,vomit,diabetes,1,,0,https://doi.org/10.1542/peds.147.3_MeetingAbstract.429
+888.png,292,female,69,,COVID-19,negative,1,India,,7,1,1,1,1,,95,"asthenia, tachycardia",,1,,1,https://www.ijhsr.org/IJHSR_Vol.11_Issue.1_Jan2021/IJHSR15.pdf
+889.png,293,male,68,AP,COVID-19,,,Poland,1,7,1,1,1,,,,,hypertension,1,,1,https://doi.org/10.26444/jpccr/132590
+890p.png,294,,12,AP,COVID-19,positive,,Peru,,,0,,,,,,,,1,,1,https://doi.org/10.17843/rpmesp.2020.374.6198
+891p.png,295,,2,AP,COVID-19,positive,,Peru,,,0,,,,,,,,1,,1,https://doi.org/10.17843/rpmesp.2020.374.6198
+892.jpg,296,,,,COVID-19,positive,,Italy,,,0,,,,,,,,1,,1,https://link.springer.com/article/10.1007/s10140-021-01905-6
+893.jpg,297,,,AP,COVID-19,positive,,Italy,,,0,,,,,,,,1,,1,https://link.springer.com/article/10.1007/s10140-021-01905-6
+894.jpg,298,male,65,PA,COVID-19,positive,,Italy,,7,0,1,1,,,,,,1,,1,https://link.springer.com/article/10.1007/s10140-021-01905-6
+895.jpg,299,male,63,AP,COVID-19,positive,,Italy,,12,0,1,1,,,,,,1,,1,https://link.springer.com/article/10.1007/s10140-021-01905-6
+896.jpg,300,male,58,,COVID-19,positive,,Italy,1,2,0,,,,,,,,1,,1,https://link.springer.com/article/10.1007/s10140-021-01905-6
+897.jpg,300,male,58,AP,COVID-19,positive,,Italy,13,14,0,,,,,,,,1,pleural effusion,1,https://link.springer.com/article/10.1007/s10140-021-01905-6
+898.jpg,301,male,58,AP,COVID-19,positive,,Italy,,,1,,,,,,,,1,,1,https://link.springer.com/article/10.1007/s10140-021-01905-6
+899p.jpg,302,male,0.5,AP,COVID-19,positive,,Spain,,,0,1,1,,,,,,1,,0,https://doi.org/10.1016/j.rxeng.2020.11.006
+900.jpg,303,female,44,AP,COVID-19,positive,1,US,1,,0,,,2,,,,,1,,1,https://doi.org/10.1080/20009666.2020.1821471
