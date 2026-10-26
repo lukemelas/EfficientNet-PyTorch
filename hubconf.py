@@ -31,9 +31,9 @@ def _create_model_fn(model_name):
         else:
             model = _EfficientNet.from_name(
                 model_name=model_name_,
-                override_params={'num_classes': num_classes},
+                in_channels=in_channels,
+                num_classes=num_classes,
             )
-            model._change_in_channels(in_channels)
 
         return model
 
